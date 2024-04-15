@@ -6,13 +6,14 @@
 #    By: macampos <macampos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/04/11 14:44:49 by macampos         ###   ########.fr        #
+#    Updated: 2024/04/15 17:11:35 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c src/starting_shell.c
+SRC = src/main.c src/starting_shell.c parcing/parsargs.c parcing/builtins/cd.c parcing/builtins/echo.c parcing/builtins/env.c parcing/builtins/pwd.c parcing/builtins/export.c \
+		parcing/builtins/unset.c parcing/builtins/exit.c \
 
 OBJ = $(SRC:.c=.o)
 
