@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/13 00:34:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/16 21:44:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,18 @@ int	main(int argc, char **argv, char **envp)
 {
 	if (argc != 1)
 		return(1);
-	t_main	main;
+	t_cmd	cmd;
 	char	*user_input;
-	char	**cmds;
-	int		i;
 
-	i = -1;
 	(void)argv;
-	(void)main;
 	while (1)
 	{
 		user_input = readline("minishell> ");
 		if(!user_input)	
 			return 1;
-		cmds = ft_split(user_input, ' ');
+		initiate_args(user_input, envp, cmd);
 		add_history(user_input);
-		if (cmds[0])
-			execute_function(cmds, envp);
+		if (cmd.args[0])
+			execute_function(cmd.args, envp);
 	}
 }

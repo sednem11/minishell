@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/16 16:32:15 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/16 19:55:55 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,11 @@ void	child_process(char **argv, char **envp, int *fd)
 {
 	struct s_stupid	stupid;
 
-	stupid.i = -1;
-	close(fd[0]);
 	if (pars_args(argv) != -1)
+	{
 		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
 	stupid.path = get_paths(argv[0], envp);
 	if (check_builtins(argv, stupid.path, envp) == 1)
 		execve(stupid.path, argv, envp);
@@ -106,8 +107,8 @@ int	execute_function(char **cmd, char **envp)
 		return(-1);
 	if (id == 0)
 		child_process(cmd, envp, fd);
-	// if (pars_args(cmd) != -1)
-	// 	parent_process(cmd, envp, fd, pars_args(cmd));
+	if (pars_args(cmd) != -1)
+		parent_process(cmd, envp, fd, pars_args(cmd));
 	waitpid(0, NULL, 0);
 	if (ft_strncmp(cmd[0], "cat", 3) == 0)
 		printf("\n");
