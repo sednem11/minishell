@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/15 19:22:31 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:32:15 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ void	parent_process(char **argv, char **envp, int *fd, int i)
 {
 	char	*path;
 
-	close(fd[1]);
 	path = get_paths(argv[i + 1], envp);
 	execve (path, &argv[i + 1], envp);
+	close(fd[1]);
 }
 
 

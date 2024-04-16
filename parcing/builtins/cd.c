@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:03:45 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/15 19:06:24 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:23:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 void	cd(char **cmd, char *path, char **envp)
 {
-	execve(path, cmd, envp);
+	(void)path;
+	(void)envp;
+	chdir(cmd[1]);
 }
