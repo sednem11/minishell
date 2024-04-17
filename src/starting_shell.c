@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 16:48:39 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:59:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_stupid
 	char	**cmd;
 }		t_stupid;
 
-void	child_process(char *argv, char **envp, int *fd, t_cmd cmd)
+void	child_process(char **argv, char **envp, int *fd, t_cmd *cmd)
 {
 	struct s_stupid	stupid;
 
@@ -79,7 +79,7 @@ void	child_process(char *argv, char **envp, int *fd, t_cmd cmd)
 		close(fd[1]);
 	}
 	if (check_builtins(argv, stupid.path, envp) == 1)
-		execve(cmd.path , argv, envp);
+		execve(cmd->path , cmd->args, envp);
 }
 
 void	parent_process(char **argv, char **envp, int *fd, int i)
@@ -92,7 +92,7 @@ void	parent_process(char **argv, char **envp, int *fd, int i)
 }
 
 
-int	execute_function(char **argv, char **envp, t_cmd cmd)
+int	execute_function(char **argv, char **envp, t_cmd *cmd)
 {
 	pid_t	id;
 	int		fd[2];
@@ -105,9 +105,9 @@ int	execute_function(char **argv, char **envp, t_cmd cmd)
 	if (id == -1)
 		return(-1);
 	if (id == 0)
-		child_process(cmd.args[0], envp, fd, cmd);
+		child_process(argv, envp, fd, cmd);
 	waitpid(0, NULL, 0);
-	if (pars_args(cmd.args[0]) != -1)
-		parent_process(cmd.args[1], envp, fd, pars_args(argv));
+	if (pars_args(argv) != -1)
+		parent_process(argv, envp, fd, pars_args(argv));
 	return(1);
 }
