@@ -6,13 +6,13 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/15 19:06:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:45:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	export(char **cmd, char *path, char **envp)
+void	export(t_cmd *cmd, char **envp)
 {
-	execve(path, cmd, envp);
+	execve(cmd->path, cmd->args, envp);
 }

@@ -6,15 +6,14 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:03:45 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/16 15:23:45 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:45:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	cd(char **cmd, char *path, char **envp)
+void	cd(t_cmd *cmd, char **envp)
 {
-	(void)path;
 	(void)envp;
-	chdir(cmd[1]);
+	chdir(cmd->args[1]);
 }

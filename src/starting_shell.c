@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 16:59:54 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:08:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,38 +61,27 @@ char	*get_paths(char *argv, char **envp)
 	return (NULL);
 }
 
-typedef struct s_stupid
+void	child_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
 {
-	int		file;
-	int		i;
-	char	*path;
-	char	**cmd;
-}		t_stupid;
-
-void	child_process(char **argv, char **envp, int *fd, t_cmd *cmd)
-{
-	struct s_stupid	stupid;
-
-	if (pars_args(argv) != -1)
+	if (pars_args(ft_split(user_input, ' ')) != -1)
 	{
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	if (check_builtins(argv, stupid.path, envp) == 1)
+	if (check_builtins(cmd ,  envp) == 1)
 		execve(cmd->path , cmd->args, envp);
 }
 
-void	parent_process(char **argv, char **envp, int *fd, int i)
-{
-	char	*path;
+// void	parent_process(char *user_input, char **envp, int *fd, int i)
+// // {
+// // 	char	*path;
 
-	path = get_paths(argv[i + 1], envp);
-	execve (path, &argv[i + 1], envp);
-	close(fd[1]);
-}
+// // 	execve (path, &argv[i + 1], envp);
+// // 	close(fd[1]);
+// // }
 
 
-int	execute_function(char **argv, char **envp, t_cmd *cmd)
+int	execute_function(char *user_input, char **envp, t_cmd *cmd)
 {
 	pid_t	id;
 	int		fd[2];
@@ -105,9 +94,9 @@ int	execute_function(char **argv, char **envp, t_cmd *cmd)
 	if (id == -1)
 		return(-1);
 	if (id == 0)
-		child_process(argv, envp, fd, cmd);
+		child_process(user_input, envp, fd, cmd);
 	waitpid(0, NULL, 0);
-	if (pars_args(argv) != -1)
-		parent_process(argv, envp, fd, pars_args(argv));
+	// if (pars_args(ft_split(user_input, ' ')) != -1)
+	// 	parent_process(user_input, envp, fd, pars_args(ft_split(user_input, ' ')));
 	return(1);
 }

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 17:03:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:18:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@ int	pars_args(char **cmds)
 	return(-1);
 }
 
-int check_builtins(char **cmd, char *path, char **envp)
+int check_builtins(t_cmd *cmd, char **envp)
 {
-	if (ft_strncmp(cmd[0], "cd", 2) == 0)
-		cd(cmd, path, envp);
-	else if(ft_strncmp(cmd[0], "export", 6) == 0)
-		export(cmd, path, envp);
-	else if(ft_strncmp(cmd[0], "pwd", 3) == 0)
-		pwd(cmd, path, envp);
-	else if(ft_strncmp(cmd[0], "env", 3) == 0)
-		env(cmd, path, envp);
-	else if(ft_strncmp(cmd[0], "exit", 4) == 0)
-		exitt(cmd, path, envp);
-	else if(ft_strncmp(cmd[0], "echo", 4) == 0)
-		echo(cmd, path, envp);
-	else if(ft_strncmp(cmd[0], "unset", 5) == 0)
-		unset(cmd, path, envp);
-	if (ft_strncmp(cmd[0], "cd", 2) == 0 || ft_strncmp(cmd[0], "export", 6) == 0
-		|| ft_strncmp(cmd[0], "pwd", 3) == 0 || ft_strncmp(cmd[0], "env", 3) == 0
-		|| ft_strncmp(cmd[0], "exit", 4) == 0 || ft_strncmp(cmd[0], "echo", 4) == 0
-		|| ft_strncmp(cmd[0], "unset", 5) == 0)
+	if (ft_strncmp(cmd->args[0], "cd", 2) == 0)
+		cd(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "export", 6) == 0)
+		export(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "pwd", 3) == 0)
+		pwd(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "env", 3) == 0)
+		env(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "exit", 4) == 0)
+		exitt(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "echo", 4) == 0)
+		echo(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "unset", 5) == 0)
+		unset(cmd, envp);
+	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 || ft_strncmp(cmd->args[0], "export", 6) == 0
+		|| ft_strncmp(cmd->args[0], "pwd", 3) == 0 || ft_strncmp(cmd->args[0], "env", 3) == 0
+		|| ft_strncmp(cmd->args[0], "exit", 4) == 0 || ft_strncmp(cmd->args[0], "echo", 4) == 0
+		|| ft_strncmp(cmd->args[0], "unset", 5) == 0)
 		return(0);
 	else
 		return(1);
@@ -71,44 +71,52 @@ int	check_pipes(char *user_input)
 	return(z);
 }
 
-void	set_comands(char *argv, char **argv2, char **envp, t_cmd *cmd)
+t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 {
 	int		i;
-	
+	char	**argv2;
+	t_cmd	*begin;
+	t_cmd	*temp;
+
+	temp = NULL;
+	begin = NULL;
+	(void)envp;
+	argv2 = ft_split(argv, '\4');
 	i = 0;
+	cmd = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 	while (argv2[i])
 	{
-		cmd->args = ft_calloc(ft_strlen(argv), sizeof(char *));
-		cmd->args = ft_split(argv2[i], ' ');
-		cmd->path = get_paths(argv2[i], envp);
+		cmd->args = ft_split(argv2[i], '\3');
+		cmd->path = get_paths(cmd->args[0], envp);
+		if (begin == NULL)
+			begin = cmd;
+		cmd->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 		cmd = cmd->next;
 		i++;
 	}
-	
+	return(begin);
 }
 
-void	initiate_args(char *user_input, char **envp, t_cmd *cmd)
+t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
 {
 	int		flag;
 	int		i;
 	char	*argv;
-	char	**argv2;
 
-	(void)envp;
 	i = 0;
-	flag = 0;
-	argv = NULL;
-	cmd->next = NULL;
+	flag = -1;
+	argv = ft_calloc(ft_strlen(user_input), sizeof(char *));
 	while(user_input[i])
 	{
-		if ((flag == 0 && user_input[i] != ' ') || flag == 1)
-			argv[i] = user_input[i];
-		if (flag == 0 && user_input[i] == ' ')
-			argv[i] = '\3';
 		if (user_input[i] == '"')
-			flag = 1;
+			flag *= -1;
+		if (flag == -1 && user_input[i] == '|')
+			argv[i] = '\4';
+		else if ((flag == -1 && user_input[i] != ' ') || flag == 1 || user_input[i] == '"')
+			argv[i] = user_input[i];
+		else if (flag == -1 && user_input[i] == ' ')
+			argv[i] = '\3';
 		i++;
 	}
-	argv2 = ft_split(argv, '\3');
-	set_comands(argv, argv2, envp, cmd);
+	return(set_comands(argv, envp, cmd));
 }

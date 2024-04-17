@@ -6,13 +6,13 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:31 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/15 19:06:50 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 19:46:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	unset(char **cmd, char *path, char **envp)
+void	unset(t_cmd *cmd,  char **envp)
 {
-	execve(path, cmd, envp);
+	execve(cmd->path, cmd->args, envp);
 }

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 16:54:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:18:40 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ typedef struct	s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
-int		execute_function(char **argv, char **envp, t_cmd *cmd);
+int		execute_function(char *user_input, char **envp, t_cmd *cmd);
 int		pars_args(char **cmds);
-int 	check_builtins(char **cmd, char *path, char **envp);
-void	cd(char **cmd, char *path, char **envp);
-void	echo(char **cmd, char *path, char **envp);
-void	env(char **cmd, char *path, char **envp);
-void	exitt(char **cmd, char *path, char **envp);
-void	export(char **cmd, char *path, char **envp);
-void	pwd(char **cmd, char *path, char **envp);
-void	unset(char **cmd, char *path, char **envp);
-void	initiate_args(char *user_input, char **envp, t_cmd *cmd);
+int 	check_builtins(t_cmd *cmd, char **envp);
+void	cd(t_cmd *cmd, char **envp);
+void	echo(t_cmd *cmd, char **envp);
+void	env(t_cmd *cmd, char **envp);
+void	exitt(t_cmd *cmd, char **envp);
+void	export(t_cmd *cmd, char **envp);
+void	pwd(t_cmd *cmd, char **envp);
+void	unset(t_cmd *cmd, char **envp);
+t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd);
 char	*get_paths(char *argv, char **envp);
 
 #endif
