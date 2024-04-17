@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 20:18:40 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:56:33 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	pwd(t_cmd *cmd, char **envp);
 void	unset(t_cmd *cmd, char **envp);
 t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd);
 char	*get_paths(char *argv, char **envp);
+int		check_pipes(char *user_input);
 
 #endif

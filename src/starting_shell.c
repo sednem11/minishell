@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 20:08:00 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 20:57:46 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,20 @@ void	child_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	if (check_builtins(cmd ,  envp) == 1)
+	if (check_builtins(cmd, envp) == 1)
 		execve(cmd->path , cmd->args, envp);
 }
 
-// void	parent_process(char *user_input, char **envp, int *fd, int i)
-// // {
-// // 	char	*path;
-
-// // 	execve (path, &argv[i + 1], envp);
-// // 	close(fd[1]);
-// // }
+void	parent_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
+{
+	cmd = cmd->next;
+	if(check_pipes(user_input) > 1)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
+	execve(cmd->path, cmd->args, envp);
+}
 
 
 int	execute_function(char *user_input, char **envp, t_cmd *cmd)
@@ -96,7 +99,7 @@ int	execute_function(char *user_input, char **envp, t_cmd *cmd)
 	if (id == 0)
 		child_process(user_input, envp, fd, cmd);
 	waitpid(0, NULL, 0);
-	// if (pars_args(ft_split(user_input, ' ')) != -1)
-	// 	parent_process(user_input, envp, fd, pars_args(ft_split(user_input, ' ')));
+	if (pars_args(ft_split(user_input, ' ')) != -1)
+		parent_process(user_input, envp, fd, cmd);
 	return(1);
 }
