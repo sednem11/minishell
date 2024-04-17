@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 16:47:33 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:48:39 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,8 @@ int	execute_function(char **argv, char **envp, t_cmd cmd)
 		return(-1);
 	if (id == 0)
 		child_process(cmd.args[0], envp, fd, cmd);
+	waitpid(0, NULL, 0);
 	if (pars_args(cmd.args[0]) != -1)
 		parent_process(cmd.args[1], envp, fd, pars_args(argv));
-	waitpid(0, NULL, 0);
-	if (ft_strncmp(cmd[0], "cat", 3) == 0)
-		printf("\n");
 	return(1);
 }
