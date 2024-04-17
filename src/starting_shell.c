@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/16 19:55:55 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:47:33 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_stupid
 	char	**cmd;
 }		t_stupid;
 
-void	child_process(char **argv, char **envp, int *fd)
+void	child_process(char *argv, char **envp, int *fd, t_cmd cmd)
 {
 	struct s_stupid	stupid;
 
@@ -78,9 +78,8 @@ void	child_process(char **argv, char **envp, int *fd)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 	}
-	stupid.path = get_paths(argv[0], envp);
 	if (check_builtins(argv, stupid.path, envp) == 1)
-		execve(stupid.path, argv, envp);
+		execve(cmd.path , argv, envp);
 }
 
 void	parent_process(char **argv, char **envp, int *fd, int i)
@@ -93,7 +92,7 @@ void	parent_process(char **argv, char **envp, int *fd, int i)
 }
 
 
-int	execute_function(char **cmd, char **envp)
+int	execute_function(char **argv, char **envp, t_cmd cmd)
 {
 	pid_t	id;
 	int		fd[2];
@@ -106,9 +105,9 @@ int	execute_function(char **cmd, char **envp)
 	if (id == -1)
 		return(-1);
 	if (id == 0)
-		child_process(cmd, envp, fd);
-	if (pars_args(cmd) != -1)
-		parent_process(cmd, envp, fd, pars_args(cmd));
+		child_process(cmd.args[0], envp, fd, cmd);
+	if (pars_args(cmd.args[0]) != -1)
+		parent_process(cmd.args[1], envp, fd, pars_args(argv));
 	waitpid(0, NULL, 0);
 	if (ft_strncmp(cmd[0], "cat", 3) == 0)
 		printf("\n");

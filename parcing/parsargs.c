@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/16 21:47:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:45:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,53 @@ int check_builtins(char **cmd, char *path, char **envp)
 		return(1);
 }
 
+int	check_pipes(char *user_input)
+{
+	int	i;
+	int	flag;
+	int	z;
+
+	flag = 1;
+	i = 0;
+	while(user_input[i])
+	{
+		if (user_input[i] == '|' && flag == 1)
+			z++;
+		if (user_input[i] == '"')
+			flag *= -1;
+		i++;
+	}
+	return(z);
+}
+
+void	set_comands(char **argv, char **envp, t_cmd cmd)
+{
+	int		i;
+	
+	i = 0;
+	while (argv[i])
+	{
+		cmd.args = ft_calloc(ft_strlen(argv), sizeof(char *));
+		cmd.args = ft_split(argv, ' ');
+		cmd.path = get_paths(argv[i][0], envp);
+		cmd = cmd.next;
+		i++;
+	}
+	
+}
+
 void	initiate_args(char *user_input, char **envp, t_cmd cmd)
 {
 	int		flag;
 	int		i;
 	char	*argv;
+	char	**argv2;
 
 	(void)envp;
 	i = 0;
 	flag = 0;
 	argv = NULL;
+	cmd.next = NULL;
 	while(user_input[i])
 	{
 		if ((flag == 0 && user_input[i] != ' ') || flag == 1)
@@ -71,5 +108,6 @@ void	initiate_args(char *user_input, char **envp, t_cmd cmd)
 			flag = 1;
 		i++;
 	}
-	cmd.args = ft_split(argv, '\3');
+	argv2 = ft_split(argv, '\3');
+	set_comands(argv2, envp, cmd);
 }
