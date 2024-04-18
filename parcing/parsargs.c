@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/18 14:40:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:20:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 			cmd->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 			cmd = cmd->next;
 		}
+		cmd->numb = i;
 		i++;
 	}
 	return(begin);

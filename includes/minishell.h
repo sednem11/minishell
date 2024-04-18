@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/18 12:02:44 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/18 19:19:21 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ typedef struct	s_cmd
 	char			*path;
 	char			**args;
 	int				fd[2];
-	int 			status;
+	int 			numb;
 	pid_t			pid;
 	struct s_cmd	*next;
 	struct s_cmd	*begining;
