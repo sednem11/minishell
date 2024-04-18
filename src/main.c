@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 23:49:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:15:55 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,11 @@ int	main(int argc, char **argv, char **envp)
 		user_input = readline("minishell> ");
 		if(!user_input)	
 			return 1;
-		cmd = initiate_args(user_input, envp, cmd);
-		if (user_input)
+		if (*user_input != '\0')
+			cmd = initiate_args(user_input, envp, cmd);
+		if (*user_input != '\0')
 			add_history(user_input);
-		if (user_input)
+		if (*user_input != '\0')
 			execute_function(user_input, envp, cmd);
 	}
 }

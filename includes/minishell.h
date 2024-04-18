@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 20:56:33 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/18 12:02:44 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct	s_cmd
 	int 			status;
 	pid_t			pid;
 	struct s_cmd	*next;
+	struct s_cmd	*begining;
 }	t_cmd;
 
 int		execute_function(char *user_input, char **envp, t_cmd *cmd);

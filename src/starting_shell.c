@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/18 01:14:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/18 15:49:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ char	*get_paths(char *argv, char **envp)
 void	parent_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
 {
 	(void)user_input;
-	cmd = cmd->next;
 	dup2(fd[0], STDIN_FILENO);
 	dup2(STDOUT_FILENO, fd[1]);
 	close(fd[1]);
@@ -76,23 +75,25 @@ void	child_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
 {
 	if (pars_args(ft_split(user_input, ' ')) != -1)
 	{
-		if (cmd->next->next->args == NULL)
+		if (cmd == cmd->begining)
 		{
 			dup2(fd[1], STDOUT_FILENO);
 			close(fd[1]);
 		}
-		// else
-		// {
-		// 	int		fd2[2];
-		// 	pid_t 	id;
-
-		// 	if (pipe(fd2) == -1)
-		// 		return;
-		// 	id = fork();
-		// 	if (id == 0)
-		// 		child_process(user_input, envp, fd2, cmd);
-		// 	waitpid(0, NULL, 0);
-		// }
+		else if (cmd->next == NULL)
+		{
+			printf("AHHHHHHH\n");
+			dup2(fd[0], STDIN_FILENO);
+			dup2(STDOUT_FILENO, fd[1]);
+			close(fd[1]);
+			close(fd[0]);
+		}
+		else if (cmd->next && cmd != cmd->begining)
+		{
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[1]);
+			close(fd[0]);
+		}
 	}
 	if (check_builtins(cmd, envp) == 1)
 		execve(cmd->path , cmd->args, envp);
@@ -107,13 +108,17 @@ int	execute_function(char *user_input, char **envp, t_cmd *cmd)
 		return (-1);
 	if (pipe(fd) == -1)
 		return (-1);
-	id = fork();
-	if (id == -1)
-		return(-1);
-	if (id == 0)
-		child_process(user_input, envp, fd, cmd);
-	waitpid(0, NULL, 0);
-	if (pars_args(ft_split(user_input, ' ')) != -1)
+	while(cmd)
+	{
+		id = fork();
+		if (id == -1)
+			return(-1);
+		if (id == 0)
+			child_process(user_input, envp, fd, cmd);
+		waitpid(id, NULL, 0);
+		cmd = cmd->next;
 		parent_process(user_input, envp, fd, cmd);
+	}
 	return(1);
 }
+	
