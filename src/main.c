@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 20:43:28 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 23:49:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	main(int argc, char **argv, char **envp)
 		if(!user_input)	
 			return 1;
 		cmd = initiate_args(user_input, envp, cmd);
-		add_history(user_input);
+		if (user_input)
+			add_history(user_input);
 		if (user_input)
 			execute_function(user_input, envp, cmd);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 20:18:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/17 23:42:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 	int		i;
 	char	**argv2;
 	t_cmd	*begin;
-	t_cmd	*temp;
 
-	temp = NULL;
 	begin = NULL;
 	(void)envp;
 	argv2 = ft_split(argv, '\4');

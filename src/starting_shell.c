@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/17 20:57:46 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/18 01:14:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,28 +61,42 @@ char	*get_paths(char *argv, char **envp)
 	return (NULL);
 }
 
+void	parent_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
+{
+	(void)user_input;
+	cmd = cmd->next;
+	dup2(fd[0], STDIN_FILENO);
+	dup2(STDOUT_FILENO, fd[1]);
+	close(fd[1]);
+	close(fd[0]);
+	execve(cmd->path, cmd->args, envp);
+}
+
 void	child_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
 {
 	if (pars_args(ft_split(user_input, ' ')) != -1)
 	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
+		if (cmd->next->next->args == NULL)
+		{
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
+		}
+		// else
+		// {
+		// 	int		fd2[2];
+		// 	pid_t 	id;
+
+		// 	if (pipe(fd2) == -1)
+		// 		return;
+		// 	id = fork();
+		// 	if (id == 0)
+		// 		child_process(user_input, envp, fd2, cmd);
+		// 	waitpid(0, NULL, 0);
+		// }
 	}
 	if (check_builtins(cmd, envp) == 1)
 		execve(cmd->path , cmd->args, envp);
 }
-
-void	parent_process(char *user_input, char **envp, int fd[2], t_cmd *cmd)
-{
-	cmd = cmd->next;
-	if(check_pipes(user_input) > 1)
-	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-	}
-	execve(cmd->path, cmd->args, envp);
-}
-
 
 int	execute_function(char *user_input, char **envp, t_cmd *cmd)
 {
