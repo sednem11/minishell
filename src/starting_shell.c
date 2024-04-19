@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/19 01:47:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:58:39 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd)
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
 			close(cmd->fd[1]);
+			close(cmd->fd[0]);
 		}
 	}
 	if (check_builtins(cmd, envp) == 1)
