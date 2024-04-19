@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/18 19:19:21 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/19 01:01:43 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	s_cmd
 	struct s_cmd	*begining;
 }	t_cmd;
 
+void	set_comands2(t_cmd *cmd, int i);
 int		execute_function(char *user_input, char **envp, t_cmd *cmd);
 int		pars_args(char **cmds);
 int 	check_builtins(t_cmd *cmd, char **envp);
