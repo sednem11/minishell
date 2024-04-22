@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/19 01:01:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/22 00:40:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ int	pars_args(char **cmds)
 	return(-1);
 }
 
-int check_builtins(t_cmd *cmd, char **envp)
+t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main)
 {
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0)
 		cd(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "export", 6) == 0)
-		export(cmd, envp);
+		main = export(cmd, envp, main);
 	else if(ft_strncmp(cmd->args[0], "pwd", 3) == 0)
 		pwd(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "env", 3) == 0)
@@ -39,16 +39,10 @@ int check_builtins(t_cmd *cmd, char **envp)
 	else if(ft_strncmp(cmd->args[0], "exit", 4) == 0)
 		exitt(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "echo", 4) == 0)
-		echo(cmd, envp);
+		echo(cmd, 0);
 	else if(ft_strncmp(cmd->args[0], "unset", 5) == 0)
 		unset(cmd, envp);
-	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 || ft_strncmp(cmd->args[0], "export", 6) == 0
-		|| ft_strncmp(cmd->args[0], "pwd", 3) == 0 || ft_strncmp(cmd->args[0], "env", 3) == 0
-		|| ft_strncmp(cmd->args[0], "exit", 4) == 0 || ft_strncmp(cmd->args[0], "echo", 4) == 0
-		|| ft_strncmp(cmd->args[0], "unset", 5) == 0)
-		return(0);
-	else
-		return(1);
+	return(main);
 }
 
 int	check_pipes(char *user_input)

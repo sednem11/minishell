@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/19 01:58:39 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/22 21:36:11 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,52 +61,63 @@ char	*get_paths(char *argv, char **envp)
 	return (NULL);
 }
 
-void	child_process(char *user_input, char **envp, t_cmd *cmd)
+void	closepipes(t_cmd *cmd)
+{
+	if (cmd->fd[1] != 1 && cmd->fd[1] != 0)
+		close(cmd->fd[1]);
+	if (cmd->fd[0] != 1 && cmd->fd[0] != 0)
+		close(cmd->fd[0]);
+}
+
+void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	if (pars_args(ft_split(user_input, ' ')) != -1)
 	{
 		if (cmd == cmd->begining)
 		{
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			close(cmd->fd[1]);
+			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
 			dup2(cmd->fd[0], STDIN_FILENO);
-			close(cmd->fd[1]);
-			close(cmd->fd[0]);
+			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			close(cmd->fd[1]);
-			close(cmd->fd[0]);
+			closepipes(cmd);
 		}
 	}
-	if (check_builtins(cmd, envp) == 1)
+	main = check_builtins(cmd, envp, main);
+	if (check_builtins2(cmd, envp, main) == 1)
 		execve(cmd->path , cmd->args, envp);
 }
 
 
 
-int	execute_function(char *user_input, char **envp, t_cmd *cmd)
+t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	pid_t	id;
 
-	if (envp == NULL)
-		return (-1);
 	while(cmd)
 	{
+		if (pars_args(ft_split(user_input, ' ')) == -1 
+			&& ft_strncmp(cmd->args[0], "export", 6) == 0)
+		{
+			main = export(cmd, envp, main);
+			return(main);
+		}
 		id = fork();
 		if (id == -1)
-			return(-1);
-		if (id == 0)
-			child_process(user_input, envp, cmd);
-		close(cmd->fd[1]);
-		waitpid(0, NULL, 0);
+			return(main);
+		if (id == 0 )
+			child_process(user_input, envp, cmd, main);
+		closepipes(cmd);
 		cmd = cmd->next;
 	}
-	return(1);
+	while (waitpid(-1, NULL, 0) != -1);
+	return(main);
 }
 	
