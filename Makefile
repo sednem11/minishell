@@ -6,7 +6,7 @@
 #    By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/04/22 21:47:22 by macampos         ###   ########.fr        #
+#    Updated: 2024/04/22 21:48:31 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ SRC = src/main.c src/starting_shell.c parcing/parsargs.c parcing/pars_helpers.c 
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g
 
 CC = cc
 

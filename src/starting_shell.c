@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/22 21:36:11 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:10:49 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	main = check_builtins(cmd, envp, main);
 	if (check_builtins2(cmd, envp, main) == 1)
 		execve(cmd->path , cmd->args, envp);
+	return ;
 }
 
 
@@ -100,14 +101,16 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	pid_t	id;
+	t_main	*next;
 
+	next = NULL;
 	while(cmd)
 	{
 		if (pars_args(ft_split(user_input, ' ')) == -1 
 			&& ft_strncmp(cmd->args[0], "export", 6) == 0)
 		{
-			main = export(cmd, envp, main);
-			return(main);
+			next = export(cmd, envp, main);
+			return(next);
 		}
 		id = fork();
 		if (id == -1)

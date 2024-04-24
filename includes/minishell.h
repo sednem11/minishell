@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/22 21:33:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/23 15:16:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_main
 {
 	char			*prompt;
 	char			**env;
+	char			**export;
 	struct s_main	*next;
 }	t_main;
 
