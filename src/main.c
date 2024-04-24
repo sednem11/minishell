@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/23 18:14:40 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:57:23 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_main	*set_main(t_main *main, char **envp)
 	main->env = calloc(sizeof(char *), matrixlen(envp) + 1);
 	while (envp[j])
 	{
-		main->env[j] = calloc(sizeof(char), ft_strlen(envp[j]));
+		main->env[j] = calloc(sizeof(char), ft_strlen(envp[j]) + 1);
 		main->env[j] = (char *)ft_memcpy((void *)main->env[j], (void *)envp[j], ft_strlen(envp[j]));
 		j++;
 	}
@@ -41,8 +41,8 @@ t_main	*set_main(t_main *main, char **envp)
 	main->export = calloc(sizeof(char *), matrixlen(envp) + 1);
 	while (envp[j])
 	{
-		main->export[j] = calloc(sizeof(char), ft_strlen(envp[j]));
-		main->export[j] = (char *)ft_memcpy((void *)main->env[j], (void *)envp[j], ft_strlen(envp[j]));
+		main->export[j] = calloc(sizeof(char), ft_strlen(envp[j]) + 1);
+		main->export[j] = (char *)ft_memcpy((void *)main->export[j], (void *)envp[j], ft_strlen(envp[j]));
 		j++;
 	}
 	return(main);

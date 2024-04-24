@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/22 00:40:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:53:29 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
 
 	i = 0;
 	flag = -1;
-	argv = ft_calloc(ft_strlen(user_input), sizeof(char *));
+	argv = ft_calloc(sizeof(char), ft_strlen(user_input) + 1);
 	while(user_input[i])
 	{
 		if (user_input[i] == '"')

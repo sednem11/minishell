@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/23 18:10:49 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/24 19:33:38 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,21 +101,16 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	pid_t	id;
-	t_main	*next;
-
-	next = NULL;
+	
 	while(cmd)
 	{
 		if (pars_args(ft_split(user_input, ' ')) == -1 
 			&& ft_strncmp(cmd->args[0], "export", 6) == 0)
-		{
-			next = export(cmd, envp, main);
-			return(next);
-		}
+			return (export(cmd, envp, main));
 		id = fork();
 		if (id == -1)
 			return(main);
-		if (id == 0 )
+		if (id == 0)
 			child_process(user_input, envp, cmd, main);
 		closepipes(cmd);
 		cmd = cmd->next;
