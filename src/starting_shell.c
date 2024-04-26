@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/24 19:33:38 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/26 19:26:26 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	main = check_builtins(cmd, envp, main);
 	if (check_builtins2(cmd, envp, main) == 1)
 		execve(cmd->path , cmd->args, envp);
-	return ;
+	exit(1);
 }
 
 

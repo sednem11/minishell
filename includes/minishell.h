@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/23 15:16:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/26 15:42:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,9 @@ void	print_env(char **envp);
 int		check_builtins2(t_cmd *cmd, char **envp, t_main *main);
 int 	matrixlen(char **envp);
 t_main	*free_env(t_main *main);
+t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported);
+int		*check_paired(char *exported, char **envp, char **envp2, int len);
+int		ft_strlen_updated(char *str);
+int		find_equal(char *arg);
 
 #endif

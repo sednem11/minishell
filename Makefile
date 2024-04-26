@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+         #
+#    By: macampos <macampos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/04/22 21:48:31 by macampos         ###   ########.fr        #
+#    Updated: 2024/04/26 15:14:06 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c src/starting_shell.c parcing/parsargs.c parcing/pars_helpers.c parcing/builtins/cd.c parcing/builtins/echo.c parcing/builtins/env.c parcing/builtins/pwd.c parcing/builtins/export.c \
-		parcing/builtins/unset.c parcing/builtins/exit.c parcing/utils.c \
+SRC = src/main.c src/starting_shell.c parsing/parsargs.c parsing/pars_helpers.c parsing/builtins/cd.c parsing/builtins/echo.c parsing/builtins/env.c parsing/builtins/pwd.c parsing/builtins/export.c \
+		parsing/builtins/unset.c parsing/builtins/exit.c parsing/utils.c \
 
 OBJ = $(SRC:.c=.o)
 
