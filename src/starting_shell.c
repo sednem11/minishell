@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/26 19:26:26 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/28 13:54:08 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,12 +107,20 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 		if (pars_args(ft_split(user_input, ' ')) == -1 
 			&& ft_strncmp(cmd->args[0], "export", 6) == 0)
 			return (export(cmd, envp, main));
-		id = fork();
-		if (id == -1)
-			return(main);
-		if (id == 0)
-			child_process(user_input, envp, cmd, main);
-		closepipes(cmd);
+		else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+		{
+			closepipes(cmd);
+			return (export(cmd, envp, main));
+		}
+		else
+		{
+			id = fork();
+			if (id == -1)
+				return(main);
+			if (id == 0)
+				child_process(user_input, envp, cmd, main);
+			closepipes(cmd);
+		}
 		cmd = cmd->next;
 	}
 	while (waitpid(-1, NULL, 0) != -1);
