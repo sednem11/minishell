@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/26 15:42:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/04/30 16:57:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,6 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported);
 int		*check_paired(char *exported, char **envp, char **envp2, int len);
 int		ft_strlen_updated(char *str);
 int		find_equal(char *arg);
+void	print_export(t_main *main);
 
 #endif
