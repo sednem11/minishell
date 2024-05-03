@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/30 19:44:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:44:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	print_export(t_main *main)
 	
 	a = 0;
 	c = 0;
-	while (main->export[a])
+	while (matrixlen(main->export) > a + 1)
 	{
 		n = check_last(main);
 		i = 0;
