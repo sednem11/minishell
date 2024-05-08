@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/30 16:57:45 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:39:49 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	env(t_cmd *cmd, char **envp);
 void	exitt(t_cmd *cmd, char **envp);
 t_main	*export(t_cmd *cmd, char **envp, t_main *main);
 void	pwd(t_cmd *cmd, char **envp);
-void	unset(t_cmd *cmd, char **envp);
+t_main	*unset(t_cmd *cmd, t_main *main, char **envp);
 t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd);
 char	*get_paths(char *argv, char **envp);
 int		check_pipes(char *user_input);
@@ -66,5 +66,6 @@ int		*check_paired(char *exported, char **envp, char **envp2, int len);
 int		ft_strlen_updated(char *str);
 int		find_equal(char *arg);
 void	print_export(t_main *main);
+t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported);
 
 #endif

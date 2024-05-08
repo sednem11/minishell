@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/26 15:39:46 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:04:14 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,43 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	{
 		main->export[j] = calloc(sizeof(char), ft_strlen(exported));
 		main->export[j] = (char *)ft_memcpy((void *)main->export[j], (void *)exported, ft_strlen(exported));
+	}
+	return(main);
+}
+
+t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
+{
+	int	j;
+	int i;
+	int	*place;
+	
+	i = 0;
+	place = check_paired(exported, envp, envp2, ft_strlen_updated(exported));
+	j = 0;
+	main = calloc(sizeof(t_main), sizeof(t_main));
+	main->env = calloc(sizeof(char *), matrixlen(envp) + 1);
+	while (envp[j])
+	{
+		if (j != place[0])
+		{
+			main->env[i] = calloc(sizeof(char), 10000);
+			main->env[i] = (char *)ft_memcpy((void *)main->env[j], (void *)envp[j], ft_strlen(envp[j]));
+			i++;
+		}
+		j++;
+	}
+	j = 0;
+	i = 0;
+	main->export = calloc(sizeof(char *), matrixlen(envp2) + 1);
+	while (envp2[j])
+	{
+		if (j != place[1])
+		{
+			main->export[i] = calloc(sizeof(char), 10000);
+			main->export[i] = (char *)ft_memcpy((void *)main->export[j], (void *)envp2[j], ft_strlen(envp2[j]));
+			i++;
+		}
+		j++;
 	}
 	return(main);
 }

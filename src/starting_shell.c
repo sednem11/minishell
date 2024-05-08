@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/28 13:54:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:00:38 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	exit(1);
 }
 
-
-
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	pid_t	id;
@@ -111,6 +109,14 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 		{
 			closepipes(cmd);
 			return (export(cmd, envp, main));
+		}
+		else if (pars_args(ft_split(user_input, ' ')) == -1 
+			&& ft_strncmp(cmd->args[0], "unset", 5) == 0)
+			return (unset(cmd, main, envp));
+		else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
+		{
+			closepipes(cmd);
+			return (unset(cmd, main, envp));
 		}
 		else
 		{

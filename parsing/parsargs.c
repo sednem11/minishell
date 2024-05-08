@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/26 15:33:33 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:39:15 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main)
 	else if(ft_strncmp(cmd->args[0], "echo", 4) == 0)
 		echo(cmd, 0);
 	else if(ft_strncmp(cmd->args[0], "unset", 5) == 0)
-		unset(cmd, envp);
+		main = unset(cmd, main, envp);
 	return(main);
 }
 
