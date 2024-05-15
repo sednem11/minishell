@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/03 16:04:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/13 12:35:59 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 		if (j != place[0])
 		{
 			main->env[i] = calloc(sizeof(char), 10000);
-			main->env[i] = (char *)ft_memcpy((void *)main->env[j], (void *)envp[j], ft_strlen(envp[j]));
+			main->env[i] = (char *)ft_memcpy((void *)main->env[i], (void *)envp[j], ft_strlen(envp[j]));
 			i++;
 		}
 		j++;
@@ -90,7 +90,7 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 		if (j != place[1])
 		{
 			main->export[i] = calloc(sizeof(char), 10000);
-			main->export[i] = (char *)ft_memcpy((void *)main->export[j], (void *)envp2[j], ft_strlen(envp2[j]));
+			main->export[i] = (char *)ft_memcpy((void *)main->export[i], (void *)envp2[j], ft_strlen(envp2[j]));
 			i++;
 		}
 		j++;
