@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:03:45 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/21 22:58:13 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:28:43 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 void	cd(t_cmd *cmd, char **envp)
 {
 	(void)envp;
-	if (ft_strncmp(cmd->args[1], "~", 1) == 0)
+	if (ft_strncmp(cmd->args[1], "~", 1) == 0 || !cmd->args[1])
 		chdir("/home");
-	chdir(cmd->args[1]);
+	else
+	{
+		printf("%s\n", cmd->args[1]);
+		chdir(cmd->args[1]);
+	}
 }

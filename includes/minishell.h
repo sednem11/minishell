@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/03 15:39:49 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:23:16 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct	s_cmd
 void	set_comands2(t_cmd *cmd, int i);
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main);
 int		pars_args(char **cmds);
-t_main 	*check_builtins(t_cmd *cmd, char **envp, t_main *main);
+void	check_builtins(t_cmd *cmd, char **envp);
 void	cd(t_cmd *cmd, char **envp);
 void	echo(t_cmd *cmd, int i);
 void	env(t_cmd *cmd, char **envp);

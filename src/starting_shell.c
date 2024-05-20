@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/03 16:00:38 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:35:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			closepipes(cmd);
 		}
 	}
-	main = check_builtins(cmd, envp, main);
+	check_builtins(cmd, envp);
 	if (check_builtins2(cmd, envp, main) == 1)
 		execve(cmd->path , cmd->args, envp);
 	exit(1);
@@ -118,6 +118,8 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 			closepipes(cmd);
 			return (unset(cmd, main, envp));
 		}
+		else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "cd", 2) == 0)
+			cd(cmd, main->env);
 		else
 		{
 			id = fork();
