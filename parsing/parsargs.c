@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/20 17:36:05 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:57:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ int	pars_args(char **cmds)
 
 void	check_builtins(t_cmd *cmd, char **envp)
 {
-	if(ft_strncmp(cmd->args[0], "pwd", 3) == 0)
+	if (ft_strncmp(cmd->args[0], "cd", 2) == 0)
+		cd(cmd, envp);
+	else if(ft_strncmp(cmd->args[0], "pwd", 3) == 0)
 		pwd(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "env", 3) == 0)
 		env(cmd, envp);

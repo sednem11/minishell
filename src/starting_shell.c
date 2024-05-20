@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/20 17:35:36 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:11:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,37 +100,40 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 {
 	pid_t	id;
 	
-	while(cmd)
+	if (cmd->next || check_builtins2(cmd, envp, main) == 1)
 	{
-		if (pars_args(ft_split(user_input, ' ')) == -1 
-			&& ft_strncmp(cmd->args[0], "export", 6) == 0)
-			return (export(cmd, envp, main));
-		else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+		while(cmd)
 		{
-			closepipes(cmd);
-			return (export(cmd, envp, main));
+			if (pars_args(ft_split(user_input, ' ')) == -1 
+				&& ft_strncmp(cmd->args[0], "export", 6) == 0)
+				return (export(cmd, envp, main));
+			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+			{
+				closepipes(cmd);
+				return (export(cmd, envp, main));
+			}
+			else if (pars_args(ft_split(user_input, ' ')) == -1 
+				&& ft_strncmp(cmd->args[0], "unset", 5) == 0)
+				return (unset(cmd, main, envp));
+			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
+			{
+				closepipes(cmd);
+				return (unset(cmd, main, envp));
+			}
+			else
+			{
+				id = fork();
+				if (id == -1)
+					return(main);
+				if (id == 0)
+					child_process(user_input, envp, cmd, main);
+				closepipes(cmd);
+			}
+			cmd = cmd->next;
 		}
-		else if (pars_args(ft_split(user_input, ' ')) == -1 
-			&& ft_strncmp(cmd->args[0], "unset", 5) == 0)
-			return (unset(cmd, main, envp));
-		else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
-		{
-			closepipes(cmd);
-			return (unset(cmd, main, envp));
-		}
-		else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "cd", 2) == 0)
-			cd(cmd, main->env);
-		else
-		{
-			id = fork();
-			if (id == -1)
-				return(main);
-			if (id == 0)
-				child_process(user_input, envp, cmd, main);
-			closepipes(cmd);
-		}
-		cmd = cmd->next;
 	}
+	else
+		check_builtins(cmd, envp);
 	while (waitpid(-1, NULL, 0) != -1);
 	return(main);
 }
