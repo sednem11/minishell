@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/04/30 16:57:11 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:29:41 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_main	*free_env(t_main *main)
+void	free_env(t_main *main)
 {
 	int	i;
 
 	i = 0;
 	while (main->env[i])
 	{
+		printf("%i\n", i);
 		free(main->env[i]);
 		i++;
 	}
-	free(main->env);
-	return(main);
+	// free(main->env);
 }
 
 int	find_equal(char *arg)
@@ -93,6 +93,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	if (!cmd->args[1])
 	{
 		print_export(main);
+		main = set_main(main, envp);
 		return(main);
 	}
 	else if (cmd->args[2])

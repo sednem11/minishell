@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/20 18:11:05 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:32:33 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			closepipes(cmd);
 		}
 	}
-	check_builtins(cmd, envp);
+	check_builtins(cmd, envp, main);
 	if (check_builtins2(cmd, envp, main) == 1)
 		execve(cmd->path , cmd->args, envp);
 	exit(1);
@@ -133,7 +133,7 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 		}
 	}
 	else
-		check_builtins(cmd, envp);
+		main = check_builtins(cmd, envp, main);
 	while (waitpid(-1, NULL, 0) != -1);
 	return(main);
 }

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/20 17:24:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:37:22 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_main	*set_main(t_main *main, char **envp)
 	
 	j = 0;
 	main = calloc(sizeof(t_main), sizeof(t_main));
+	main->beginning = calloc(sizeof(t_main), sizeof(t_main));
 	main->env = calloc(sizeof(char *), matrixlen(envp) + 2);
 	while (envp[j])
 	{
@@ -45,6 +46,7 @@ t_main	*set_main(t_main *main, char **envp)
 		main->export[j] = (char *)ft_memcpy((void *)main->export[j], (void *)envp[j], ft_strlen(envp[j]));
 		j++;
 	}
+	main->beginning = main;
 	return(main);
 }
 
@@ -70,6 +72,7 @@ int	main(int argc, char **argv, char **envp)
 			cmd = initiate_args(user_input, main->env, cmd);
 			add_history(user_input);
 			main->next = execute_function(user_input, main->env, cmd, main);
+			main->next->beginning = main->beginning;
 			main = main->next;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/16 16:23:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:29:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct	s_main
 	char			*prompt;
 	char			**env;
 	char			**export;
+	struct s_main	*beginning;
 	struct s_main	*next;
 }	t_main;
 
@@ -46,11 +47,11 @@ typedef struct	s_cmd
 void	set_comands2(t_cmd *cmd, int i);
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main);
 int		pars_args(char **cmds);
-void	check_builtins(t_cmd *cmd, char **envp);
+t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main);
 void	cd(t_cmd *cmd, char **envp);
 void	echo(t_cmd *cmd, int i);
 void	env(t_cmd *cmd, char **envp);
-void	exitt(t_cmd *cmd, char **envp);
+void	exitt(t_cmd *cmd, char **envp, t_main *main);
 t_main	*export(t_cmd *cmd, char **envp, t_main *main);
 void	pwd(t_cmd *cmd, char **envp);
 t_main	*unset(t_cmd *cmd, t_main *main, char **envp);
@@ -60,12 +61,15 @@ int		check_pipes(char *user_input);
 void	print_env(char **envp);
 int		check_builtins2(t_cmd *cmd, char **envp, t_main *main);
 int 	matrixlen(char **envp);
-t_main	*free_env(t_main *main);
+void	free_env(t_main *main);
 t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported);
 int		*check_paired(char *exported, char **envp, char **envp2, int len);
 int		ft_strlen_updated(char *str);
 int		find_equal(char *arg);
 void	print_export(t_main *main);
 t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported);
+void	free_every_main(t_main *main);
+void	free_every_cmd(t_cmd *cmd);
+t_main	*set_main(t_main *main, char **envp);
 
 #endif

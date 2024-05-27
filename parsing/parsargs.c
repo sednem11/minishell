@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/20 17:57:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/27 16:33:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,23 @@ int	pars_args(char **cmds)
 	return(-1);
 }
 
-void	check_builtins(t_cmd *cmd, char **envp)
+t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main)
 {
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0)
 		cd(cmd, envp);
+	else if (ft_strncmp(cmd->args[0], "export", 6) == 0)
+		main = export(cmd, envp, main);
+	else if (ft_strncmp(cmd->args[0], "unset", 5) == 0)
+		main = unset(cmd , main, envp);
 	else if(ft_strncmp(cmd->args[0], "pwd", 3) == 0)
 		pwd(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "env", 3) == 0)
 		env(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "exit", 4) == 0)
-		exitt(cmd, envp);
+		exitt(cmd, envp, main);
 	else if(ft_strncmp(cmd->args[0], "echo", 4) == 0)
 		echo(cmd, 0);
+	return(main);
 }
 
 int	check_pipes(char *user_input)
