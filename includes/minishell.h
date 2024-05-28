@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/27 17:29:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:23:51 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported);
 void	free_every_main(t_main *main);
 void	free_every_cmd(t_cmd *cmd);
 t_main	*set_main(t_main *main, char **envp);
+t_main	*set_main4(t_main *main, char **env, char **export);
 
 #endif

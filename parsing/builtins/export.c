@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/27 17:29:41 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:17:26 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	free_env(t_main *main)
 	i = 0;
 	while (main->env[i])
 	{
-		printf("%i\n", i);
 		free(main->env[i]);
 		i++;
 	}
@@ -93,8 +92,8 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	if (!cmd->args[1])
 	{
 		print_export(main);
-		main = set_main(main, envp);
-		return(main);
+		next = set_main4(main, main->env, main->export);
+		return(next);
 	}
 	else if (cmd->args[2])
 		return(main);
