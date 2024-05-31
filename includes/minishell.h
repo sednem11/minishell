@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/28 17:23:51 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:33:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 
 typedef struct	s_main
 {
-	char			*prompt;
 	char			**env;
 	char			**export;
 	struct s_main	*beginning;

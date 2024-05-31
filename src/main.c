@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/28 17:22:56 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:36:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_main	*set_main4(t_main *main, char **env, char **export)
 	
 	j = 0;
 	main = calloc(sizeof(t_main), sizeof(t_main));
-	main->beginning = calloc(sizeof(t_main), sizeof(t_main));
 	main->env = calloc(sizeof(char *), matrixlen(env) + 2);
 	while (env[j])
 	{

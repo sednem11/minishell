@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/28 18:26:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:32:50 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	free_every_main(t_main *main)
 	while(main)
 	{
 		free_env(main);
-		free(main->prompt);
 		main = main->next;
 	}
 
@@ -50,7 +49,8 @@ void	exitt(t_cmd *cmd, char **envp, t_main *main)
 {
 	(void) cmd;
 	(void) envp;
-	free_every_main(main->beginning);
+	(void) main;
+	// free_every_main(main->beginning);
 	// free(main);
 	// free_every_cmd(cmd);
 	// free(cmd);
