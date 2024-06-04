@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/31 17:33:36 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/02 19:18:31 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,6 @@ void	free_every_main(t_main *main);
 void	free_every_cmd(t_cmd *cmd);
 t_main	*set_main(t_main *main, char **envp);
 t_main	*set_main4(t_main *main, char **env, char **export);
+void	signal_main(void);
 
 #endif
