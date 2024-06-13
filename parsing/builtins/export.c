@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/31 15:42:04 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/13 13:06:56 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,12 @@ int		ft_strlen_updated(char *str)
 	int i;
 
 	i = 0;
-	while (str[i] && str[i] != '=')
+	while (str[i] != '\0')
+	{
+		if (str[i] == '=')
+			return(i);
 		i++;
+	}
 	return(i);
 }
 
@@ -95,15 +99,9 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 		next = set_main4(main, main->env, main->export);
 		return(next);
 	}
-	else if (cmd->args[2])
+	else if (cmd->args[2] && cmd->redirection == 0)
 		return(main);
 	else
-	{
-		i = find_equal(cmd->args[1]);
-		if (i == 0)
-			return(main);
-		else
-			next = set_main2(next, envp, main->export, cmd->args[1]);
-	}
+		next = set_main2(next, envp, main->export, cmd->args[1]);
 	return(next);
 }

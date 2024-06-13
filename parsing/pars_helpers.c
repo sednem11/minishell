@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/31 15:40:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/11 17:25:53 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	}
 	if (find_equal(exported) > 0 && place[0] == -1)	
 	{
-		mainn->env[j] = calloc(sizeof(char), ft_strlen(exported));
+		mainn->env[j] = calloc(sizeof(char), ft_strlen(exported) + 1);
 		mainn->env[j] = (char *)ft_memcpy((void *)mainn->env[j], (void *)exported, ft_strlen(exported));
 	}
 	j = 0;
@@ -56,7 +56,7 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	}
 	if (place[1] == -1)
 	{
-		mainn->export[j] = calloc(sizeof(char), ft_strlen(exported));
+		mainn->export[j] = calloc(sizeof(char), ft_strlen(exported) + 1);
 		mainn->export[j] = (char *)ft_memcpy((void *)mainn->export[j], (void *)exported, ft_strlen(exported));
 	}
 	mainn->beginning = main;

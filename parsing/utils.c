@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/04 16:23:45 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/13 12:03:40 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ void	print_export(t_main *main)
 			}			
 			i++;
 		}
-		printf("declare -x %s\n", main->export[n]);
+		printf("declare -x %s, %i\n", main->export[n], n);
 		c = n;
 		a++;
 	}
+	printf("%i\n", matrixlen(main->export));
 }

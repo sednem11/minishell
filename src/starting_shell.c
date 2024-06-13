@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/06 12:09:17 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:27:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,30 +69,67 @@ void	closepipes(t_cmd *cmd)
 		close(cmd->fd[0]);
 }
 
+void	aplly_redirections(t_cmd *cmd)
+{
+	int		file;
+
+	if (cmd->redirection == 1)
+	{
+		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+		dup2(file, STDOUT_FILENO);
+	}
+	else if (cmd->redirection == 2)
+	{
+	}
+	else if (cmd->redirection == 3)
+	{
+	}
+	else if (cmd->redirection == 4)
+	{
+	}
+}
+
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	if (pars_args(ft_split(user_input, ' ')) != -1)
 	{
 		if (cmd == cmd->begining)
 		{
-			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			aplly_redirections(cmd);
+			if (cmd->redirection == 0)
+				dup2(cmd->next->fd[1], STDOUT_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
-			dup2(cmd->fd[0], STDIN_FILENO);
+			aplly_redirections(cmd);
+			if (cmd->redirection == 0)
+				dup2(cmd->fd[0], STDIN_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
-			dup2(cmd->fd[0], STDIN_FILENO);
-			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			aplly_redirections(cmd);
+			if (cmd->redirection == 0)
+			{
+				dup2(cmd->fd[0], STDIN_FILENO);
+				dup2(cmd->next->fd[1], STDOUT_FILENO);
+			}
 			closepipes(cmd);
 		}
 	}
-	check_builtins(cmd, envp, main);
 	if (check_builtins2(cmd, envp, main) == 1)
-		execve(cmd->path , cmd->args, envp);
+	{
+		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
+			execve(cmd->path , cmd->args, envp);
+		else
+		{
+			char **a = NULL;
+			execve("./minishell" , a, envp);
+			printf("%s\n", strerror(errno));
+		}
+	}
+	check_builtins(cmd, envp, main, user_input);
 	exit(1);
 }
 
@@ -100,21 +137,15 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 {
 	pid_t	id;
 	
-	if (cmd->next || check_builtins2(cmd, envp, main) == 1)
+	if (cmd->next || check_builtins2(cmd, envp, main) == 1 || cmd->redirection != 0)
 	{
 		while(cmd)
 		{
-			if (pars_args(ft_split(user_input, ' ')) == -1 
-				&& ft_strncmp(cmd->args[0], "export", 6) == 0)
-				return (export(cmd, envp, main));
-			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+			if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
 			{
 				closepipes(cmd);
 				return (export(cmd, envp, main));
 			}
-			else if (pars_args(ft_split(user_input, ' ')) == -1 
-				&& ft_strncmp(cmd->args[0], "unset", 5) == 0)
-				return (unset(cmd, main, envp));
 			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
 			{
 				closepipes(cmd);
@@ -133,7 +164,7 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 		}
 	}
 	else
-		main = check_builtins(cmd, envp, main);
+		main = check_builtins(cmd, envp, main, user_input);
 	while (waitpid(-1, NULL, 0) != -1);
 	return(main);
 }

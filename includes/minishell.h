@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/02 19:18:31 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/13 16:21:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,27 @@ typedef struct	s_main
 
 typedef struct	s_cmd
 {
+	int				redirection;
+	int				redirectionpos;
 	char			*path;
 	char			**args;
+	char			**realarg;
 	int				fd[2];
 	int 			numb;
 	pid_t			pid;
 	struct s_cmd	*next;
 	struct s_cmd	*begining;
 	struct s_main	*main;
+	int				check;
 }	t_cmd;
 
+void	closepipes(t_cmd *cmd);
 void	set_comands2(t_cmd *cmd, int i);
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main);
 int		pars_args(char **cmds);
-t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main);
+t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input);
 void	cd(t_cmd *cmd, char **envp);
-void	echo(t_cmd *cmd, int i);
+void	echo(t_cmd *cmd, t_main *main, int i, char *user_input);
 void	env(t_cmd *cmd, char **envp);
 void	exitt(t_cmd *cmd, char **envp, t_main *main);
 t_main	*export(t_cmd *cmd, char **envp, t_main *main);
