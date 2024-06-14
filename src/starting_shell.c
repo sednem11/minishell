@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/13 16:27:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/14 19:46:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,11 @@ void	closepipes(t_cmd *cmd)
 void	aplly_redirections(t_cmd *cmd)
 {
 	int		file;
-
+	char	*input;
+	int		i;
+	
+	i = 0;
+	input = NULL;
 	if (cmd->redirection == 1)
 	{
 		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
@@ -83,6 +87,21 @@ void	aplly_redirections(t_cmd *cmd)
 	}
 	else if (cmd->redirection == 3)
 	{
+		input = readline("heredoc> ");
+		file = (open("temporary", O_WRONLY | O_CREAT | O_APPEND, 0777));
+		while (ft_strncmp(input, cmd->args[cmd->redirectionpos + 1],
+			ft_strlen(cmd->args[cmd->redirectionpos + 1]) != 0))
+		{
+			input = readline("heredoc> ");
+			write(file, input, ft_strlen(input));
+		}
+		cmd->realarg[matrixlen(cmd->realarg)] = calloc(sizeof(char), 10);
+		cmd->realarg[matrixlen(cmd->realarg)] = (char *)ft_memmove(cmd->realarg[matrixlen(cmd->realarg)], "temporary", 9);
+		while (cmd->realarg[i])
+		{
+			printf("%s\n", cmd->realarg[i]);
+			i++;
+		}
 	}
 	else if (cmd->redirection == 4)
 	{
@@ -118,10 +137,11 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			closepipes(cmd);
 		}
 	}
+	aplly_redirections(cmd);
 	if (check_builtins2(cmd, envp, main) == 1)
 	{
 		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
-			execve(cmd->path , cmd->args, envp);
+			execve(cmd->path , cmd->realarg, envp);
 		else
 		{
 			char **a = NULL;

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/13 16:23:04 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:45:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,26 @@ void	check_redirections(t_cmd *cmd, char *arg, int i)
 {
 	if (ft_strncmp(arg, ">", 1) == 0 && arg[1] == '\0')
 	{
-		cmd->redirection = 1;
+		if (cmd->redirection == 0)
+			cmd->redirection = 1;
 		cmd->redirectionpos = i;
 	}
 	else if (ft_strncmp(arg, "<", 1) == 0 && arg[1] == '\0')
 	{
-		cmd->redirection = 2;
+		if (cmd->redirection == 0)
+			cmd->redirection = 2;
 		cmd->redirectionpos = i;
 	}
 	else if (ft_strncmp(arg, "<<", 2) == 0 && arg[2] == '\0')
 	{
-		cmd->redirection = 3;
+		if (cmd->redirection == 0)
+			cmd->redirection = 3;
 		cmd->redirectionpos = i;
 	}
 	else if (ft_strncmp(arg, ">>", 2) == 0 && arg[2] == '\0')
 	{
-		cmd->redirection = 4;
+		if (cmd->redirection == 0)
+			cmd->redirection = 4;
 		cmd->redirectionpos = i;
 	}
 }
@@ -106,10 +110,10 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 		cmd->redirection = 0;
 		j = 0;
 		cmd->args = ft_split(argv2[i], '\3');
+		cmd->realarg = ft_split2(argv2[i], '\3');
 		while (cmd->args[j])
 		{
-			if (cmd->redirection == 0)
-				check_redirections(cmd, cmd->args[j], j);
+			check_redirections(cmd, cmd->args[j], j);
 			j++;
 		}
 		cmd->path = get_paths(cmd->args[0], envp);

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/13 16:21:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/14 14:18:38 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct	s_cmd
 	int				check;
 }	t_cmd;
 
+char	**ft_split2(char const *s, char c);
 void	closepipes(t_cmd *cmd);
 void	set_comands2(t_cmd *cmd, int i);
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main);
