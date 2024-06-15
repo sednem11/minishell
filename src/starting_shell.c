@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/14 19:46:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:35:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,23 @@ void	closepipes(t_cmd *cmd)
 		close(cmd->fd[0]);
 }
 
+void	alloc_heredoc(t_cmd *cmd)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = calloc(sizeof(char *), matrixlen(cmd->realarg) + 2);
+	while(cmd->realarg[i])
+	{
+		new[i] = cmd->realarg[i];
+		i++;
+	}
+	new[i] = ft_strdup("temporary");
+	free(cmd->realarg);
+	cmd->realarg = new;
+}
+
 void	aplly_redirections(t_cmd *cmd)
 {
 	int		file;
@@ -88,20 +105,21 @@ void	aplly_redirections(t_cmd *cmd)
 	else if (cmd->redirection == 3)
 	{
 		input = readline("heredoc> ");
-		file = (open("temporary", O_WRONLY | O_CREAT | O_APPEND, 0777));
+		file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777));
+		write(file, input, ft_strlen(input));
+		write(file, "\n", 1);
 		while (ft_strncmp(input, cmd->args[cmd->redirectionpos + 1],
 			ft_strlen(cmd->args[cmd->redirectionpos + 1]) != 0))
 		{
 			input = readline("heredoc> ");
-			write(file, input, ft_strlen(input));
+			if(ft_strncmp(input, cmd->args[cmd->redirectionpos + 1],
+				ft_strlen(cmd->args[cmd->redirectionpos + 1]) != 0))
+			{
+				write(file, input, ft_strlen(input));
+				write(file, "\n", 1);
+			}
 		}
-		cmd->realarg[matrixlen(cmd->realarg)] = calloc(sizeof(char), 10);
-		cmd->realarg[matrixlen(cmd->realarg)] = (char *)ft_memmove(cmd->realarg[matrixlen(cmd->realarg)], "temporary", 9);
-		while (cmd->realarg[i])
-		{
-			printf("%s\n", cmd->realarg[i]);
-			i++;
-		}
+		alloc_heredoc(cmd);
 	}
 	else if (cmd->redirection == 4)
 	{
