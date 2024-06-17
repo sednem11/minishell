@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/15 17:35:05 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:11:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	closepipes(t_cmd *cmd)
 		close(cmd->fd[0]);
 }
 
-void	alloc_heredoc(t_cmd *cmd)
+void	alloc_heredoc(t_cmd *cmd, char	*alocated)
 {
 	char	**new;
 	int		i;
@@ -81,7 +81,7 @@ void	alloc_heredoc(t_cmd *cmd)
 		new[i] = cmd->realarg[i];
 		i++;
 	}
-	new[i] = ft_strdup("temporary");
+	new[i] = ft_strdup(alocated);
 	free(cmd->realarg);
 	cmd->realarg = new;
 }
@@ -101,6 +101,7 @@ void	aplly_redirections(t_cmd *cmd)
 	}
 	else if (cmd->redirection == 2)
 	{
+		alloc_heredoc(cmd, cmd->args[cmd->redirectionpos + 1]);
 	}
 	else if (cmd->redirection == 3)
 	{
@@ -119,10 +120,12 @@ void	aplly_redirections(t_cmd *cmd)
 				write(file, "\n", 1);
 			}
 		}
-		alloc_heredoc(cmd);
+		alloc_heredoc(cmd, "temporary");
 	}
 	else if (cmd->redirection == 4)
 	{
+		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
+		dup2(file, STDOUT_FILENO);
 	}
 }
 

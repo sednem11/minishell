@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/15 16:04:47 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:12:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,10 @@ void	print_export(t_main *main)
 			}			
 			i++;
 		}
-		printf("declare -x %s, %i\n", main->export[n], n);
+		printf("declare -x %s\n", main->export[n]);
 		c = n;
 		a++;
 	}
-	printf("%i\n", matrixlen(main->export));
 }
 
 static char	*word_aloc(char const *str, char c)
@@ -145,7 +144,8 @@ char	**ft_split2(char const *s, char c)
 	{
 		while (s[i] == c)
 			i++;
-		if ((s[i] == '>' && s[i + 1] == c) || (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == c))
+		if ((s[i] == '>' && s[i + 1] == c) || (s[i] == '<' && s[i + 1] == '<' && s[i + 2] == c)
+			|| (s[i] == '>' && s[i + 1] == '>' && s[i + 2] == c))
 			break;
 		if (s[i] != '\0' && s[i] != c)
 		{

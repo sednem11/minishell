@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/14 14:54:27 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:59:14 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ void	echo_redirections(t_cmd *cmd)
 		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
 		dup2(file, STDOUT_FILENO);
 		closepipes(cmd);
+	}
+	if (cmd->redirection == 3 || cmd->redirection == 2)
+	{
+		printf("\n");
+		return ;
 	}
 	while (cmd->realarg[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/05/31 17:32:50 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/17 16:13:46 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,12 @@ void	free_every_main(t_main *main)
 
 void	exitt(t_cmd *cmd, char **envp, t_main *main)
 {
-	(void) cmd;
 	(void) envp;
 	(void) main;
 	// free_every_main(main->beginning);
 	// free(main);
 	// free_every_cmd(cmd);
 	// free(cmd);
-	exit(1);
+	exit(ft_atoi(cmd->args[1]));
 	return ;
 }
