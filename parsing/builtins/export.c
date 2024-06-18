@@ -6,13 +6,13 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/13 13:06:56 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:32:21 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_env(t_main *main)
+void	free_env_and_export(t_main *main)
 {
 	int	i;
 
@@ -22,7 +22,15 @@ void	free_env(t_main *main)
 		free(main->env[i]);
 		i++;
 	}
-	// free(main->env);
+	free(main->env);
+	i = 0;
+	while(main->export[i])
+	{
+		free(main->export[i]);
+		i++;
+	}
+	free(main->export);
+	
 }
 
 int	find_equal(char *arg)
@@ -96,8 +104,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	if (!cmd->args[1])
 	{
 		print_export(main);
-		next = set_main4(main, main->env, main->export);
-		return(next);
+		return(main);
 	}
 	else if (cmd->args[2] && cmd->redirection == 0)
 		return(main);

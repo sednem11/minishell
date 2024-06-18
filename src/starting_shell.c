@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/17 16:11:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:42:51 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ char	*get_paths(char *argv, char **envp)
 		path = ft_strjoin(part_path, cmd[0]);
 		free(part_path);
 		if (access(path, F_OK) == 0)
+		{
+			free_paths(paths, cmd);
 			return (path);
+		}
 		free(path);
 	}
 	free_paths(paths, cmd);
@@ -162,7 +165,10 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	if (check_builtins2(cmd, envp, main) == 1)
 	{
 		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
-			execve(cmd->path , cmd->realarg, envp);
+		{
+			if (cmd->path)
+				execve(cmd->path , cmd->realarg, envp);
+		}
 		else
 		{
 			char **a = NULL;

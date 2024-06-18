@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/14 14:18:38 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/18 15:31:01 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ typedef struct	s_main
 {
 	char			**env;
 	char			**export;
-	struct s_main	*beginning;
 	struct s_main	*next;
 }	t_main;
 
@@ -43,10 +42,10 @@ typedef struct	s_cmd
 	pid_t			pid;
 	struct s_cmd	*next;
 	struct s_cmd	*begining;
-	struct s_main	*main;
 	int				check;
 }	t_cmd;
 
+void	free_cmd_args(t_cmd *cmd);
 char	**ft_split2(char const *s, char c);
 void	closepipes(t_cmd *cmd);
 void	set_comands2(t_cmd *cmd, int i);
@@ -66,7 +65,7 @@ int		check_pipes(char *user_input);
 void	print_env(char **envp);
 int		check_builtins2(t_cmd *cmd, char **envp, t_main *main);
 int 	matrixlen(char **envp);
-void	free_env(t_main *main);
+void	free_env_and_export(t_main *main);
 t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported);
 int		*check_paired(char *exported, char **envp, char **envp2, int len);
 int		ft_strlen_updated(char *str);
@@ -76,7 +75,6 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported);
 void	free_every_main(t_main *main);
 void	free_every_cmd(t_cmd *cmd);
 t_main	*set_main(t_main *main, char **envp);
-t_main	*set_main4(t_main *main, char **env, char **export);
 void	signal_main(void);
 
 #endif

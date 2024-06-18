@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/14 14:45:05 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/18 16:26:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,43 +92,72 @@ void	check_redirections(t_cmd *cmd, char *arg, int i)
 		cmd->redirectionpos = i;
 	}
 }
+void	free_cmd_args(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while(cmd->args[i])
+	{
+		free(cmd->args[i]);
+		i++;
+	}
+	free(cmd->args);
+	i = 0;
+	while(cmd->realarg[i])
+	{
+		free(cmd->realarg[i]);
+		i++;
+	}
+	free(cmd->realarg);
+}
 
 t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 {
 	int		i;
 	int		j;
 	char	**argv2;
+	t_cmd	*cmd2;
 	t_cmd	*begin;
 
-	begin = NULL;
+	cmd2 = NULL;
 	(void)envp;
 	argv2 = ft_split(argv, '\4');
 	i = 0;
-	cmd = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
+	cmd2 = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 	while (argv2[i])
 	{
-		cmd->redirection = 0;
+		cmd2->redirection = 0;
 		j = 0;
-		cmd->args = ft_split(argv2[i], '\3');
-		cmd->realarg = ft_split2(argv2[i], '\3');
-		while (cmd->args[j])
+		cmd2->args = ft_split(argv2[i], '\3');
+		cmd2->realarg = ft_split2(argv2[i], '\3');
+		while (cmd2->args[j])
 		{
-			check_redirections(cmd, cmd->args[j], j);
+			check_redirections(cmd2, cmd2->args[j], j);
 			j++;
 		}
-		cmd->path = get_paths(cmd->args[0], envp);
-		if (begin == NULL)
-			begin = cmd;
-		cmd->begining = begin;
+		cmd2->path = get_paths(cmd2->args[0], envp);
+		if (i == 0)
+			begin = cmd2;
+		cmd2->begining = begin;
 		if (argv2[i + 1])
 		{
-			cmd->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
-			cmd = cmd->next;
+			cmd2->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
+			cmd2 = cmd2->next;
 		}
-		set_comands2(cmd, i);
+		free(argv2[i]);
+		set_comands2(cmd2, i);
 		i++;
 	}
-	return(begin);
+	if(cmd)
+	{
+		free(cmd->path);
+		free_cmd_args(cmd);
+		free(cmd);
+	}
+	free(argv);
+	free(argv2);
+	return(cmd2->begining);
 }
 
 t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
