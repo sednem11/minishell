@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/18 15:20:26 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:38:23 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	free_args(t_cmd *cmd)
 
 void	free_cmd(t_cmd *cmd)
 {
-		free(cmd->path);
 		free_cmd_args(cmd);
-		free(cmd);
 }
 
 void	exitt(t_cmd *cmd, char **envp, t_main *main)
@@ -56,10 +54,9 @@ void	exitt(t_cmd *cmd, char **envp, t_main *main)
 	}
 	if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) != 0)
 	{
-		// free_every_main(main->beginning);
-		// free(main);
-		// free_every_cmd(cmd);
-		// free(cmd);
+		free_env_and_export(main);
+		free(main);
+		free_cmd(cmd);
 		exit(0);
 	}
 	return ;

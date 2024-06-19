@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/18 16:42:51 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/19 13:30:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ void	aplly_redirections(t_cmd *cmd)
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
-	if (pars_args(ft_split(user_input, ' ')) != -1)
+	if (cmd->next)
 	{
 		if (cmd == cmd->begining)
 		{

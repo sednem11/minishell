@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/18 12:40:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:23:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	}
 	if (place[1] == -1)
 		mainn->export[j] = ft_strdup(exported);
+	free(main->env);
+	free(main->export);
 	free(main);
+	free(place);
 	return(mainn);
 }
 
@@ -66,7 +69,7 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 	j = 0;
 	place = check_paired(exported, envp, envp2, ft_strlen_updated(exported));
 	mainn = calloc(sizeof(t_main), sizeof(t_main));
-	mainn->env = calloc(sizeof(char *), matrixlen(envp));
+	mainn->env = calloc(sizeof(char *), matrixlen(envp) + 1);
 	while (envp[j])
 	{
 		if (j != place[0])
@@ -78,7 +81,7 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 	}
 	j = 0;
 	i = 0;
-	mainn->export = calloc(sizeof(char *), matrixlen(envp2));
+	mainn->export = calloc(sizeof(char *), matrixlen(envp2) + 1);
 	while (envp2[j])
 	{
 		if (j != place[1])
@@ -88,6 +91,13 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 		}
 		j++;
 	}
+	if (place[0] != -1)
+		free(main->env[place[0]]);
+	if (place[1] != -1)
+		free(main->export[place[1]]);
+	free(main->env);
+	free(main->export);
 	free(main);
+	free(place);
 	return(mainn);
 }

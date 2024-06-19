@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/18 16:26:54 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/19 16:11:46 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,30 @@ void	check_redirections(t_cmd *cmd, char *arg, int i)
 void	free_cmd_args(t_cmd *cmd)
 {
 	int	i;
+	t_cmd *temporary;
 
-	i = 0;
-	while(cmd->args[i])
+	temporary = cmd;
+	while(temporary)
 	{
-		free(cmd->args[i]);
-		i++;
+		cmd = temporary;
+		i = 0;
+		while(cmd->args[i])
+		{
+			free(cmd->args[i]);
+			i++;
+		}
+		free(cmd->args);
+		i = 0;
+		while(cmd->realarg[i])
+		{
+			free(cmd->realarg[i]);
+			i++;
+		}
+		free(cmd->realarg);
+		temporary = cmd->next;
+		free(cmd->path);
+		free(cmd);
 	}
-	free(cmd->args);
-	i = 0;
-	while(cmd->realarg[i])
-	{
-		free(cmd->realarg[i]);
-		i++;
-	}
-	free(cmd->realarg);
 }
 
 t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
@@ -140,21 +149,17 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 		if (i == 0)
 			begin = cmd2;
 		cmd2->begining = begin;
+		set_comands2(cmd2, i);
 		if (argv2[i + 1])
 		{
 			cmd2->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 			cmd2 = cmd2->next;
 		}
 		free(argv2[i]);
-		set_comands2(cmd2, i);
 		i++;
 	}
 	if(cmd)
-	{
-		free(cmd->path);
 		free_cmd_args(cmd);
-		free(cmd);
-	}
 	free(argv);
 	free(argv2);
 	return(cmd2->begining);

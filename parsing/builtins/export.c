@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/18 16:32:21 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/19 13:14:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,6 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	else if (cmd->args[2] && cmd->redirection == 0)
 		return(main);
 	else
-		next = set_main2(next, envp, main->export, cmd->args[1]);
+		next = set_main2(main, envp, main->export, cmd->args[1]);
 	return(next);
 }
