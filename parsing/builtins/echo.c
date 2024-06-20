@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 13:23:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:42:55 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,8 @@ int	check_$(char *user_input)
 void	echo_redirections(t_cmd *cmd)
 {
 	int	i;
-	// int	file;
 	
 	i = 1;
-	// if (cmd->redirection == 1)
-	// {
-	// 	file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
-	// 	dup2(file, STDOUT_FILENO);
-	// 	closepipes(cmd);
-	// }
-	// if (cmd->redirection == 3 || cmd->redirection == 2)
-	// {
-	// 	printf("\n");
-	// 	return ;
-	// }
 	while (cmd->realarg[i])
 	{
 		printf("%s", cmd->realarg[i]);
@@ -72,7 +60,9 @@ void	echo_redirections(t_cmd *cmd)
 
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 {
-	if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 2) == 0
+	if (cmd->args[1] && cmd->redirection != 0)
+		echo_redirections(cmd);
+	else if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 2) == 0
 		&& ft_strlen(cmd->args[1]) == 2 && cmd->args[3] == NULL)
 	{
 		i = 2;
@@ -99,6 +89,4 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 		}
 		printf("\n");
 	}
-	else if (cmd->args[1] && cmd->redirection != 0)
-		echo_redirections(cmd);
 }
