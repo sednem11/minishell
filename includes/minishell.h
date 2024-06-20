@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/18 15:31:01 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/20 15:54:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ typedef struct	s_main
 
 typedef struct	s_cmd
 {
-	int				redirection;
-	int				redirectionpos;
+	int				*redirection;
+	int				*redirectionpos;
 	char			*path;
 	char			**args;
+	char			**argv2;
 	char			**realarg;
 	int				fd[2];
 	int 			numb;
@@ -45,6 +46,7 @@ typedef struct	s_cmd
 	int				check;
 }	t_cmd;
 
+int		count_redirections(char **argv);
 void	free_cmd_args(t_cmd *cmd);
 char	**ft_split2(char const *s, char c);
 void	closepipes(t_cmd *cmd);

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/17 16:16:41 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/20 13:23:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,20 @@ int	check_$(char *user_input)
 void	echo_redirections(t_cmd *cmd)
 {
 	int	i;
-	int	file;
+	// int	file;
 	
 	i = 1;
-	if (cmd->redirection == 1)
-	{
-		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
-		dup2(file, STDOUT_FILENO);
-		closepipes(cmd);
-	}
-	if (cmd->redirection == 3 || cmd->redirection == 2)
-	{
-		printf("\n");
-		return ;
-	}
+	// if (cmd->redirection == 1)
+	// {
+	// 	file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+	// 	dup2(file, STDOUT_FILENO);
+	// 	closepipes(cmd);
+	// }
+	// if (cmd->redirection == 3 || cmd->redirection == 2)
+	// {
+	// 	printf("\n");
+	// 	return ;
+	// }
 	while (cmd->realarg[i])
 	{
 		printf("%s", cmd->realarg[i]);

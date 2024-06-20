@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/19 13:30:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:06:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,20 @@ void	alloc_heredoc(t_cmd *cmd, char	*alocated)
 	cmd->realarg = new;
 }
 
+int		check_last_redirection(t_cmd *cmd, int i)
+{
+	int j;
+	
+	j = i + 1;
+	while(cmd->redirection[j])
+	{
+		if (cmd->redirection[i] == cmd->redirection[j])
+			return(-1);
+		j++;
+	}
+	return(1);
+}
+
 void	aplly_redirections(t_cmd *cmd)
 {
 	int		file;
@@ -97,44 +111,50 @@ void	aplly_redirections(t_cmd *cmd)
 	
 	i = 0;
 	input = NULL;
-	if (cmd->redirection == 1)
+	while(i < count_redirections(cmd->args))
 	{
-		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
-		dup2(file, STDOUT_FILENO);
-	}
-	else if (cmd->redirection == 2)
-	{
-		alloc_heredoc(cmd, cmd->args[cmd->redirectionpos + 1]);
-	}
-	else if (cmd->redirection == 3)
-	{
-		input = readline("heredoc> ");
-		file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777));
-		write(file, input, ft_strlen(input));
-		write(file, "\n", 1);
-		while (ft_strncmp(input, cmd->args[cmd->redirectionpos + 1],
-			ft_strlen(cmd->args[cmd->redirectionpos + 1]) != 0))
+		if (cmd->redirection[i] == 1)
+		{
+			printf("%s\n", cmd->realarg[1]);
+			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+			if (check_last_redirection(cmd, i) == 1)
+				dup2(file, STDOUT_FILENO);
+		}
+		else if (cmd->redirection[i] == 2)
+		{
+			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
+		}
+		else if (cmd->redirection[i] == 3)
 		{
 			input = readline("heredoc> ");
-			if(ft_strncmp(input, cmd->args[cmd->redirectionpos + 1],
-				ft_strlen(cmd->args[cmd->redirectionpos + 1]) != 0))
+			file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777));
+			write(file, input, ft_strlen(input));
+			write(file, "\n", 1);
+			while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 			{
-				write(file, input, ft_strlen(input));
-				write(file, "\n", 1);
+				input = readline("heredoc> ");
+				if(ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+					ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+				{
+					write(file, input, ft_strlen(input));
+					write(file, "\n", 1);
+				}
 			}
+			alloc_heredoc(cmd, "temporary");
 		}
-		alloc_heredoc(cmd, "temporary");
-	}
-	else if (cmd->redirection == 4)
-	{
-		file = (open(cmd->args[cmd->redirectionpos + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
-		dup2(file, STDOUT_FILENO);
+		else if (cmd->redirection[i] == 4)
+		{
+			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
+			dup2(file, STDOUT_FILENO);
+		}
+		i++;
 	}
 }
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
-	if (cmd->next)
+	if (cmd->argv2[1])
 	{
 		if (cmd == cmd->begining)
 		{
