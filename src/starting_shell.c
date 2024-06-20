@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 17:06:54 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/20 18:11:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ void	aplly_redirections(t_cmd *cmd)
 	{
 		if (cmd->redirection[i] == 1)
 		{
-			printf("%s\n", cmd->realarg[1]);
 			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
 			if (check_last_redirection(cmd, i) == 1)
 				dup2(file, STDOUT_FILENO);
