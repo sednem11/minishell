@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 18:11:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:53:51 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,22 +108,30 @@ void	aplly_redirections(t_cmd *cmd)
 	int		file;
 	char	*input;
 	int		i;
+	int		flag;
 	
+	flag = 0;
 	i = 0;
 	input = NULL;
 	while(i < count_redirections(cmd->args))
 	{
+		if (cmd->redirectionoverall == 2 && flag == 0)
+		{
+			while(cmd->redirection[i] != 3)
+				i++;
+			flag = 1;
+		}
 		if (cmd->redirection[i] == 1)
 		{
 			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
 			if (check_last_redirection(cmd, i) == 1)
 				dup2(file, STDOUT_FILENO);
 		}
-		else if (cmd->redirection[i] == 2)
+		else if (cmd->redirection[i] == 2 && flag != 2)
 		{
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
 		}
-		else if (cmd->redirection[i] == 3)
+		else if (cmd->redirection[i] == 3 && flag != 2)
 		{
 			input = readline("heredoc> ");
 			file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777));
@@ -140,14 +148,21 @@ void	aplly_redirections(t_cmd *cmd)
 					write(file, "\n", 1);
 				}
 			}
-			alloc_heredoc(cmd, "temporary");
+			if (cmd->redirectionoverall != 2)
+				alloc_heredoc(cmd, "temporary");
 		}
 		else if (cmd->redirection[i] == 4)
 		{
 			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
 			dup2(file, STDOUT_FILENO);
 		}
-		i++;
+		if (cmd->redirectionoverall == 2 && flag == 1)
+		{
+			i = 0;
+			flag = 2;
+		}
+		else
+			i++;
 	}
 }
 
@@ -158,21 +173,21 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		if (cmd == cmd->begining)
 		{
 			aplly_redirections(cmd);
-			if (cmd->redirection == 0)
+			if (cmd->redirectionoverall == 0)
 				dup2(cmd->next->fd[1], STDOUT_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
 			aplly_redirections(cmd);
-			if (cmd->redirection == 0)
+			if (cmd->redirectionoverall == 0)
 				dup2(cmd->fd[0], STDIN_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
 			aplly_redirections(cmd);
-			if (cmd->redirection == 0)
+			if (cmd->redirectionoverall == 0)
 			{
 				dup2(cmd->fd[0], STDIN_FILENO);
 				dup2(cmd->next->fd[1], STDOUT_FILENO);
@@ -203,7 +218,7 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 {
 	pid_t	id;
 	
-	if (cmd->next || check_builtins2(cmd, envp, main) == 1 || cmd->redirection != 0)
+	if (cmd->next || check_builtins2(cmd, envp, main) == 1 || cmd->redirectionoverall != 0)
 	{
 		while(cmd)
 		{

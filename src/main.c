@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/19 16:41:29 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:02:40 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,10 @@ int	main(int argc, char **argv, char **envp)
 		{
 			cmd = initiate_args(user_input, main->env, cmd);
 			add_history(user_input);
-			next = execute_function(user_input, main->env, cmd, main);
+			if (cmd == NULL)
+				next = main;
+			else
+				next = execute_function(user_input, main->env, cmd, main);
 			main = next;
 		}
 	}

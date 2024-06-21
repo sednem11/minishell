@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 17:35:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:26:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	exitt(t_cmd *cmd, char **envp, t_main *main)
 		if (!cmd->args[2])
 		{
 			free_cmd(cmd);
-			exit(last);
+			exit(123);
 		}
 	}
 	if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) != 0)

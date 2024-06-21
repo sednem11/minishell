@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 17:42:55 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:23:35 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	echo_redirections(t_cmd *cmd)
 
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 {
-	if (cmd->args[1] && cmd->redirection != 0)
+	if (cmd->args[1] && cmd->redirectionoverall != 0)
 		echo_redirections(cmd);
 	else if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 2) == 0
 		&& ft_strlen(cmd->args[1]) == 2 && cmd->args[3] == NULL)
@@ -74,7 +74,7 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 			i++;
 		}
 	}
-	else if (cmd->args[1] && cmd->redirection == 0)
+	else if (cmd->args[1] && cmd->redirectionoverall == 0)
 	{
 		i = 1;
 		while (cmd->args[i])

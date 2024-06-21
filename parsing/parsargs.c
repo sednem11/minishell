@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 18:10:48 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/21 11:21:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	pars_args(char **cmds)
 
 t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 {
+	(void) user_input;
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 && ft_strlen(cmd->args[0]) == 2)
 		cd(cmd, envp);
 	else if (ft_strncmp(cmd->args[0], "export", 6) == 0 && ft_strlen(cmd->args[0]) == 6)
@@ -174,6 +175,26 @@ void	free_cmd_args(t_cmd *cmd)
 	}
 }
 
+ int	count_dif_redirections(char **argv)
+ {
+	int	i;
+	int	a;
+	int	b;
+
+	b = 0;
+	a = 0;
+	i = 0;
+	while(argv[i])
+	{
+		if (ft_strncmp(argv[i], ">", 1) == 0 || ft_strncmp(argv[i], ">>", 2) == 0)
+			a = 1;
+		if (ft_strncmp(argv[i], "<", 1) == 0 || ft_strncmp(argv[i], "<<", 2) == 0)
+			b = 1;
+		i++;
+	}
+	return(a + b);
+ }
+
 t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 {
 	int		i;
@@ -195,6 +216,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 		cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
 		cmd2->redirection = calloc(sizeof(int), count_redirections(cmd2->args));
 		cmd2->redirectionpos = calloc(sizeof(int), count_redirections(cmd2->args));
+		cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
 		while (cmd2->args[j])
 		{
 			check_redirections(cmd2, cmd2->args[j], j);
@@ -247,6 +269,11 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
 		else if ((flag == -1 && user_input[i] != ' ') || flag == 1)
 			argv[i] = user_input[i];
 		i++;
+	}
+	if (flag == 1)
+	{
+		printf("unclosed argument\n");
+		return(NULL);
 	}
 	return(set_comands(argv, envp, cmd));
 }

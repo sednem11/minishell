@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/20 15:54:36 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/21 09:47:10 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct	s_cmd
 {
 	int				*redirection;
 	int				*redirectionpos;
+	int				redirectionoverall;
 	char			*path;
 	char			**args;
 	char			**argv2;
