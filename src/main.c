@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/21 11:02:40 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:51:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int	main(int argc, char **argv, char **envp)
 		{
 			free_env_and_export(main);
 			free(main);
-			free_cmd_args(cmd);
+			if (cmd)
+				free_cmd_args(cmd);
 			return 1;
 		}
 		if (*user_input != '\0')

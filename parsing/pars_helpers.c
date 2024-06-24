@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/19 16:23:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/22 12:49:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	set_comands2(t_cmd *cmd, int i)
 {
-    cmd->numb = i;
+	cmd->numb = i;
+
 	if (pipe(cmd->fd) == -1)
 		return;
 }

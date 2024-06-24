@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/21 11:53:51 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:44:55 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,19 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
 		{
-			if (cmd->path)
-				execve(cmd->path , cmd->realarg, envp);
+			execve(cmd->path , cmd->realarg, envp);
+			if (ft_strncmp(cmd->args[0], "./", 2) == 0)
+			{
+				write(2, " No such file or directory\n", 28);
+				main->status = 126;
+				exit(main->status);
+			}
+			if (ft_strncmp(cmd->args[0], "/", 1) == 0)
+				write(2, " No such file or directory\n", 28);
+			else
+				write(2, " command not found\n", 19);
+			main->status = 127;
+			exit(main->status);
 		}
 		else
 		{
@@ -232,6 +243,11 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 				closepipes(cmd);
 				return (unset(cmd, main, envp));
 			}
+			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit", 4) == 0)
+			{
+				closepipes(cmd);
+				return (exitt(cmd, envp, main));	
+			}
 			else
 			{
 				id = fork();
@@ -246,7 +262,9 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 	}
 	else
 		main = check_builtins(cmd, envp, main, user_input);
-	while (waitpid(-1, NULL, 0) != -1);
+	while (waitpid(-1, &main->status, 0) != -1);
+	if (WIFEXITED(main->status))
+		main->status = WEXITSTATUS(main->status);
 	return(main);
 }
 	

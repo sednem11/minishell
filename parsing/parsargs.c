@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/21 11:21:34 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:55:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 	else if(ft_strncmp(cmd->args[0], "env", 3) == 0 && ft_strlen(cmd->args[0]) == 3)
 		env(cmd, envp);
 	else if(ft_strncmp(cmd->args[0], "exit", 4) == 0 && ft_strlen(cmd->args[0]) == 4)
-		exitt(cmd, envp, main);
+		main = exitt(cmd, envp, main);
 	else if(ft_strncmp(cmd->args[0], "echo", 4) == 0 && ft_strlen(cmd->args[0]) == 4)
 		echo(cmd, main, 0, user_input);
 	return(main);
@@ -150,6 +150,7 @@ void	free_cmd_args(t_cmd *cmd)
 	t_cmd *temporary;
 
 	temporary = cmd;
+	closepipes(cmd);
 	while(temporary)
 	{
 		cmd = temporary;
@@ -166,6 +167,13 @@ void	free_cmd_args(t_cmd *cmd)
 			free(cmd->realarg[i]);
 			i++;
 		}
+		i = 0;
+		while(cmd->argv2[i])
+		{
+			free(cmd->argv2[i]);
+			i++;
+		}
+		free(cmd->argv2);
 		free(cmd->realarg);
 		temporary = cmd->next;
 		free(cmd->redirection);
@@ -207,6 +215,8 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 	z = 0;
 	cmd2 = NULL;
 	(void)envp;
+	if(cmd)
+		free_cmd_args(cmd);
 	cmd2 = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 	cmd2->argv2 = ft_split(argv, '\4');	
 	while (cmd2->argv2[i])
@@ -235,8 +245,6 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 		}
 		i++;
 	}
-	if(cmd)
-		free_cmd_args(cmd);
 	free(argv);
 	return(cmd2->begining);
 }

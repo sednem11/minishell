@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/21 11:23:35 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/24 18:26:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,30 @@
 void	print_$(t_main *main, char *arg)
 {
 	int	i;
-
-	i = 0;
-	while (main->env[i])
+	char	**value;
+	
+	value = ft_split(arg, ' ');
+	i = 1;
+	if (!arg[0])
+		printf("$\n");
+	if (arg[0] == '?')
 	{
-		if (ft_strncmp(arg, main->env[i], ft_strlen(arg)) == 0 && main->env[i][ft_strlen(arg)] == '=')
-			printf("%s", &main->env[i][ft_strlen(arg) + 1]);
-		i++;
+		printf("%i", main->status);
+		while(arg[i] && arg[i] != ' ')
+		{
+			printf("%c", arg[i]);
+			i++;
+		}
+	}
+	else
+	{
+		i = 0;
+		while (main->env[i])
+		{
+			if (ft_strncmp(value[0], main->env[i], ft_strlen(value[0])) == 0 && main->env[i][ft_strlen(value[0])] == '=')
+				printf("%s", &main->env[i][ft_strlen(value[0]) + 1]);
+			i++;
+		}
 	}
 }
 
@@ -34,7 +51,7 @@ int	check_$(char *user_input)
 	flag = -1;
 	while (user_input[i])
 	{
-		if (user_input[i] == '"' || user_input[i] == 39)
+		if (user_input[i] == 39)
 			flag *= -1;
 		if (user_input[i] == '$' && flag == 1)
 			return(i);
@@ -58,6 +75,32 @@ void	echo_redirections(t_cmd *cmd)
 	printf("\n");
 }
 
+void	print_args(char **args, char *user_input, int i, t_main *main)
+{
+	int	j;
+	int	flag;
+
+	flag = 1;
+	j = 0;
+	while(j < (int)ft_strlen(args[i]))
+	{
+		if (args[i][j] == '$' && check_$(user_input) == 1)
+		{
+			print_$(main, &args[i][j + 1]);
+			while(args[i][j] != ' ')
+				j++;
+			flag = 0;
+		}
+		else
+		{
+			printf("%c", args[i][j]);
+			j++;
+		}
+	}
+	if (args[i + 1] && user_input[5 + ft_strlen(args[i])] == ' ' && flag == 1)
+		printf("%s", " ");
+}
+
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 {
 	if (cmd->args[1] && cmd->redirectionoverall != 0)
@@ -79,12 +122,7 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 		i = 1;
 		while (cmd->args[i])
 		{
-			if (cmd->args[i][0] == '$' && check_$(user_input) == 1)
-				print_$(main, &cmd->args[i][1]);
-			else
-				printf("%s", cmd->args[i]);
-			if (cmd->args[i + 1])
-				printf(" ");
+			print_args(cmd->args, user_input, i, main);
 			i++;
 		}
 		printf("\n");

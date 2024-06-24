@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/21 11:26:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:46:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,17 @@ void	free_cmd(t_cmd *cmd)
 		free_cmd_args(cmd);
 }
 
-void	exitt(t_cmd *cmd, char **envp, t_main *main)
+t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 {
 	(void) envp;
 	(void) main;
 	int		last;
 	
-	last = ft_atoi(cmd->args[1]);
 	if (!cmd->args[1] || ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) == 0)
 	{
+		if (cmd->args[2] && ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) == 0
+			&& ft_strncmp(ft_itoa(ft_atoi(cmd->args[2])), cmd->args[2], ft_strlen(cmd->args[2])) != 0)
+			return(main);
 		free_env_and_export(main);
 		free(main);
 		if (!cmd->args[1])
@@ -48,16 +50,17 @@ void	exitt(t_cmd *cmd, char **envp, t_main *main)
 		}
 		if (!cmd->args[2])
 		{
+			last = ft_atoi(cmd->args[1]);
 			free_cmd(cmd);
-			exit(123);
+			exit(last);
 		}
 	}
-	if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) != 0)
+	else if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) != 0)
 	{
 		free_env_and_export(main);
 		free(main);
 		free_cmd(cmd);
 		exit(0);
 	}
-	return ;
+	return(main);
 }
