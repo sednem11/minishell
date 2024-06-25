@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 10:32:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 15:17:03 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,11 @@ void	aplly_redirections(t_cmd *cmd)
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
+	char	**a;
+	char	*b;
+
+	b = NULL;
+	a = NULL;
 	if (cmd->argv2[1])
 	{
 		if (cmd == cmd->begining)
@@ -196,7 +201,14 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 	}
 	aplly_redirections(cmd);
-	if (check_builtins2(cmd, envp, main) == 1)
+	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=", main->env, main->export, 5)[0] == -1)
+	{
+		execve(b , cmd->realarg, envp);
+		write(2, " No such file or directory\n", 28);
+		main->status = 127;
+		exit(main->status);
+	}
+	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=", main->env, main->export, 5)[0] != -1)
 	{
 		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
 		{
@@ -209,6 +221,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			}
 			if (ft_strncmp(cmd->args[0], "/", 1) == 0)
 				write(2, " No such file or directory\n", 28);
+			else if (cmd->args[0][0] == '$' && cmd->args[1] && check_paired(cmd->args[0], main->env, main->export, ft_strlen(cmd->args[0]) - 1)[0] == -1)
+				execve(cmd->path , &cmd->args[1], envp);
 			else
 				write(2, " command not found\n", 19);
 			main->status = 127;
@@ -216,7 +230,6 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 		else
 		{
-			char **a = NULL;
 			execve("./minishell" , a, envp);
 			printf("%s\n", strerror(errno));
 		}

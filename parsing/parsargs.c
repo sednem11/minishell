@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 10:53:26 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:44:21 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,17 +203,20 @@ void	free_cmd_args(t_cmd *cmd)
 	return(a + b);
  }
 
-t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
+t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 {
 	int		i;
 	int		z;
 	int		j;
+	char	**path2;
 	t_cmd	*cmd2;
 	t_cmd	*begin;
 
 	i = 0;
 	z = 0;
 	cmd2 = NULL;
+	path2 = calloc(sizeof(char *), 2);
+	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
 	(void)envp;
 	if(cmd)
 		free_cmd_args(cmd);
@@ -232,7 +235,10 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 			check_redirections(cmd2, cmd2->args[j], j);
 			j++;
 		}
-		cmd2->path = get_paths(cmd2->args[0], envp);
+		if (check_paired("PATH=", main->env, main->export, 5)[0] != -1)
+			cmd2->path = get_paths(cmd2->args[0], envp);
+		else
+			cmd2->path = get_paths(cmd2->args[0], path2);
 		if (i == 0)
 			begin = cmd2;
 		cmd2->begining = begin;
@@ -249,7 +255,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd)
 	return(cmd2->begining);
 }
 
-t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
+t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	int		flag;
 	int		i;
@@ -283,7 +289,7 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
 		printf("unclosed argument\n");
 		return(NULL);
 	}
-	return(set_comands(argv, envp, cmd));
+	return(set_comands(argv, envp, cmd, main));
 }
 
 // echo "hello hjvb"       cat < out > out2

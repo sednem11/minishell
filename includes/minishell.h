@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 10:52:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 11:50:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_main	*exitt(t_cmd *cmd, char **envp, t_main *main);
 t_main	*export(t_cmd *cmd, char **envp, t_main *main);
 void	pwd(t_cmd *cmd, char **envp);
 t_main	*unset(t_cmd *cmd, t_main *main, char **envp);
-t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd);
+t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main);
 char	*get_paths(char *argv, char **envp);
 int		check_pipes(char *user_input);
 void	print_env(char **envp);

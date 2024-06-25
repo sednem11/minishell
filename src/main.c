@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 10:06:59 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 12:03:13 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,18 @@ t_main	*set_main(t_main *main, char **envp)
 	
 	j = 0;
 	main = calloc(sizeof(t_main), sizeof(t_main));
+	if (envp[0] == NULL)
+	{
+		main->env = calloc(sizeof(char *), 4);
+		main->env[0] = ft_strdup("PWD=/home/macampos/minishell");
+		main->env[1] = ft_strdup("SHLVL=1");
+		main->env[2] = ft_strdup("_=/usr/bin/env");
+		main->export = calloc(sizeof(char *), 4);
+		main->export[0] = ft_strdup("PWD=/home/macampos/minishell");
+		main->export[1] = ft_strdup("SHLVL=1");
+		main->export[2] = ft_strdup("_=/usr/bin/env");
+		return(main);
+	}
 	main->env = calloc(sizeof(char *), matrixlen(envp) + 1);
 	while (envp[j])
 	{
@@ -75,7 +87,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*user_input != '\0')
 		{
-			cmd = initiate_args(user_input, main->env, cmd);
+			cmd = initiate_args(user_input, main->env, cmd, main);
 			add_history(user_input);
 			if (cmd == NULL)
 				next = main;
