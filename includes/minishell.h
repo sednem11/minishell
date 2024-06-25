@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/24 14:54:12 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:52:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	set_comands2(t_cmd *cmd, int i);
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main);
 int		pars_args(char **cmds);
 t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input);
-void	cd(t_cmd *cmd, char **envp);
+void	cd(t_cmd *cmd, char **envp, t_main *main);
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input);
 void	env(t_cmd *cmd, char **envp);
 t_main	*exitt(t_cmd *cmd, char **envp, t_main *main);

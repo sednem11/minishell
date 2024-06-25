@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/24 14:55:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:53:26 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 {
 	(void) user_input;
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 && ft_strlen(cmd->args[0]) == 2)
-		cd(cmd, envp);
+		cd(cmd, envp, main);
 	else if (ft_strncmp(cmd->args[0], "export", 6) == 0 && ft_strlen(cmd->args[0]) == 6)
 		main = export(cmd, envp, main);
 	else if (ft_strncmp(cmd->args[0], "unset", 5) == 0 && ft_strlen(cmd->args[0]) == 5)
@@ -285,3 +285,10 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd)
 	}
 	return(set_comands(argv, envp, cmd));
 }
+
+// echo "hello hjvb"       cat < out > out2
+
+// >>
+// >
+// <<
+// <

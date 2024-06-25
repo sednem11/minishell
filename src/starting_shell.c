@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/24 14:44:55 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:32:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,4 +267,6 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 		main->status = WEXITSTATUS(main->status);
 	return(main);
 }
-	
+
+
+//echo hello | exit 4 | pwd
