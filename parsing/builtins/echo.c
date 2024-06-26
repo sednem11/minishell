@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 11:00:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:01:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	print_$(t_main *main, char *arg)
 	value = ft_split(arg, ' ');
 	i = 1;
 	if (!arg[0])
+	{
 		printf("$\n");
+		return;
+	}
 	if (arg[0] == '?')
 	{
 		printf("%i", main->status);

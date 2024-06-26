@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 15:17:03 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:06:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			}
 			if (ft_strncmp(cmd->args[0], "/", 1) == 0)
 				write(2, " No such file or directory\n", 28);
-			else if (cmd->args[0][0] == '$' && cmd->args[1] && check_paired(cmd->args[0], main->env, main->export, ft_strlen(cmd->args[0]) - 1)[0] == -1)
+			else if (cmd->args[0][0] == '$' && cmd->args[1]
+				&& check_paired(cmd->args[0], main->env, main->export, ft_strlen(cmd->args[0]) - 1)[0] == -1)
 				execve(cmd->path , &cmd->args[1], envp);
 			else
 				write(2, " command not found\n", 19);

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/19 13:14:05 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:32:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,21 @@ int		ft_strlen_updated(char *str)
 	return(i);
 }
 
+int		check_invalid(char *arg)
+{
+	int	i;
+	
+	i = 0;
+	while(arg[i] && arg[i] != '=')
+	{
+		if ((arg[i] < 48 || arg[i] > 57) && (arg[i] < 65
+			|| arg[i] > 90) && (arg[i] < 97 || arg[i] > 122))
+			return(i);
+		i++;
+	}
+	return(-1);
+}
+
 t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 {
 	t_main	*next;
@@ -108,7 +123,13 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	}
 	else if (cmd->args[2] && cmd->redirection == 0)
 		return(main);
-	else
+	else if (check_invalid(cmd->args[1]) != -1 || cmd->args[1][0] == '=')
+	{
+		write(2, " not a valid identifier", 24);
+		main->status = 1;
+		return(main);
+	}
+	else if (check_invalid(cmd->args[1]) == -1)
 		next = set_main2(main, envp, main->export, cmd->args[1]);
 	return(next);
 }
