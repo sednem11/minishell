@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 15:27:28 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:16:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,11 @@ void	free_cmd_args(t_cmd *cmd)
 		if (ft_strncmp(argv[i], ">", 1) == 0 || ft_strncmp(argv[i], ">>", 2) == 0)
 			a = 1;
 		if (ft_strncmp(argv[i], "<", 1) == 0 || ft_strncmp(argv[i], "<<", 2) == 0)
-			b = 1;
+			b += 1;
 		i++;
 	}
+	if (b > 1)
+		return(2);
 	return(a + b);
  }
 

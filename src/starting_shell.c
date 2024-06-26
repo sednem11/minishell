@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 17:44:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 19:33:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,41 @@ int		check_last_redirection(t_cmd *cmd, int i)
 	int j;
 	
 	j = i + 1;
-	while(cmd->redirection[j])
+	while(j < count_redirections(cmd->args))
 	{
 		if (cmd->redirection[i] == cmd->redirection[j])
 			return(-1);
 		j++;
 	}
 	return(1);
+}
+
+int		last_reversed(t_cmd *cmd, int flag)
+{
+	int		i;
+	int		j;
+
+	j = -2;
+	i = 0;
+	if (flag == -1)
+	{
+		while(i < count_redirections(cmd->args))
+		{
+			if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
+				j = i;
+			i++;
+		}
+	}
+	else
+	{
+		while(cmd->redirection[i] && i < flag)
+		{
+			if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
+				j = i;
+			i++;
+		}
+	}
+	return(j);
 }
 
 void	aplly_redirections(t_cmd *cmd, t_main *main)
@@ -110,7 +138,9 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 	int		i;
 	int		j;
 	int		flag;
+	int		flag2;
 	
+	flag2 = -1;
 	flag = 0;
 	i = 0;
 	input = NULL;
@@ -118,7 +148,7 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 	{
 		if (cmd->redirectionoverall == 2 && flag == 0)
 		{
-			while(cmd->redirection[i] && cmd->redirection[i] != 3 && cmd->redirection[i] != 2)
+			while(i != last_reversed(cmd, flag2))
 				i++;
 			if (!cmd->redirection[i])
 				i = 0;
@@ -161,15 +191,18 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 		}
 		else if (cmd->redirection[i] == 2 && flag != 2)
 		{
-			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
-				file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY, 0777));
-			else
-				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY, 0777));
-			if (file == -1)
+			if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
 			{
-				write(2, " no such file or directory\n", 28);
-				main->status = 1;
-				exit(main->status);
+				if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
+					file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY, 0777));
+				else
+					file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY, 0777));
+				if (file == -1)
+				{
+					write(2, " no such file or directory\n", 28);
+					main->status = 1;
+					exit(main->status);
+				}
 			}
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
 				alloc_heredoc(cmd, &cmd->args[cmd->redirectionpos[i]][1]);
@@ -268,8 +301,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			if (cmd->redirectionoverall == 0)
-				dup2(cmd->next->fd[1], STDOUT_FILENO);
+			dup2(cmd->next->fd[1], STDOUT_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
