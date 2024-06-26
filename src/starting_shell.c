@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 12:18:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:44:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,12 @@ int		check_last_redirection(t_cmd *cmd, int i)
 	return(1);
 }
 
-void	aplly_redirections(t_cmd *cmd)
+void	aplly_redirections(t_cmd *cmd, t_main *main)
 {
 	int		file;
 	char	*input;
 	int		i;
+	int		j;
 	int		flag;
 	
 	flag = 0;
@@ -117,7 +118,7 @@ void	aplly_redirections(t_cmd *cmd)
 	{
 		if (cmd->redirectionoverall == 2 && flag == 0)
 		{
-			while(cmd->redirection[i] && cmd->redirection[i] != 3)
+			while(cmd->redirection[i] && cmd->redirection[i] != 3 && cmd->redirection[i] != 2)
 				i++;
 			if (!cmd->redirection[i])
 				i = 0;
@@ -125,15 +126,51 @@ void	aplly_redirections(t_cmd *cmd)
 		}
 		if (cmd->redirection[i] == 1)
 		{
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 2 && cmd->args[cmd->redirectionpos[i] + 2])
+			{
+				j = 2;
+				while(cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				{
+					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
+					j++;
+				}
+			}
+			else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 && cmd->args[cmd->redirectionpos[i] + 1])
+			{
+				j = 1;
+				while(cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				{
+					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
+					j++;
+				}
+			}
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
 				file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
 			else
 				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+			if (file == -1)
+			{
+				write(2, " permission denied\n", 20);
+				main->status = 1;
+				exit(main->status);
+			}
 			if (check_last_redirection(cmd, i) == 1)
 				dup2(file, STDOUT_FILENO);
 		}
 		else if (cmd->redirection[i] == 2 && flag != 2)
 		{
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
+				file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY, 0777));
+			else
+				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY, 0777));
+			if (file == -1)
+			{
+				write(2, " no such file or directory\n", 28);
+				main->status = 1;
+				exit(main->status);
+			}
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
 				alloc_heredoc(cmd, &cmd->args[cmd->redirectionpos[i]][1]);
 			else
@@ -147,13 +184,12 @@ void	aplly_redirections(t_cmd *cmd)
 			write(file, "\n", 1);
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 			{
-				printf("%i\n", cmd->redirectionoverall);
 				while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
 					ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 				{
 					input = readline("heredoc> ");
-					if(ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-						ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+					if(ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
+						ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 					{
 						write(file, input, ft_strlen(input));
 						write(file, "\n", 1);
@@ -179,10 +215,36 @@ void	aplly_redirections(t_cmd *cmd)
 		}
 		else if (cmd->redirection[i] == 4)
 		{
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3 && cmd->args[cmd->redirectionpos[i] + 2])
+			{
+				j = 2;
+				while(cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				{
+					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
+					j++;
+				}
+			}
+			else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2 && cmd->args[cmd->redirectionpos[i] + 1])
+			{
+				j = 1;
+				while(cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				{
+					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
+					j++;
+				}
+			}
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 				file = (open(&cmd->args[cmd->redirectionpos[i]][2], O_WRONLY | O_CREAT | O_APPEND, 0777));
 			else
 				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
+			if (file == -1)
+			{
+				write(2, " permission denied\n", 20);
+				main->status = 1;
+				exit(main->status);
+			}
 			dup2(file, STDOUT_FILENO);
 		}
 		if (cmd->redirectionoverall == 2 && flag == 1)
@@ -206,21 +268,18 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			aplly_redirections(cmd);
 			if (cmd->redirectionoverall == 0)
 				dup2(cmd->next->fd[1], STDOUT_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
-			aplly_redirections(cmd);
 			if (cmd->redirectionoverall == 0)
 				dup2(cmd->fd[0], STDIN_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
-			aplly_redirections(cmd);
 			if (cmd->redirectionoverall == 0)
 			{
 				dup2(cmd->fd[0], STDIN_FILENO);
@@ -229,7 +288,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			closepipes(cmd);
 		}
 	}
-	aplly_redirections(cmd);
+	aplly_redirections(cmd, main);
 	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=", main->env, main->export, 5)[0] == -1)
 	{
 		execve(b , cmd->realarg, envp);
