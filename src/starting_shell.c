@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 10:06:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:18:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,19 +117,27 @@ void	aplly_redirections(t_cmd *cmd)
 	{
 		if (cmd->redirectionoverall == 2 && flag == 0)
 		{
-			while(cmd->redirection[i] != 3)
+			while(cmd->redirection[i] && cmd->redirection[i] != 3)
 				i++;
+			if (!cmd->redirection[i])
+				i = 0;
 			flag = 1;
 		}
 		if (cmd->redirection[i] == 1)
 		{
-			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
+				file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+			else
+				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
 			if (check_last_redirection(cmd, i) == 1)
 				dup2(file, STDOUT_FILENO);
 		}
 		else if (cmd->redirection[i] == 2 && flag != 2)
 		{
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
+				alloc_heredoc(cmd, &cmd->args[cmd->redirectionpos[i]][1]);
+			else
+				alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
 		}
 		else if (cmd->redirection[i] == 3 && flag != 2)
 		{
@@ -137,15 +145,33 @@ void	aplly_redirections(t_cmd *cmd)
 			file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777));
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
-			while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 			{
-				input = readline("heredoc> ");
-				if(ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+				printf("%i\n", cmd->redirectionoverall);
+				while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
+					ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+				{
+					input = readline("heredoc> ");
+					if(ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+						ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+					{
+						write(file, input, ft_strlen(input));
+						write(file, "\n", 1);
+					}
+				}
+			}
+			else
+			{
+				while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
 					ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 				{
-					write(file, input, ft_strlen(input));
-					write(file, "\n", 1);
+					input = readline("heredoc> ");
+					if(ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+						ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+					{
+						write(file, input, ft_strlen(input));
+						write(file, "\n", 1);
+					}
 				}
 			}
 			if (cmd->redirectionoverall != 2)
@@ -153,7 +179,10 @@ void	aplly_redirections(t_cmd *cmd)
 		}
 		else if (cmd->redirection[i] == 4)
 		{
-			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
+				file = (open(&cmd->args[cmd->redirectionpos[i]][2], O_WRONLY | O_CREAT | O_APPEND, 0777));
+			else
+				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
 			dup2(file, STDOUT_FILENO);
 		}
 		if (cmd->redirectionoverall == 2 && flag == 1)
@@ -236,7 +265,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 	}
 	check_builtins(cmd, envp, main, user_input);
-	exit(1);
+	exit(main->status);
 }
 
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main)

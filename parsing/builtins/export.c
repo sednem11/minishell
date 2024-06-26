@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 10:32:00 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:45:51 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	}
 	else if (cmd->args[2] && cmd->redirection == 0)
 		return(main);
-	else if (check_invalid(cmd->args[1]) != -1 || cmd->args[1][0] == '=')
+	else if (check_invalid(cmd->args[1]) != -1 || cmd->args[1][0] == '='
+		|| (cmd->args[1][0] > 47 && cmd->args[1][0] < 58))
 	{
 		write(2, " not a valid identifier", 24);
 		main->status = 1;

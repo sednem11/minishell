@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 12:44:21 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:58:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ int		count_redirections(char **argv)
 	i = 0;
 	while(argv[i])
 	{
-		if ((ft_strncmp(argv[i], ">", 1) == 0 && argv[i][1] == '\0')
-			|| (ft_strncmp(argv[i], "<", 1) == 0 && argv[i][1] == '\0')
-			|| (ft_strncmp(argv[i], "<<", 2) == 0 && argv[i][2] == '\0')
-			|| (ft_strncmp(argv[i], ">>", 2) == 0 && argv[i][2] == '\0'))
+		if ((ft_strncmp(argv[i], ">", 1) == 0)
+			|| (ft_strncmp(argv[i], "<", 1) == 0)
+			|| (ft_strncmp(argv[i], "<<", 2) == 0)
+			|| (ft_strncmp(argv[i], ">>", 2) == 0))
 			j++;
 		i++;
 	}
@@ -90,7 +90,7 @@ void	check_redirections(t_cmd *cmd, char *arg, int j)
 	int		i;
 
 	i = 0;
-	if (ft_strncmp(arg, ">", 1) == 0 && arg[1] == '\0')
+	if (ft_strncmp(arg, ">", 1) == 0 && arg[1] != '>')
 	{
 		while(i < count_redirections(cmd->args))
 		{
@@ -103,7 +103,7 @@ void	check_redirections(t_cmd *cmd, char *arg, int j)
 		}
 		cmd->redirectionpos[i] = j;
 	}
-	else if (ft_strncmp(arg, "<", 1) == 0 && arg[1] == '\0')
+	else if (ft_strncmp(arg, "<", 1) == 0 && arg[1] != '<')
 	{
 		while(i < count_redirections(cmd->args))
 		{
@@ -116,7 +116,7 @@ void	check_redirections(t_cmd *cmd, char *arg, int j)
 		}
 		cmd->redirectionpos[i] = j;
 	}
-	else if (ft_strncmp(arg, "<<", 2) == 0 && arg[2] == '\0')
+	else if (ft_strncmp(arg, "<<", 2) == 0)
 	{
 		while(i < count_redirections(cmd->args))
 		{
@@ -129,7 +129,7 @@ void	check_redirections(t_cmd *cmd, char *arg, int j)
 		}
 		cmd->redirectionpos[i] = j;
 	}
-	else if (ft_strncmp(arg, ">>", 2) == 0 && arg[2] == '\0')
+	else if (ft_strncmp(arg, ">>", 2) == 0)
 	{
 		i = 0;
 		while(i < count_redirections(cmd->args))
