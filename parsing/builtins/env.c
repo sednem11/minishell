@@ -17,7 +17,7 @@ void	print_env(char **envp)
 	int	j;
 
 	j = 0;
-	while(envp[j])
+	while (envp[j])
 	{
 		printf("%s\n", envp[j]);
 		j++;

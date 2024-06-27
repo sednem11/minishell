@@ -16,13 +16,14 @@ int	check_builtins2(t_cmd *cmd, char **envp, t_main *main)
 {
 	(void)main;
 	(void)envp;
-	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 || ft_strncmp(cmd->args[0], "export", 6) == 0
-		|| ft_strncmp(cmd->args[0], "pwd", 3) == 0 || ft_strncmp(cmd->args[0], "env", 3) == 0
-		|| ft_strncmp(cmd->args[0], "exit", 4) == 0 || ft_strncmp(cmd->args[0], "echo", 4) == 0
+	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 || ft_strncmp(cmd->args[0],
+			"export", 6) == 0 || ft_strncmp(cmd->args[0], "pwd", 3) == 0
+		|| ft_strncmp(cmd->args[0], "env", 3) == 0 || ft_strncmp(cmd->args[0],
+			"exit", 4) == 0 || ft_strncmp(cmd->args[0], "echo", 4) == 0
 		|| ft_strncmp(cmd->args[0], "unset", 5) == 0)
-		return(0);
-    else
-		return(1);
+		return (0);
+	else
+		return (1);
 }
 
 int	check_last(t_main *main)
@@ -39,11 +40,11 @@ int	check_last(t_main *main)
 			z = ft_strlen_updated(main->export[n]);
 		else
 			z = ft_strlen_updated(main->export[i]);
-		if (ft_strncmp(main->export[i], main->export[n], z) > 0)
+		if (ft_strncmp(main->export[i], main -> export[n], z) > 0)
 			n = i;
 		i++;
 	}
-	return(n);
+	return (n);
 }
 
 void	print_export(t_main *main)
@@ -53,7 +54,7 @@ void	print_export(t_main *main)
 	int	z;
 	int	a;
 	int	c;
-	
+
 	a = 0;
 	c = 0;
 	while (matrixlen(main->export) > a + 1)
@@ -66,16 +67,17 @@ void	print_export(t_main *main)
 				z = ft_strlen_updated(main->export[n]);
 			else
 				z = ft_strlen_updated(main->export[i]);
-			if (ft_strncmp(main->export[i], main->export[n], z) < 0 && a == 0)
+			if (ft_strncmp(main->export[i], main -> export[n], z) < 0 && a == 0)
 				n = i;
-			else if (a > 0 && ft_strncmp(main->export[i], main->export[c], ft_strlen_updated(main->export[i])) > 0)
+			else if (a > 0 && ft_strncmp(main->export[i], main -> export[c],
+					ft_strlen_updated(main->export[i])) > 0)
 			{
-				if (ft_strncmp(main->export[i], main->export[n], z) < 0)
+				if (ft_strncmp(main->export[i], main -> export[n], z) < 0)
 					n = i;
-				else if(ft_strncmp(main->export[i], main->export[n], z) == 0
+				else if (ft_strncmp(main->export[i], main -> export[n], z) == 0
 					&& ft_strlen_updated(main->export[i]) != ft_strlen_updated(main->export[n]))
 					n = i;
-			}			
+			}
 			i++;
 		}
 		printf("declare -x %s\n", main->export[n]);
@@ -116,7 +118,7 @@ static int	count_words2(char const *s, char c)
 	while (s[i])
 	{
 		if ((s[i] == '>' || s[i] == '<') && check == 1)
-			return(j);
+			return (j);
 		if (s[i] != c && check == 1)
 		{
 			j++;
@@ -133,19 +135,19 @@ char	**ft_split2(char const *s, char c)
 {
 	int		i;
 	int		j;
-	char	**ptr; 
+	char	**ptr;
 
 	i = 0;
 	j = 0;
 	ptr = malloc((count_words2(s, c) + 1) * sizeof(char *));
-	if (! ptr)
+	if (!ptr)
 		return (NULL);
 	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
 		if (s[i] == '>' || s[i] == '<')
-			break;
+			break ;
 		if (s[i] != '\0' && s[i] != c)
 		{
 			ptr[j] = word_aloc(s + i, c);

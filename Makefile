@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: macampos <macampos@student.42.fr>          +#+  +:+       +#+         #
+#    By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/06/26 19:27:14 by macampos         ###   ########.fr        #
+#    Updated: 2024/06/27 15:18:54 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,10 @@ clean:
 fclean: clean
 	cd includes/libft && make fclean
 	rm -rf $(NAME)
+
+norminette:
+	python3 -m c_formatter_42 $(SRC) includes/minishell.h
+	python3 -m norminette $(SRC) includes/minishell.h
 
 valgrind: $(NAME)
 	valgrind --suppressions=readline.supp --leak-check=full --track-fds=yes --track-origins=yes --show-leak-kinds=all ./${NAME}

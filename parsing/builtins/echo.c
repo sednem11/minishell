@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 15:15:22 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 14:24:21 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	print_$(t_main *main, char *arg)
+void print_$(t_main *main, char *arg)
 {
-	int	i;
+	int		i;
 	char	**value;
-	
+
 	value = ft_split(arg, ' ');
 	i = 1;
-	if (!arg[0])
+	if (!arg[0] || arg[0] == ' ')
 	{
-		printf("$\n");
-		return;
+		printf("$");
+		return ;
 	}
 	if (arg[0] == '?')
 	{
 		printf("%i", main->status);
-		while(arg[i] && arg[i] != ' ')
+		while (arg[i] && arg[i] != ' ')
 		{
 			printf("%c", arg[i]);
 			i++;
@@ -38,18 +38,19 @@ void	print_$(t_main *main, char *arg)
 		i = 0;
 		while (main->env[i])
 		{
-			if (ft_strncmp(value[0], main->env[i], ft_strlen(value[0])) == 0 && main->env[i][ft_strlen(value[0])] == '=')
+			if (ft_strncmp(value[0], main->env[i], ft_strlen(value[0])) == 0
+				&& main->env[i][ft_strlen(value[0])] == '=')
 				printf("%s", &main->env[i][ft_strlen(value[0]) + 1]);
 			i++;
 		}
 	}
 }
 
-int	check_$(char *user_input)
+int check_$(char *user_input)
 {
 	int	i;
 	int	flag;
-	
+
 	i = 0;
 	flag = -1;
 	while (user_input[i])
@@ -57,16 +58,16 @@ int	check_$(char *user_input)
 		if (user_input[i] == 39)
 			flag *= -1;
 		if (user_input[i] == '$' && flag == 1)
-			return(i);
+			return (i);
 		i++;
 	}
-	return(1);
+	return (1);
 }
 
 void	echo_redirections(t_cmd *cmd)
 {
 	int	i;
-	
+
 	i = 1;
 	while (cmd->realarg[i])
 	{
@@ -85,12 +86,12 @@ void	print_args(char **args, char *user_input, int i, t_main *main)
 
 	flag = 1;
 	j = 0;
-	while(j < (int)ft_strlen(args[i]))
+	while (j < (int)ft_strlen(args[i]))
 	{
 		if (args[i][j] == '$' && check_$(user_input) == 1)
 		{
 			print_$(main, &args[i][j + 1]);
-			while(args[i][j] != ' ')
+			while (args[i][j] != ' ')
 				j++;
 			flag = 0;
 		}

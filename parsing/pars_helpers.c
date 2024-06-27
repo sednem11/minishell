@@ -15,17 +15,16 @@
 void	set_comands2(t_cmd *cmd, int i)
 {
 	cmd->numb = i;
-
 	if (pipe(cmd->fd) == -1)
-		return;
+		return ;
 }
 
 t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 {
-	int	j;
-	int	*place;
-	t_main *mainn;
-	
+	int		j;
+	int		*place;
+	t_main	*mainn;
+
 	place = check_paired(exported, envp, envp2, ft_strlen_updated(exported));
 	j = 0;
 	mainn = calloc(sizeof(t_main), sizeof(t_main));
@@ -38,7 +37,7 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 			mainn->env[j] = ft_strdup(exported);
 		j++;
 	}
-	if (find_equal(exported) > 0 && place[0] == -1)	
+	if (find_equal(exported) > 0 && place[0] == -1)
 		mainn->env[j] = ft_strdup(exported);
 	j = 0;
 	mainn->export = calloc(sizeof(char *), matrixlen(envp2) + 2);
@@ -56,16 +55,16 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	free(main->export);
 	free(main);
 	free(place);
-	return(mainn);
+	return (mainn);
 }
 
 t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 {
-	int	j;
-	int i;
-	int	*place;
+	int		j;
+	int		i;
+	int		*place;
 	t_main	*mainn;
-	
+
 	i = 0;
 	j = 0;
 	place = check_paired(exported, envp, envp2, ft_strlen_updated(exported));
@@ -100,5 +99,5 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 	free(main->export);
 	free(main);
 	free(place);
-	return(mainn);
+	return (mainn);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/24 12:46:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 13:36:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,27 @@ void	free_args(t_cmd *cmd)
 
 void	free_cmd(t_cmd *cmd)
 {
-		free_cmd_args(cmd);
+	free_cmd_args(cmd);
 }
 
 t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 {
-	(void) envp;
-	(void) main;
-	int		last;
-	
-	if (!cmd->args[1] || ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) == 0)
+	int	last;
+
+	(void)envp;
+	(void)main;
+	if (!cmd->args[1] || ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])),
+			cmd->args[1], ft_strlen(cmd->args[1])) == 0)
 	{
-		if (cmd->args[2] && ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) == 0
-			&& ft_strncmp(ft_itoa(ft_atoi(cmd->args[2])), cmd->args[2], ft_strlen(cmd->args[2])) != 0)
-			return(main);
+		if (cmd->args[2] && ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])),
+				cmd->args[1], ft_strlen(cmd->args[1])) == 0
+			&& ft_strncmp(ft_itoa(ft_atoi(cmd->args[2])), cmd->args[2],
+				ft_strlen(cmd->args[2])) != 0)
+		{
+			main->status = 1;
+			write(2, " to many arguments\n", 20);
+			return (main);
+		}
 		free_env_and_export(main);
 		free(main);
 		if (!cmd->args[1])
@@ -55,12 +62,19 @@ t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 			exit(last);
 		}
 	}
-	else if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1], ft_strlen(cmd->args[1])) != 0)
+	else if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1],
+			ft_strlen(cmd->args[1])) != 0)
 	{
+		if (cmd->args[1] && !cmd->args[2])
+		{
+			main->status = 2;
+			write(2, " numeric argument required\n", 28);
+			return (main);
+		}
 		free_env_and_export(main);
 		free(main);
 		free_cmd(cmd);
 		exit(0);
 	}
-	return(main);
+	return (main);
 }

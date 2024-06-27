@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 11:24:44 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:24:02 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_paths(char **paths, char **cmd)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (cmd[i])
@@ -72,14 +72,14 @@ void	closepipes(t_cmd *cmd)
 		close(cmd->fd[0]);
 }
 
-void	alloc_heredoc(t_cmd *cmd, char	*alocated)
+void	alloc_heredoc(t_cmd *cmd, char *alocated)
 {
 	char	**new;
 	int		i;
 
 	i = 0;
 	new = calloc(sizeof(char *), matrixlen(cmd->realarg) + 2);
-	while(cmd->realarg[i])
+	while (cmd->realarg[i])
 	{
 		new[i] = cmd->realarg[i];
 		i++;
@@ -89,30 +89,30 @@ void	alloc_heredoc(t_cmd *cmd, char	*alocated)
 	cmd->realarg = new;
 }
 
-int		check_last_redirection(t_cmd *cmd, int i)
+int	check_last_redirection(t_cmd *cmd, int i)
 {
-	int j;
-	
+	int	j;
+
 	j = i + 1;
-	while(j < count_redirections(cmd->args))
+	while (j < count_redirections(cmd->args))
 	{
 		if (cmd->redirection[i] == cmd->redirection[j])
-			return(-1);
+			return (-1);
 		j++;
 	}
-	return(1);
+	return (1);
 }
 
-int		last_reversed(t_cmd *cmd, int flag)
+int	last_reversed(t_cmd *cmd, int flag)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	j = -2;
 	i = 0;
 	if (flag == -1)
 	{
-		while(i < count_redirections(cmd->args))
+		while (i < count_redirections(cmd->args))
 		{
 			if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
 				j = i;
@@ -121,14 +121,14 @@ int		last_reversed(t_cmd *cmd, int flag)
 	}
 	else
 	{
-		while(cmd->redirection[i] && i < flag)
+		while (cmd->redirection[i] && i < flag)
 		{
 			if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
 				j = i;
 			i++;
 		}
 	}
-	return(j);
+	return (j);
 }
 
 void	aplly_redirections(t_cmd *cmd, t_main *main)
@@ -139,16 +139,16 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 	int		j;
 	int		flag;
 	int		flag2;
-	
+
 	flag2 = -1;
 	flag = 0;
 	i = 0;
 	input = NULL;
-	while(i < count_redirections(cmd->args))
+	while (i < count_redirections(cmd->args))
 	{
 		if (cmd->redirectionoverall == 2 && flag == 0)
 		{
-			while(i != last_reversed(cmd, flag2))
+			while (i != last_reversed(cmd, flag2))
 				i++;
 			if (!cmd->redirection[i])
 				i = 0;
@@ -156,30 +156,36 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 		}
 		if (cmd->redirection[i] == 1)
 		{
-			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 2 && cmd->args[cmd->redirectionpos[i] + 2])
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 2
+				&& cmd->args[cmd->redirectionpos[i] + 2])
 			{
 				j = 2;
-				while(cmd->args[cmd->redirectionpos[i] + j]
-					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				while (cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i]
+					+ j] != cmd->args[cmd->redirectionpos[i + 1]])
 				{
 					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
 					j++;
 				}
 			}
-			else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 && cmd->args[cmd->redirectionpos[i] + 1])
+			else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
+				&& cmd->args[cmd->redirectionpos[i] + 1])
 			{
 				j = 1;
-				while(cmd->args[cmd->redirectionpos[i] + j]
-					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				while (cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i]
+					+ j] != cmd->args[cmd->redirectionpos[i + 1]])
 				{
 					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
 					j++;
 				}
 			}
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
-				file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+				file = (open(&cmd->args[cmd->redirectionpos[i]][1],
+							O_WRONLY | O_CREAT | O_TRUNC, 0777));
 			else
-				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_TRUNC, 0777));
+				file = (open(cmd->args[cmd->redirectionpos[i] + 1],
+							O_WRONLY | O_CREAT | O_TRUNC, 0777));
 			if (file == -1)
 			{
 				write(2, " permission denied\n", 20);
@@ -194,9 +200,11 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 			if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
 			{
 				if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
-					file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY, 0777));
+					file = (open(&cmd->args[cmd->redirectionpos[i]][1],
+								O_RDONLY, 0777));
 				else
-					file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY, 0777));
+					file = (open(cmd->args[cmd->redirectionpos[i] + 1],
+								O_RDONLY, 0777));
 				if (file == -1)
 				{
 					write(2, " no such file or directory\n", 28);
@@ -212,17 +220,18 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 		else if (cmd->redirection[i] == 3 && flag != 2)
 		{
 			input = readline("heredoc> ");
-			file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0777));
+			file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND,
+						0777));
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 			{
 				while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-					ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+						ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 				{
 					input = readline("heredoc> ");
-					if(ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-						ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+					if (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
+							ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 					{
 						write(file, input, ft_strlen(input));
 						write(file, "\n", 1);
@@ -232,11 +241,12 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 			else
 			{
 				while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-					ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+						ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 				{
 					input = readline("heredoc> ");
-					if(ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-						ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+					if (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+							ft_strlen(cmd->args[cmd->redirectionpos[i]
+								+ 1]) != 0))
 					{
 						write(file, input, ft_strlen(input));
 						write(file, "\n", 1);
@@ -248,30 +258,36 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 		}
 		else if (cmd->redirection[i] == 4)
 		{
-			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3 && cmd->args[cmd->redirectionpos[i] + 2])
+			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3
+				&& cmd->args[cmd->redirectionpos[i] + 2])
 			{
 				j = 2;
-				while(cmd->args[cmd->redirectionpos[i] + j]
-					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				while (cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i]
+					+ j] != cmd->args[cmd->redirectionpos[i + 1]])
 				{
 					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
 					j++;
 				}
 			}
-			else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2 && cmd->args[cmd->redirectionpos[i] + 1])
+			else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
+				&& cmd->args[cmd->redirectionpos[i] + 1])
 			{
 				j = 1;
-				while(cmd->args[cmd->redirectionpos[i] + j]
-					&& cmd->args[cmd->redirectionpos[i] + j] != cmd->args[cmd->redirectionpos[i + 1]])
+				while (cmd->args[cmd->redirectionpos[i] + j]
+					&& cmd->args[cmd->redirectionpos[i]
+					+ j] != cmd->args[cmd->redirectionpos[i + 1]])
 				{
 					alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
 					j++;
 				}
 			}
 			if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
-				file = (open(&cmd->args[cmd->redirectionpos[i]][2], O_WRONLY | O_CREAT | O_APPEND, 0777));
+				file = (open(&cmd->args[cmd->redirectionpos[i]][2],
+							O_WRONLY | O_CREAT | O_APPEND, 0777));
 			else
-				file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_WRONLY | O_CREAT | O_APPEND, 0777));
+				file = (open(cmd->args[cmd->redirectionpos[i] + 1],
+							O_WRONLY | O_CREAT | O_APPEND, 0777));
 			if (file == -1)
 			{
 				write(2, " permission denied\n", 20);
@@ -301,8 +317,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			if (cmd->redirectionoverall == 0)
-				dup2(cmd->next->fd[1], STDOUT_FILENO);
+			dup2(cmd->next->fd[1], STDOUT_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
@@ -318,18 +333,20 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 	}
 	aplly_redirections(cmd, main);
-	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=", main->env, main->export, 5)[0] == -1)
+	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=",
+			main->env, main->export, 5)[0] == -1)
 	{
-		execve(b , cmd->realarg, envp);
+		execve(b, cmd->realarg, envp);
 		write(2, " No such file or directory\n", 28);
 		main->status = 127;
 		exit(main->status);
 	}
-	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=", main->env, main->export, 5)[0] != -1)
+	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=",
+			main->env, main->export, 5)[0] != -1)
 	{
 		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
 		{
-			execve(cmd->path , cmd->realarg, envp);
+			execve(cmd->path, cmd->realarg, envp);
 			if (ft_strncmp(cmd->args[0], "./", 2) == 0)
 			{
 				write(2, " No such file or directory\n", 28);
@@ -339,8 +356,9 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			if (ft_strncmp(cmd->args[0], "/", 1) == 0)
 				write(2, " No such file or directory\n", 28);
 			else if (cmd->args[0][0] == '$' && cmd->args[1]
-				&& check_paired(cmd->args[0], main->env, main->export, ft_strlen(cmd->args[0]) - 1)[0] == -1)
-				execve(cmd->path , &cmd->args[1], envp);
+				&& check_paired(cmd->args[0], main->env, main->export,
+					ft_strlen(cmd->args[0]) - 1)[0] == -1)
+				execve(cmd->path, &cmd->args[1], envp);
 			else
 				write(2, " command not found\n", 19);
 			main->status = 127;
@@ -348,7 +366,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 		else
 		{
-			execve("./minishell" , a, envp);
+			execve("./minishell", a, envp);
 			printf("%s\n", strerror(errno));
 		}
 	}
@@ -356,34 +374,38 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	exit(main->status);
 }
 
-t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main)
+t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
+		t_main *main)
 {
 	pid_t	id;
-	
-	if (cmd->next || check_builtins2(cmd, envp, main) == 1 || cmd->redirectionoverall != 0)
+
+	if (cmd->next || check_builtins2(cmd, envp, main) == 1
+		|| cmd->redirectionoverall != 0)
 	{
-		while(cmd)
+		while (cmd)
 		{
 			if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
 			{
 				closepipes(cmd);
 				return (export(cmd, envp, main));
 			}
-			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
+			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset",
+					5) == 0)
 			{
 				closepipes(cmd);
 				return (unset(cmd, main, envp));
 			}
-			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit", 4) == 0)
+			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit",
+					4) == 0)
 			{
 				closepipes(cmd);
-				return (exitt(cmd, envp, main));	
+				return (exitt(cmd, envp, main));
 			}
 			else
 			{
 				id = fork();
 				if (id == -1)
-					return(main);
+					return (main);
 				if (id == 0)
 					child_process(user_input, envp, cmd, main);
 				closepipes(cmd);
@@ -393,11 +415,11 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd, t_main *main
 	}
 	else
 		main = check_builtins(cmd, envp, main, user_input);
-	while (waitpid(-1, &main->status, 0) != -1);
+	while (waitpid(-1, &main->status, 0) != -1)
+		;
 	if (WIFEXITED(main->status))
 		main->status = WEXITSTATUS(main->status);
-	return(main);
+	return (main);
 }
 
-
-//echo hello | exit 4 | pwd
+// echo hello | exit 4 | pwd

@@ -26,9 +26,12 @@ void	*ft_memmove(void *dst, const void *src, size_t n)
 }
 /*
 #include <stdio.h>
-int main(void)
+
+int	main(void)
 {
-	char *str = ft_memmove("hello world", "sup bitches", 5);
+	char	*str;
+
+	str = ft_memmove("hello world", "sup bitches", 5);
 	if (str == NULL)
 		printf("str is null\n");
 	printf("sucessful memmove, string is %s\n", str);
