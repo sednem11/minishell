@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 19:33:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 11:22:11 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -301,7 +301,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			if (cmd->redirectionoverall == 0)
+				dup2(cmd->next->fd[1], STDOUT_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)

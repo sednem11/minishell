@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 18:16:05 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 11:19:40 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	int		i;
 	int		z;
 	int		j;
+	int		*place;
 	char	**path2;
 	t_cmd	*cmd2;
 	t_cmd	*begin;
@@ -237,10 +238,12 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 			check_redirections(cmd2, cmd2->args[j], j);
 			j++;
 		}
-		if (check_paired("PATH=", main->env, main->export, 5)[0] != -1)
+		place = check_paired("PATH=", main->env, main->export, 5);
+		if (place[0] == -1)
 			cmd2->path = get_paths(cmd2->args[0], envp);
 		else
 			cmd2->path = get_paths(cmd2->args[0], path2);
+		free(place);
 		if (i == 0)
 			begin = cmd2;
 		cmd2->begining = begin;
@@ -253,6 +256,8 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 		}
 		i++;
 	}
+	free(path2[0]);
+	free(path2);
 	free(argv);
 	return(cmd2->begining);
 }
