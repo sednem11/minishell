@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/26 15:27:45 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:25:47 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	print_export(t_main *main)
 			}
 			i++;
 		}
-		printf("declare -x %s\n", main->export[n]);
+		printf("declare -x %s\n", main->export[n] );
 		c = n;
 		a++;
 	}

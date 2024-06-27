@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 13:03:48 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:35:03 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	matrixlen(char **envp)
 t_main	*set_main(t_main *main, char **envp)
 {
 	int	j;
-
+	
 	j = 0;
 	main = calloc(sizeof(t_main), sizeof(t_main));
 	if (envp[0] == NULL)
@@ -46,8 +46,7 @@ t_main	*set_main(t_main *main, char **envp)
 	while (envp[j])
 	{
 		main->env[j] = calloc(sizeof(char), ft_strlen(envp[j]) + 1);
-		main->env[j] = (char *)ft_memcpy((void *)main->env[j], (void *)envp[j],
-				ft_strlen(envp[j]));
+		main->env[j] = ft_strdup(envp[j]);
 		j++;
 	}
 	j = 0;
@@ -55,8 +54,7 @@ t_main	*set_main(t_main *main, char **envp)
 	while (envp[j])
 	{
 		main->export[j] = calloc(sizeof(char), ft_strlen(envp[j]) + 1);
-		main->export[j] = (char *)ft_memcpy((void *)main->export[j],
-				(void *)envp[j], ft_strlen(envp[j]));
+		main->export[j] = ft_strdup(envp[j]);
 		j++;
 	}
 	return (main);
@@ -64,13 +62,13 @@ t_main	*set_main(t_main *main, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
+	if (argc != 1)
+		return(1);
 	t_cmd	*cmd;
 	t_main	*main;
 	t_main	*next;
 	char	*user_input;
 
-	if (argc != 1)
-		return (1);
 	main = NULL;
 	cmd = NULL;
 	(void)argv;
@@ -79,13 +77,13 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signal_main();
 		user_input = readline("minishell> ");
-		if (!user_input)
+		if(!user_input)
 		{
 			free_env_and_export(main);
 			free(main);
 			if (cmd)
 				free_cmd_args(cmd);
-			return (1);
+			return 1;
 		}
 		if (*user_input != '\0')
 		{
