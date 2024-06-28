@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/28 14:26:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 15:26:49 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,30 @@ t_main	*set_main(t_main *main, char **envp)
 	return (main);
 }
 
+int	check_input(char *input)
+{
+	int	i;
+
+	i = 1;
+	if (input[0] == '"' || input[0] == 39)
+	{
+		if (input[0] == input[1] && !input[2])
+			return(i);
+		while(input[i])
+		{
+			if ((input[0] == '"' || input[0] == 39) && !input[i + 1])
+				break;
+			if (input[i] != ' ' && input[i] != '"' && input[i] != 39)
+				return(0);
+			i++;
+		}
+		if (input[i] != '"' && input[i] != 39)
+			return (0);
+		return(i);
+	}
+	return(0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*cmd;
@@ -83,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 				free_cmd_args(cmd);
 			return (1);
 		}
-		if (*user_input != '\0')
+		if (*user_input != '\0' && check_input(user_input) == 0)
 		{
 			cmd = initiate_args(user_input, main->env, cmd, main);
 			add_history(user_input);

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/28 10:55:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 16:51:53 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,3 +308,6 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	}
 	return (set_comands(argv, envp, cmd, main));
 }
+
+
+// echo hello > out | cat < Makefile < infile
