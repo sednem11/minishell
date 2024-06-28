@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 15:24:02 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 14:55:59 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*get_paths(char *argv, char **envp)
 		part_path = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(part_path, cmd[0]);
 		free(part_path);
-		if (access(path, F_OK) == 0)
+		if (access(path, X_OK) == 0)
 		{
 			free_paths(paths, cmd);
 			return (path);
@@ -78,7 +78,7 @@ void	alloc_heredoc(t_cmd *cmd, char *alocated)
 	int		i;
 
 	i = 0;
-	new = calloc(sizeof(char *), matrixlen(cmd->realarg) + 2);
+	new = ft_calloc(sizeof(char *), matrixlen(cmd->realarg) + 2);
 	while (cmd->realarg[i])
 	{
 		new[i] = cmd->realarg[i];
@@ -308,9 +308,12 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
+	int		status;
 	char	**a;
 	char	*b;
+	int		*check;
 
+	check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	a = NULL;
 	if (cmd->argv2[1])
@@ -333,25 +336,33 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 	}
 	aplly_redirections(cmd, main);
-	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=",
-			main->env, main->export, 5)[0] == -1)
+	if (check_builtins2(cmd, envp, main) == 1 && check[0] == -1)
 	{
 		execve(b, cmd->realarg, envp);
 		write(2, " No such file or directory\n", 28);
-		main->status = 127;
-		exit(main->status);
+		status = 127;
+		free_cmd_args(cmd);
+		free_env_and_export(main);
+		free(main);
+		free(check);
+		exit(status);
 	}
-	if (check_builtins2(cmd, envp, main) == 1 && check_paired("PATH=",
-			main->env, main->export, 5)[0] != -1)
+	if (check_builtins2(cmd, envp, main) == 1 && check[0] != -1)
 	{
 		if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
 		{
+			if (cmd->realarg[0][0] == '/')
+				execve(cmd->realarg[0], cmd->realarg, envp);
 			execve(cmd->path, cmd->realarg, envp);
 			if (ft_strncmp(cmd->args[0], "./", 2) == 0)
 			{
 				write(2, " No such file or directory\n", 28);
-				main->status = 126;
-				exit(main->status);
+				status = 126;
+				free_cmd_args(cmd);
+				free_env_and_export(main);
+				free(main);
+				free(check);
+				exit(status);
 			}
 			if (ft_strncmp(cmd->args[0], "/", 1) == 0)
 				write(2, " No such file or directory\n", 28);
@@ -361,8 +372,12 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 				execve(cmd->path, &cmd->args[1], envp);
 			else
 				write(2, " command not found\n", 19);
-			main->status = 127;
-			exit(main->status);
+			free_cmd_args(cmd);
+			status = 127;
+			free_env_and_export(main);
+			free(main);
+			free(check);
+			exit(status);
 		}
 		else
 		{
@@ -421,5 +436,3 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		main->status = WEXITSTATUS(main->status);
 	return (main);
 }
-
-// echo hello | exit 4 | pwd

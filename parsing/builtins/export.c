@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 13:03:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:36:23 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	*check_paired(char *exported, char **envp, char **envp2, int len)
 	int	i;
 
 	i = 0;
-	place = calloc(sizeof(int), 3);
+	place = ft_calloc(sizeof(int), 3);
 	place[0] = -1;
 	place[1] = -1;
 	while (envp[i] && envp2[i])

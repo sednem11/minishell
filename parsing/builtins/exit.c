@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 16:16:24 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 11:09:08 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,26 @@ void	free_cmd(t_cmd *cmd)
 
 t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 {
-	int	last;
+	int		last;
+	char	*truearg;
 
 	(void)envp;
 	(void)main;
-	if (!cmd->args[1] || ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])),
-			cmd->args[1], ft_strlen(cmd->args[1])) == 0)
+	if (cmd->args[1])
+		truearg = ft_itoa(ft_atoi(cmd->args[1]));
+	if (!cmd->args[1] || ft_strncmp(truearg, cmd->args[1],
+			ft_strlen(cmd->args[1])) == 0)
 	{
-		if (cmd->args[2] && ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])),
-				cmd->args[1], ft_strlen(cmd->args[1])) == 0)
+		if (cmd->args[1] && cmd->args[2] && ft_strncmp(truearg, cmd->args[1],
+				ft_strlen(cmd->args[1])) == 0)
 		{
 			main->status = 1;
 			write(2, " to many arguments\n", 20);
+			free(truearg);
 			return (main);
 		}
+		if (cmd->args[1])
+			free(truearg);
 		free_env_and_export(main);
 		free(main);
 		if (!cmd->args[1])
@@ -60,9 +66,9 @@ t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 			exit(last);
 		}
 	}
-	else if (ft_strncmp(ft_itoa(ft_atoi(cmd->args[1])), cmd->args[1],
-			ft_strlen(cmd->args[1])) != 0)
+	else if (ft_strncmp(truearg, cmd->args[1], ft_strlen(cmd->args[1])) != 0)
 	{
+		free(truearg);
 		if (!ft_atoi(cmd->args[1]) && !cmd->args[2])
 		{
 			main->status = 2;

@@ -6,11 +6,25 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 17:33:26 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:19:48 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	check_equal(char *value)
+{
+	int	i;
+
+	i = 0;
+	while (value[i] && i < (int)ft_strlen(value))
+	{
+		if (value[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
 
 void print_$(t_main *main, char *arg)
 {
@@ -39,7 +53,8 @@ void print_$(t_main *main, char *arg)
 		while (main->env[i])
 		{
 			if (ft_strncmp(value[0], main->env[i], ft_strlen(value[0])) == 0
-				&& main->env[i][ft_strlen(value[0])] == '=')
+				&& main->env[i][ft_strlen(value[0])] == '='
+				&& check_equal(value[0]) == -1)
 				printf("%s", &main->env[i][ft_strlen(value[0]) + 1]);
 			i++;
 		}
@@ -91,7 +106,7 @@ void	print_args(char **args, char *user_input, int i, t_main *main)
 		if (args[i][j] == '$' && check_$(user_input) == 1)
 		{
 			print_$(main, &args[i][j + 1]);
-			while (args[i][j] != ' ')
+			while (args[i][j] && args[i][j] != ' ')
 				j++;
 			flag = 0;
 		}

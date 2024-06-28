@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/22 12:49:34 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:37:27 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 
 	place = check_paired(exported, envp, envp2, ft_strlen_updated(exported));
 	j = 0;
-	mainn = calloc(sizeof(t_main), sizeof(t_main));
-	mainn->env = calloc(sizeof(char *), matrixlen(envp) + 2);
+	mainn = ft_calloc(sizeof(t_main), sizeof(t_main));
+	mainn->env = ft_calloc(sizeof(char *), matrixlen(envp) + 2);
 	while (envp[j])
 	{
 		if (j != place[0] || find_equal(exported) == -1)
@@ -40,7 +40,7 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	if (find_equal(exported) > 0 && place[0] == -1)
 		mainn->env[j] = ft_strdup(exported);
 	j = 0;
-	mainn->export = calloc(sizeof(char *), matrixlen(envp2) + 2);
+	mainn->export = ft_calloc(sizeof(char *), matrixlen(envp2) + 2);
 	while (envp2[j])
 	{
 		if (j != place[1])
@@ -68,8 +68,8 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 	i = 0;
 	j = 0;
 	place = check_paired(exported, envp, envp2, ft_strlen_updated(exported));
-	mainn = calloc(sizeof(t_main), sizeof(t_main));
-	mainn->env = calloc(sizeof(char *), matrixlen(envp) + 1);
+	mainn = ft_calloc(sizeof(t_main), sizeof(t_main));
+	mainn->env = ft_calloc(sizeof(char *), matrixlen(envp) + 1);
 	while (envp[j])
 	{
 		if (j != place[0])
@@ -81,7 +81,7 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 	}
 	j = 0;
 	i = 0;
-	mainn->export = calloc(sizeof(char *), matrixlen(envp2) + 1);
+	mainn->export = ft_calloc(sizeof(char *), matrixlen(envp2) + 1);
 	while (envp2[j])
 	{
 		if (j != place[1])

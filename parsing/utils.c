@@ -80,7 +80,7 @@ void	print_export(t_main *main)
 			}
 			i++;
 		}
-		printf("declare -x %s\n", main->export[n] );
+		printf("declare -x %s\n", main->export[n]);
 		c = n;
 		a++;
 	}

@@ -24,6 +24,12 @@
     fun:add_history
 }
 {
+    leak add_history
+    Memcheck:Leak
+    ...
+    fun:calloc
+}
+{
     still_reachable xrealloc
     Memcheck:Leak
     ...

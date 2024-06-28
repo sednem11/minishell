@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 14:07:55 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/28 10:55:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 
 	i = 0;
 	cmd2 = NULL;
-	path2 = calloc(sizeof(char *), 2);
+	path2 = ft_calloc(sizeof(char *), 2);
 	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
 	(void)envp;
 	if (cmd)
@@ -236,8 +236,9 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 		j = 0;
 		cmd2->args = ft_split(cmd2->argv2[i], '\3');
 		cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
-		cmd2->redirection = calloc(sizeof(int), count_redirections(cmd2->args));
-		cmd2->redirectionpos = calloc(sizeof(int),
+		cmd2->redirection = ft_calloc(sizeof(int),
+				count_redirections(cmd2->args));
+		cmd2->redirectionpos = ft_calloc(sizeof(int),
 				count_redirections(cmd2->args));
 		cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
 		while (cmd2->args[j])
@@ -307,10 +308,3 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	}
 	return (set_comands(argv, envp, cmd, main));
 }
-
-// echo "hello hjvb"       cat < out > out2
-
-// >>
-// >
-// <<
-// <
