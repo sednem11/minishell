@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/28 16:51:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/30 12:06:24 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ int	count_redirections(char **argv)
 	i = 0;
 	while (argv[i])
 	{
-		if ((ft_strncmp(argv[i], ">", 1) == 0 && argv[i][1] != ' ')
-			|| (ft_strncmp(argv[i], "<", 1) == 0 && argv[i][1] != ' ')
-			|| (ft_strncmp(argv[i], "<<", 2) == 0 && argv[i][2] != ' ')
-			|| (ft_strncmp(argv[i], ">>", 2) == 0 && argv[i][2] != ' '))
+		if ((ft_strncmp(argv[i], ">", 1) == 0)
+			|| (ft_strncmp(argv[i], "<", 1) == 0)
+			|| (ft_strncmp(argv[i], "<<", 2) == 0)
+			|| (ft_strncmp(argv[i], ">>", 2) == 0))
 			j++;
 		i++;
 	}
@@ -205,7 +205,7 @@ int	count_dif_redirections(char **argv)
 			a = 1;
 		if ((ft_strncmp(argv[i], "<", 1) == 0 && argv[i][1] != ' ')
 			|| (ft_strncmp(argv[i], "<<", 2) == 0 && argv[i][2] != ' '))
-			b += 1;
+			b = 1;
 		i++;
 	}
 	if (b > 1)

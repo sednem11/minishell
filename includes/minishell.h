@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/25 11:50:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/06/29 15:45:47 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,14 @@ typedef struct s_cmd
 	int				check;
 }					t_cmd;
 
+
+void				redirection3(t_cmd *cmd, int i, int file);
+void				redirection4(t_cmd *cmd, int i, int file, t_main *main);
+void				alloc_heredoc(t_cmd *cmd, char *alocated);
+int					check_last_redirection(t_cmd *cmd, int i);
+int					check_last_redirection2(t_cmd *cmd, int i);
+void				redirection2(t_cmd *cmd, int i, int file, t_main *main);
+void				redirection_1(t_cmd *cmd, int file, int i, t_main *main);
 int					count_redirections(char **argv);
 void				free_cmd_args(t_cmd *cmd);
 char				**ft_split2(char const *s, char c);
