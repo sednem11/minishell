@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/30 12:53:17 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/04 19:04:55 by guest            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,12 @@ char	*get_paths(char *argv, char **envp)
 
 void	closepipes(t_cmd *cmd)
 {
-	if (cmd->fd[1] != 1 && cmd->fd[1] != 0)
+	while(cmd)
+	{
 		close(cmd->fd[1]);
-	if (cmd->fd[0] != 1 && cmd->fd[0] != 0)
 		close(cmd->fd[0]);
+		cmd = cmd->next;
+	}
 }
 
 void	alloc_heredoc(t_cmd *cmd, char *alocated)
@@ -184,22 +186,19 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			aplly_redirections(cmd, main);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			closepipes(cmd);
+			aplly_redirections(cmd, main);
 		}
 		else if (cmd->next == NULL)
 		{
-			aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
-			closepipes(cmd);
+			aplly_redirections(cmd, main);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
-			aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			closepipes(cmd);
+			aplly_redirections(cmd, main);
 		}
 	}
 	else
@@ -209,11 +208,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		execve(b, cmd->realarg, envp);
 		write(2, " No such file or directory\n", 28);
 		status = 127;
-		free_cmd_args(cmd);
-		free_env_and_export(main);
-		free(main);
-		free(check);
-		exit(status);
+		free_every_thing(cmd, main, check);
 	}
 	if (check_builtins2(cmd, envp, main) == 1 && check[0] != -1)
 	{
@@ -226,10 +221,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			{
 				write(2, " No such file or directory\n", 28);
 				status = 126;
-				free_cmd_args(cmd);
-				free_env_and_export(main);
-				free(main);
-				free(check);
+				free_every_thing(cmd, main, check);
 				exit(status);
 			}
 			if (ft_strncmp(cmd->args[0], "/", 1) == 0)
@@ -240,11 +232,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 				execve(cmd->path, &cmd->args[1], envp);
 			else
 				write(2, " command not found\n", 19);
-			free_cmd_args(cmd);
 			status = 127;
-			free_env_and_export(main);
-			free(main);
-			free(check);
+			free_every_thing(cmd, main, check);
 			exit(status);
 		}
 		else
@@ -254,7 +243,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 	}
 	check_builtins(cmd, envp, main, user_input);
-	exit(main->status);
+	free_every_thing(cmd, main, check);
+	exit(0);
 }
 
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
@@ -290,10 +280,11 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 				if (id == -1)
 					return (main);
 				if (id == 0)
+				{
 					child_process(user_input, envp, cmd, main);
-				if (cmd->redirectionoverall == 2)
 					waitpid(id, &main->status, 0);
-				closepipes(cmd);
+				}
+				closepipes(cmd->begining);
 			}
 			cmd = cmd->next;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/30 12:06:24 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/04 19:02:46 by guest            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,8 @@ void	free_cmd_args(t_cmd *cmd)
 	int		i;
 	t_cmd	*temporary;
 
-	temporary = cmd;
-	closepipes(cmd);
+	closepipes(cmd->begining);
+	temporary = cmd->begining;
 	while (temporary)
 	{
 		cmd = temporary;
@@ -255,7 +255,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 		if (i == 0)
 			begin = cmd2;
 		cmd2->begining = begin;
-		set_comands2(cmd2, i);
+		set_comands2(cmd2);
 		if (cmd2->argv2[i + 1])
 		{
 			cmd2->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));

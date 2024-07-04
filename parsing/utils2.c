@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/30 12:19:33 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:39:37 by guest            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 	}
 	if (check_last_redirection(cmd, i) == 1)
 		dup2(file, STDOUT_FILENO);
+	close(1);
+	close(0);
+	close(file);
 }
 
 void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
@@ -141,4 +144,12 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 		exit(main->status);
 	}
 	dup2(file, STDOUT_FILENO);
+}
+
+void	free_every_thing(t_cmd *cmd, t_main *main, int *check)
+{
+		free_cmd_args(cmd);
+		free_env_and_export(main);
+		free(main);
+		free(check);
 }

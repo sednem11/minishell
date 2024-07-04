@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pars_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/28 10:37:27 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:56:59 by guest            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	set_comands2(t_cmd *cmd, int i)
+void	set_comands2(t_cmd *cmd)
 {
-	cmd->numb = i;
 	if (pipe(cmd->fd) == -1)
 		return ;
 }
