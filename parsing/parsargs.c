@@ -301,11 +301,10 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 		if (flag == -1 && user_input[i] == '|')
 			argv[i] = '\4';
-		else if (flag == -1 && user_input[i] == ' ' )
+		else if (flag == -1 && user_input[i] == ' ')
 			argv[i] = '\3';
-		else if ((flag == -1 && (user_input[i] == '"'
-			|| user_input[i] == 39)) || ((user_input[i] == '"'
-			|| user_input[i] == 39) && j == i))
+		else if ((flag == -1 && (user_input[i] == '"' || user_input[i] == 39))
+			|| ((user_input[i] == '"' || user_input[i] == 39) && j == i))
 			argv[i] = '\5';
 		else if ((flag == -1 && user_input[i] != ' ') || flag == 1)
 			argv[i] = user_input[i];

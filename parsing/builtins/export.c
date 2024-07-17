@@ -109,10 +109,10 @@ int	check_invalid(char *arg)
 
 t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 {
-	(void)envp;
 	t_main	*next;
 	int		i;
 
+	(void)envp;
 	i = 1;
 	next = main;
 	if (!cmd->args[1])
@@ -120,7 +120,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 		print_export(main);
 		return (main);
 	}
-	while(cmd->args[i])
+	while (cmd->args[i])
 	{
 		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '=')
 		{

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/05 16:15:48 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:31:09 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 	}
 	if (check_last_redirection(cmd, i) == 1)
 		dup2(file, STDOUT_FILENO);
-	close(1);
-	close(0);
 	close(file);
 }
 
