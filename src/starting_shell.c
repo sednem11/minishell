@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/17 13:27:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:07:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,21 +185,21 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			aplly_redirections(cmd, main);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			aplly_redirections(cmd, main);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
-			aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
+			aplly_redirections(cmd, main);
 			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
-			aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			aplly_redirections(cmd, main);
 			closepipes(cmd);
 		}
 	}
