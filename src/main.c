@@ -66,20 +66,20 @@ int	check_input(char *input)
 	if (input[0] == '"' || input[0] == 39)
 	{
 		if (input[0] == input[1] && !input[2])
-			return(i);
-		while(input[i])
+			return (i);
+		while (input[i])
 		{
 			if ((input[0] == '"' || input[0] == 39) && !input[i + 1])
-				break;
+				break ;
 			if (input[i] != ' ' && input[i] != '"' && input[i] != 39)
-				return(0);
+				return (0);
 			i++;
 		}
 		if (input[i] != '"' && input[i] != 39)
 			return (0);
-		return(i);
+		return (i);
 	}
-	return(0);
+	return (0);
 }
 
 int	main(int argc, char **argv, char **envp)

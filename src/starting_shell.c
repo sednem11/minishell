@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/04 19:04:55 by guest            ###   ########.fr       */
+/*   Updated: 2024/07/07 15:09:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,8 @@ char	*get_paths(char *argv, char **envp)
 
 void	closepipes(t_cmd *cmd)
 {
-	while(cmd)
-	{
-		close(cmd->fd[1]);
-		close(cmd->fd[0]);
-		cmd = cmd->next;
-	}
+	close(cmd->fd[1]);
+	close(cmd->fd[0]);
 }
 
 void	alloc_heredoc(t_cmd *cmd, char *alocated)
@@ -94,22 +90,23 @@ void	alloc_heredoc(t_cmd *cmd, char *alocated)
 int	check_last_redirection2(t_cmd *cmd, int i)
 {
 	i += 1;
-	if (i  < count_redirections(cmd->args))
+	if (i < count_redirections(cmd->args))
 	{
-		while(i < count_redirections(cmd->args))
+		while (i < count_redirections(cmd->args))
 		{
-			if (cmd->redirection[i] && (cmd->redirection[i] == 2 || cmd->redirection[i] == 3))
-				return(1);
+			if (cmd->redirection[i] && (cmd->redirection[i] == 2
+					|| cmd->redirection[i] == 3))
+				return (1);
 			i++;
 		}
 	}
-	return(0);
+	return (0);
 }
 
 int	check_last_redirection(t_cmd *cmd, int i)
 {
-	int j;
-	
+	int	j;
+
 	j = i + 1;
 	if (j < count_redirections(cmd->args))
 	{
@@ -137,7 +134,7 @@ int	last_reversed(t_cmd *cmd, int flag)
 			{
 				j = i;
 				if (cmd->redirection[i] == 3 && i > flag)
-					return(j);
+					return (j);
 			}
 			i++;
 		}
@@ -147,9 +144,9 @@ int	last_reversed(t_cmd *cmd, int flag)
 
 void	aplly_redirections(t_cmd *cmd, t_main *main)
 {
-	int		file;
-	int		i;
-	
+	int	file;
+	int	i;
+
 	i = 0;
 	file = 0;
 	while (i < count_redirections(cmd->args))
@@ -169,7 +166,6 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 			redirection4(cmd, i, file, main);
 		i++;
 	}
-
 }
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
@@ -178,7 +174,10 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	char	**a;
 	char	*b;
 	int		*check;
+	int		*check2;
 
+	check2 = check_paired(&cmd->args[0][1], main->env, main->export,
+			ft_strlen(&cmd->args[0][1]));
 	check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	a = NULL;
@@ -186,23 +185,46 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
-			dup2(cmd->next->fd[1], STDOUT_FILENO);
 			aplly_redirections(cmd, main);
+			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
-			dup2(cmd->fd[0], STDIN_FILENO);
 			aplly_redirections(cmd, main);
+			dup2(cmd->fd[0], STDIN_FILENO);
+			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
+			aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			aplly_redirections(cmd, main);
+			closepipes(cmd);
 		}
 	}
 	else
 		aplly_redirections(cmd, main);
+	if (cmd->args[0][0] == '$' && check2[0] != -1)
+	{
+		if (get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
+				+ 1], main->env))
+		{
+			execve(get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
+					+ 1], main->env),
+				ft_split(&main->env[check2[0]][find_equal(main->env[check2[0]])
+					+ 1], ' '), main->env);
+		}
+		if (check2[0] != -1)
+		{
+			printf("command not found: %s\n",
+				&main->env[check2[0]][find_equal(main->env[check2[0]]) + 1]);
+			free_every_thing(cmd, main, check);
+			free(check2);
+			exit(-1);
+		}
+	}
+	free(check2);
 	if (check_builtins2(cmd, envp, main) == 1 && check[0] == -1)
 	{
 		execve(b, cmd->realarg, envp);
@@ -280,11 +302,13 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 				if (id == -1)
 					return (main);
 				if (id == 0)
-				{
 					child_process(user_input, envp, cmd, main);
-					waitpid(id, &main->status, 0);
+				if (cmd->redirectionoverall == 2)
+				{
+					while (waitpid(id, &main->status, 0) != -1)
+						;
 				}
-				closepipes(cmd->begining);
+				closepipes(cmd);
 			}
 			cmd = cmd->next;
 		}

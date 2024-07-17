@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/04 18:39:37 by guest            ###   ########.fr       */
+/*   Updated: 2024/07/05 16:15:48 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 	if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
 	{
 		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
-			file = (open(&cmd->args[cmd->redirectionpos[i]][1],
-						O_RDONLY, 0777));
+			file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY,
+						0777));
 		else
-			file = (open(cmd->args[cmd->redirectionpos[i] + 1],
-						O_RDONLY, 0777));
+			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY,
+						0777));
 		if (file == -1)
 		{
 			write(2, " no such file or directory\n", 28);
@@ -54,7 +54,8 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 			exit(main->status);
 		}
 	}
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 && check_last_redirection2(cmd, i) == 0)
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
+		&& check_last_redirection2(cmd, i) == 0)
 	{
 		alloc_heredoc(cmd, &cmd->args[cmd->redirectionpos[i]][1]);
 	}
@@ -66,10 +67,10 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 
 void	redirection3(t_cmd *cmd, int i, int file)
 {
-	char *input;
+	char	*input;
+
 	input = readline("heredoc> ");
-	file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND,
-				0777));
+	file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644));
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 	{
 		while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
@@ -90,8 +91,7 @@ void	redirection3(t_cmd *cmd, int i, int file)
 				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 		{
 			if (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-					ft_strlen(cmd->args[cmd->redirectionpos[i]
-						+ 1]) != 0))
+					ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 			{
 				write(file, input, ft_strlen(input));
 				write(file, "\n", 1);
@@ -106,7 +106,7 @@ void	redirection3(t_cmd *cmd, int i, int file)
 void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 {
 	int	j;
-	
+
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3
 		&& cmd->args[cmd->redirectionpos[i] + 2])
 	{
@@ -148,8 +148,8 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 
 void	free_every_thing(t_cmd *cmd, t_main *main, int *check)
 {
-		free_cmd_args(cmd);
-		free_env_and_export(main);
-		free(main);
-		free(check);
+	free_cmd_args(cmd);
+	free_env_and_export(main);
+	free(main);
+	free(check);
 }

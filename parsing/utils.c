@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/27 16:25:47 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/07 14:22:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,37 @@ void	print_export(t_main *main)
 	}
 }
 
+static char	*word_aloc3(char const *str, char c)
+{
+	char	*word;
+	int		word_len;
+	int		ctd;
+	int		ctd2;
+	int		i;
+
+	i = 0;
+	ctd = 0;
+	ctd2 = 0;
+	word_len = 0;
+	while (str[i] && str[i] != c)
+	{
+		if (str[i] != '\5')
+			word_len++;
+		i++;
+	}
+	word = (char *)malloc(word_len + 1);
+	while (ctd < word_len)
+	{
+		while (str[ctd2] == '\5')
+			ctd2++;
+		word[ctd] = str[ctd2];
+		ctd2++;
+		ctd++;
+	}
+	word[ctd] = '\0';
+	return (word);
+}
+
 static char	*word_aloc(char const *str, char c)
 {
 	char	*word;
@@ -104,6 +135,29 @@ static char	*word_aloc(char const *str, char c)
 	}
 	word[ctd] = '\0';
 	return (word);
+}
+
+static int	count_words3(char const *s, char c)
+{
+	size_t	i;
+	size_t	j;
+	int		check;
+
+	j = 0;
+	i = 0;
+	check = 1;
+	while (s[i])
+	{
+		if (s[i] != c && check == 1)
+		{
+			j++;
+			check = 0;
+		}
+		else if (s[i] == c)
+			check = 1;
+		i++;
+	}
+	return (j);
 }
 
 static int	count_words2(char const *s, char c)
@@ -151,6 +205,33 @@ char	**ft_split2(char const *s, char c)
 		if (s[i] != '\0' && s[i] != c)
 		{
 			ptr[j] = word_aloc(s + i, c);
+			j++;
+		}
+		while (s[i] && s[i] != c)
+			i++;
+	}
+	ptr[j] = NULL;
+	return (ptr);
+}
+
+char	**ft_split3(char const *s, char c)
+{
+	int		i;
+	int		j;
+	char	**ptr;
+
+	i = 0;
+	j = 0;
+	ptr = malloc((count_words3(s, c) + 1) * sizeof(char *));
+	if (!ptr)
+		return (NULL);
+	while (s[i])
+	{
+		while (s[i] == c)
+			i++;
+		if (s[i] != '\0' && s[i] != c)
+		{
+			ptr[j] = word_aloc3(s + i, c);
 			j++;
 		}
 		while (s[i] && s[i] != c)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/04 18:57:14 by guest            ###   ########.fr       */
+/*   Updated: 2024/07/07 14:01:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 # include "libft/libft.h"
 # include <errno.h>
 # include <fcntl.h>
+# include <linux/fs.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
 # include <string.h>
+# include <sys/ioctl.h>
 # include <sys/wait.h>
 
 typedef struct s_main
@@ -49,7 +51,7 @@ typedef struct s_cmd
 	int				check;
 }					t_cmd;
 
-
+char				**ft_split3(char const *s, char c);
 void				free_every_thing(t_cmd *cmd, t_main *main, int *check);
 void				redirection3(t_cmd *cmd, int i, int file);
 void				redirection4(t_cmd *cmd, int i, int file, t_main *main);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/28 16:50:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/07 13:32:50 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,24 +109,28 @@ int	check_invalid(char *arg)
 
 t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 {
+	(void)envp;
 	t_main	*next;
+	int		i;
 
-	next = NULL;
+	i = 1;
+	next = main;
 	if (!cmd->args[1])
 	{
 		print_export(main);
 		return (main);
 	}
-	else if (cmd->args[2] && cmd->redirection == 0)
-		return (main);
-	else if (check_invalid(cmd->args[1]) != -1 || cmd->args[1][0] == '='
-		|| (cmd->args[1][0] > 47 && cmd->args[1][0] < 58))
+	while(cmd->args[i])
 	{
-		write(2, " not a valid identifier", 24);
-		main->status = 1;
-		return (main);
+		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '=')
+		{
+			write(2, " not a valid identifier", 24);
+			main->status = 1;
+			return (next);
+		}
+		else if (check_invalid(cmd->args[i]) == -1)
+			next = set_main2(next, next->env, next->export, cmd->args[i]);
+		i++;
 	}
-	else if (check_invalid(cmd->args[1]) == -1)
-		next = set_main2(main, envp, main->export, cmd->args[1]);
 	return (next);
 }

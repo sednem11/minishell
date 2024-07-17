@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/04 19:02:46 by guest            ###   ########.fr       */
+/*   Updated: 2024/07/07 14:01:21 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,8 @@ int	count_redirections(char **argv)
 	i = 0;
 	while (argv[i])
 	{
-		if ((ft_strncmp(argv[i], ">", 1) == 0)
-			|| (ft_strncmp(argv[i], "<", 1) == 0)
-			|| (ft_strncmp(argv[i], "<<", 2) == 0)
+		if ((ft_strncmp(argv[i], ">", 1) == 0) || (ft_strncmp(argv[i], "<",
+					1) == 0) || (ft_strncmp(argv[i], "<<", 2) == 0)
 			|| (ft_strncmp(argv[i], ">>", 2) == 0))
 			j++;
 		i++;
@@ -150,12 +149,22 @@ void	check_redirections(t_cmd *cmd, char *arg, int j)
 		cmd->redirectionpos[i] = j;
 	}
 }
+void	closeallpipes(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		close(cmd->fd[0]);
+		close(cmd->fd[1]);
+		cmd = cmd->next;
+	}
+}
+
 void	free_cmd_args(t_cmd *cmd)
 {
 	int		i;
 	t_cmd	*temporary;
 
-	closepipes(cmd->begining);
+	closeallpipes(cmd->begining);
 	temporary = cmd->begining;
 	while (temporary)
 	{
@@ -200,16 +209,15 @@ int	count_dif_redirections(char **argv)
 	i = 0;
 	while (argv[i])
 	{
+		if (ft_strncmp(argv[i], "<<", 2) == 0 && argv[i][2] != ' ')
+			return (2);
 		if ((ft_strncmp(argv[i], ">", 1) == 0 && argv[i][1] != ' ')
 			|| (ft_strncmp(argv[i], ">>", 2) == 0 && argv[i][2] != ' '))
 			a = 1;
-		if ((ft_strncmp(argv[i], "<", 1) == 0 && argv[i][1] != ' ')
-			|| (ft_strncmp(argv[i], "<<", 2) == 0 && argv[i][2] != ' '))
+		if (ft_strncmp(argv[i], "<", 1) == 0 && argv[i][1] != ' ')
 			b = 1;
 		i++;
 	}
-	if (b > 1)
-		return (2);
 	return (a + b);
 }
 
@@ -234,7 +242,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	while (cmd2->argv2[i])
 	{
 		j = 0;
-		cmd2->args = ft_split(cmd2->argv2[i], '\3');
+		cmd2->args = ft_split3(cmd2->argv2[i], '\3');
 		cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
 		cmd2->redirection = ft_calloc(sizeof(int),
 				count_redirections(cmd2->args));
@@ -293,10 +301,12 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		}
 		if (flag == -1 && user_input[i] == '|')
 			argv[i] = '\4';
-		else if ((flag == -1 && (user_input[i] == ' ' || user_input[i] == '"'
-					|| user_input[i] == 39)) || ((user_input[i] == '"'
-					|| user_input[i] == 39) && j == i))
+		else if (flag == -1 && user_input[i] == ' ' )
 			argv[i] = '\3';
+		else if ((flag == -1 && (user_input[i] == '"'
+			|| user_input[i] == 39)) || ((user_input[i] == '"'
+			|| user_input[i] == 39) && j == i))
+			argv[i] = '\5';
 		else if ((flag == -1 && user_input[i] != ' ') || flag == 1)
 			argv[i] = user_input[i];
 		i++;
@@ -308,6 +318,5 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	}
 	return (set_comands(argv, envp, cmd, main));
 }
-
 
 // echo hello > out | cat < Makefile < infile
