@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/08 15:43:00 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/08 23:52:24 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_cmd
 	int				check;
 }					t_cmd;
 
+int					last_reversed(t_cmd *cmd, int flag);
+void				aplly_redirections(t_cmd *cmd, t_main *main);
 void				closeallpipes(t_cmd *cmd);
 char				**ft_split3(char const *s, char c);
 void				free_every_thing(t_cmd *cmd, t_main *main, int *check);

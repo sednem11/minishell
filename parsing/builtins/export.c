@@ -122,7 +122,8 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	}
 	while (cmd->args[i])
 	{
-		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '=' || (cmd->args[1][0] > 47 && cmd->args[1][0] < 58))
+		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '='
+			|| (cmd->args[1][0] > 47 && cmd->args[1][0] < 58))
 		{
 			write(2, " not a valid identifier", 24);
 			main->status = 1;
