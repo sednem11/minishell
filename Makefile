@@ -6,14 +6,14 @@
 #    By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/08/08 23:53:01 by macampos         ###   ########.fr        #
+#    Updated: 2024/08/09 00:02:42 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = src/main.c src/starting_shell.c parsing/parsargs.c parsing/pars_helpers.c parsing/builtins/cd.c parsing/builtins/echo.c parsing/builtins/env.c parsing/builtins/pwd.c parsing/builtins/export.c \
-		parsing/builtins/unset.c parsing/builtins/exit.c parsing/utils.c parsing/signals.c  parsing/utils2.c src/redirections_helpers.c \
+		parsing/builtins/unset.c parsing/builtins/exit.c parsing/utils.c parsing/signals.c  parsing/utils2.c src/redirections_helpers.c parsing/utils3.c\
 
 OBJ = $(SRC:.c=.o)
 

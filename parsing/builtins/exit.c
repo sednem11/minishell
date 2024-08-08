@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/06/28 11:09:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/09 00:12:10 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 {
 	int		last;
 	char	*truearg;
+	int		status;
 
 	(void)envp;
 	(void)main;
@@ -71,18 +72,18 @@ t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 		free(truearg);
 		if (!ft_atoi(cmd->args[1]) && !cmd->args[2])
 		{
-			main->status = 2;
+			status = 2;
 			write(2, " numeric argument required\n", 28);
 		}
 		else if (cmd->args[1])
 		{
-			main->status = 100;
+			status = 100;
 			write(2, " numeric argument required\n", 28);
 		}
 		free_env_and_export(main);
 		free(main);
 		free_cmd(cmd);
-		exit(main->status);
+		exit(status);
 	}
 	return (main);
 }
