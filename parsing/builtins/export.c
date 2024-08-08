@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/07 13:32:50 by macampos         ###   ########.fr       */
+/*   Updated: 2024/07/17 19:22:17 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	}
 	while (cmd->args[i])
 	{
-		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '=')
+		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '=' || (cmd->args[1][0] > 47 && cmd->args[1][0] < 58))
 		{
 			write(2, " not a valid identifier", 24);
 			main->status = 1;
