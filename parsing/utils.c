@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 15:03:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:57:55 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	check_builtins2(t_cmd *cmd, char **envp, t_main *main)
 {
 	(void)main;
 	(void)envp;
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return(0);
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 || ft_strncmp(cmd->args[0],
 			"export", 6) == 0 || ft_strncmp(cmd->args[0], "pwd", 3) == 0
 		|| ft_strncmp(cmd->args[0], "env", 3) == 0 || ft_strncmp(cmd->args[0],
@@ -36,10 +38,10 @@ int	check_last(t_main *main)
 	i = 0;
 	while (main->export[i])
 	{
-		if (ft_strlen_updated(main->export[i]) > ft_strlen_updated(main->export[n]))
-			z = ft_strlen_updated(main->export[n]);
+		if (ft_strlen_upd(main->export[i]) > ft_strlen_upd(main->export[n]))
+			z = ft_strlen_upd(main->export[n]);
 		else
-			z = ft_strlen_updated(main->export[i]);
+			z = ft_strlen_upd(main->export[i]);
 		if (ft_strncmp(main->export[i], main -> export[n], z) > 0)
 			n = i;
 		i++;
@@ -63,19 +65,20 @@ void	print_export(t_main *main)
 		i = 0;
 		while (main->export[i])
 		{
-			if (ft_strlen_updated(main->export[i]) > ft_strlen_updated(main->export[n]))
-				z = ft_strlen_updated(main->export[n]);
+			if (ft_strlen_upd(main->export[i]) > ft_strlen_upd(main->export[n]))
+				z = ft_strlen_upd(main->export[n]);
 			else
-				z = ft_strlen_updated(main->export[i]);
+				z = ft_strlen_upd(main->export[i]);
 			if (ft_strncmp(main->export[i], main -> export[n], z) < 0 && a == 0)
 				n = i;
 			else if (a > 0 && ft_strncmp(main->export[i], main -> export[c],
-					ft_strlen_updated(main->export[i])) > 0)
+					ft_strlen_upd(main->export[i])) > 0)
 			{
 				if (ft_strncmp(main->export[i], main -> export[n], z) < 0)
 					n = i;
 				else if (ft_strncmp(main->export[i], main -> export[n], z) == 0
-					&& ft_strlen_updated(main->export[i]) != ft_strlen_updated(main->export[n]))
+					&& ft_strlen_upd(main->export[i])
+					!= ft_strlen_upd(main->export[n]))
 					n = i;
 			}
 			i++;
@@ -89,30 +92,28 @@ void	print_export(t_main *main)
 char	*word_aloc3(char const *str, char c)
 {
 	char	*word;
-	int		word_len;
-	int		ctd;
-	int		ctd2;
+	t_split	split;
 	int		i;
 
 	i = 0;
-	ctd = 0;
-	ctd2 = 0;
-	word_len = 0;
+	split.ctd = 0;
+	split.ctd2 = 0;
+	split.word_len = 0;
 	while (str[i] && str[i] != c)
 	{
 		if (str[i] != '\5')
-			word_len++;
+			split.word_len++;
 		i++;
 	}
-	word = (char *)malloc(word_len + 1);
-	while (ctd < word_len)
+	word = (char *)malloc(split.word_len + 1);
+	while (split.ctd < split.word_len)
 	{
-		while (str[ctd2] == '\5')
-			ctd2++;
-		word[ctd] = str[ctd2];
-		ctd2++;
-		ctd++;
+		while (str[split.ctd2] == '\5')
+			split.ctd2++;
+		word[split.ctd] = str[split.ctd2];
+		split.ctd2++;
+		split.ctd++;
 	}
-	word[ctd] = '\0';
+	word[split.ctd] = '\0';
 	return (word);
 }

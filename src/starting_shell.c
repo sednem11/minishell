@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/09 00:02:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:38:16 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
 		if (get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
 				+ 1], main->env))
 		{
-			execve(get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
-					+ 1], main->env),
+			execve(get_paths(&main->env[check2[0]]
+				[find_equal(main->env[check2[0]]) + 1], main->env),
 				ft_split(&main->env[check2[0]][find_equal(main->env[check2[0]])
 					+ 1], ' '), main->env);
 		}

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 14:49:36 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 17:45:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,34 @@ typedef struct s_cmd
 	int				fd[2];
 	int				numb;
 	pid_t			pid;
+	int				i;
+	int				j;
 	struct s_cmd	*next;
 	struct s_cmd	*begining;
 	int				check;
 }					t_cmd;
+
+typedef struct s_path
+{
+	char	**paths;
+	char	*part_path;
+	char	*path;
+	int		i;
+}			t_path;
+
+typedef struct s_split
+{
+	int		word_len;
+	int		ctd;
+	int		ctd2;
+}			t_split;
+
+typedef struct s_ar
+{
+	int	i;
+	int	j;
+	int	flag;
+}		t_ar;
 
 int					count_dif_redirections(char **argv);
 char				*word_aloc3(char const *str, char c);
@@ -97,7 +121,7 @@ t_main				*set_main2(t_main *main, char **envp, char **envp2,
 						char *exported);
 int					*check_paired(char *exported, char **envp, char **envp2,
 						int len);
-int					ft_strlen_updated(char *str);
+int					ft_strlen_upd(char *str);
 int					find_equal(char *arg);
 void				print_export(t_main *main);
 t_main				*set_main3(t_main *main, char **envp, char **envp2,

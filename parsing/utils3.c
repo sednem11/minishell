@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 00:01:16 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 15:03:21 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:20:35 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,33 +34,30 @@ void	free_paths(char **paths, char **cmd)
 
 char	*get_paths(char *argv, char **envp)
 {
-	int		i;
-	char	**paths;
-	char	*part_path;
-	char	*path;
+	t_path	path;
 	char	**cmd;
 
-	if (!envp)
+	path.i = 0;
+	if (!envp || !argv || !*argv)
 		return (NULL);
 	cmd = ft_split(argv, ' ');
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH=", 5) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = -1;
-	while (paths[++i])
+	while (ft_strnstr(envp[path.i], "PATH=", 5) == 0)
+		path.i++;
+	path.paths = ft_split(envp[path.i] + 5, ':');
+	path.i = -1;
+	while (path.paths[++path.i])
 	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd[0]);
-		free(part_path);
-		if (access(path, X_OK) == 0)
+		path.part_path = ft_strjoin(path.paths[path.i], "/");
+		path.path = ft_strjoin(path.part_path, cmd[0]);
+		free(path.part_path);
+		if (access(path.path, X_OK) == 0)
 		{
-			free_paths(paths, cmd);
-			return (path);
+			free_paths(path.paths, cmd);
+			return (path.path);
 		}
-		free(path);
+		free(path.path);
 	}
-	free_paths(paths, cmd);
+	free_paths(path.paths, cmd);
 	return (NULL);
 }
 

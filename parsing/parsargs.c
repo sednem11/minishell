@@ -3,89 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 15:07:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:25:32 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	count_redirections(char **argv)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	i = 0;
-	while (argv[i])
-	{
-		if ((ft_strncmp(argv[i], ">", 1) == 0) || (ft_strncmp(argv[i], "<",
-					1) == 0) || (ft_strncmp(argv[i], "<<", 2) == 0)
-			|| (ft_strncmp(argv[i], ">>", 2) == 0))
-			j++;
-		i++;
-	}
-	if (j == 0)
-		return (1);
-	return (j);
-}
-
-void	closeallpipes(t_cmd *cmd)
-{
-	while (cmd)
-	{
-		close(cmd->fd[0]);
-		close(cmd->fd[1]);
-		cmd = cmd->next;
-	}
-}
-
-void	free_cmd_args2(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->args[i])
-	{
-		free(cmd->args[i]);
-		i++;
-	}
-	free(cmd->args);
-	i = 0;
-	while (cmd->realarg[i])
-	{
-		free(cmd->realarg[i]);
-		i++;
-	}
-	i = 0;
-	while (cmd->argv2[i])
-	{
-		free(cmd->argv2[i]);
-		i++;
-	}
-}
-
-void	free_cmd_args(t_cmd *cmd)
-{
-	t_cmd	*temporary;
-
-	closeallpipes(cmd->begining);
-	temporary = cmd->begining;
-	while (temporary)
-	{
-		cmd = temporary;
-		free_cmd_args2(cmd);
-		free(cmd->argv2);
-		free(cmd->realarg);
-		temporary = cmd->next;
-		free(cmd->redirection);
-		free(cmd->redirectionpos);
-		free(cmd->path);
-		free(cmd);
-	}
-}
 
 t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 {
@@ -144,43 +69,50 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	return (cmd2->begining);
 }
 
+void	check_args(char *user_input, t_ar *ar, char *argv)
+{
+	if ((user_input[ar->i] == '"' || user_input[ar->i] == 39) && ar->flag == -1)
+		ar->j = ar->i;
+	if ((user_input[ar->i] == '"' || user_input[ar->i] == 39)
+		&& user_input[ar->i] == user_input[ar->j])
+	{
+		ar->j = ar->i;
+		ar->flag *= -1;
+	}
+	if (ar->flag == -1 && user_input[ar->i] == '|')
+		argv[ar->i] = '\4';
+	else if (ar->flag == -1 && user_input[ar->i] == ' ')
+		argv[ar->i] = '\3';
+	else if ((ar->flag == -1 && (user_input[ar->i] == '"'
+				|| user_input[ar->i] == 39)) || ((user_input[ar->i] == '"'
+				|| user_input[ar->i] == 39) && ar->j == ar->i))
+		argv[ar->i] = '\5';
+	else if ((ar->flag == -1 && user_input[ar->i] != ' ') || ar->flag == 1)
+		argv[ar->i] = user_input[ar->i];
+}
+
 t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
-	int		flag;
-	int		i;
-	int		j;
+	t_ar	*ar;
 	char	*argv;
 
-	j = 0;
-	i = 0;
-	flag = -1;
+	ar = malloc(sizeof(t_ar));
+	ar->j = 0;
+	ar->i = 0;
+	ar->flag = -1;
 	argv = ft_calloc(sizeof(char), ft_strlen(user_input) + 1);
-	while (user_input[i])
+	while (user_input[ar->i])
 	{
-		if ((user_input[i] == '"' || user_input[i] == 39) && flag == -1)
-			j = i;
-		if ((user_input[i] == '"' || user_input[i] == 39)
-			&& user_input[i] == user_input[j])
-		{
-			j = i;
-			flag *= -1;
-		}
-		if (flag == -1 && user_input[i] == '|')
-			argv[i] = '\4';
-		else if (flag == -1 && user_input[i] == ' ')
-			argv[i] = '\3';
-		else if ((flag == -1 && (user_input[i] == '"' || user_input[i] == 39))
-			|| ((user_input[i] == '"' || user_input[i] == 39) && j == i))
-			argv[i] = '\5';
-		else if ((flag == -1 && user_input[i] != ' ') || flag == 1)
-			argv[i] = user_input[i];
-		i++;
+		check_args(user_input, ar, argv);
+		ar->i++;
 	}
-	if (flag == 1)
+	if (ar->flag == 1)
 	{
 		printf("unclosed argument\n");
+		free(ar);
 		return (NULL);
 	}
+	free(ar);
 	return (set_comands(argv, envp, cmd, main));
 }
 
