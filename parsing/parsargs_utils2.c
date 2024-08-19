@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 15:05:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:01:08 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	pars_args(char **cmds)
 t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 {
 	(void)user_input;
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return (main);
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 && ft_strlen(cmd->args[0]) == 2)
 		cd(cmd, envp, main);
 	else if (ft_strncmp(cmd->args[0], "export", 6) == 0

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 17:17:51 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:38:11 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,23 @@ int	*check_paired(char *exported, char **envp, char **envp2, int len)
 {
 	int	*place;
 	int	i;
+	int	j;
 
 	i = 0;
-	place = ft_calloc(sizeof(int), 3);
+	j = 0;
+	place = ft_calloc(3, sizeof(int));
 	place[0] = -1;
 	place[1] = -1;
-	while (envp[i] && envp2[i])
+	while (envp[i] || envp2[j])
 	{
-		if (ft_strncmp(envp[i], exported, len) == 0)
+		if (envp[i] && ft_strncmp(envp[i], exported, len) == 0)
 			place[0] = i;
-		if (ft_strncmp(envp2[i], exported, len) == 0)
-			place[1] = i;
-		i++;
-	}
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], exported, len) == 0)
-			place[0] = i;
-		i++;
-	}
-	while (envp2[i])
-	{
-		if (ft_strncmp(envp2[i], exported, len) == 0)
-			place[1] = i;
-		i++;
+		if (envp2[j] && ft_strncmp(envp2[j], exported, len) == 0)
+			place[1] = j;
+		if (envp[i])
+			i++;
+		if (envp2[j])
+			j++;
 	}
 	return (place);
 }

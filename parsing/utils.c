@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 17:57:55 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:01:31 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_builtins2(t_cmd *cmd, char **envp, t_main *main)
 	(void)main;
 	(void)envp;
 	if (!cmd || !cmd->args || !cmd->args[0])
-		return(0);
+		return (0);
 	if (ft_strncmp(cmd->args[0], "cd", 2) == 0 || ft_strncmp(cmd->args[0],
 			"export", 6) == 0 || ft_strncmp(cmd->args[0], "pwd", 3) == 0
 		|| ft_strncmp(cmd->args[0], "env", 3) == 0 || ft_strncmp(cmd->args[0],

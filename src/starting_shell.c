@@ -6,67 +6,11 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 17:38:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 00:17:44 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	child2(t_cmd *cmd, t_main *main)
-{
-	if (cmd->argv2[1])
-	{
-		if (cmd == cmd->begining)
-		{
-			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			aplly_redirections(cmd, main);
-			closepipes(cmd);
-		}
-		else if (cmd->next == NULL)
-		{
-			dup2(cmd->fd[0], STDIN_FILENO);
-			aplly_redirections(cmd, main);
-			closepipes(cmd);
-		}
-		else if (cmd->next && cmd != cmd->begining)
-		{
-			dup2(cmd->fd[0], STDIN_FILENO);
-			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			aplly_redirections(cmd, main);
-			closepipes(cmd);
-		}
-	}
-	else
-		aplly_redirections(cmd, main);
-}
-
-void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
-{
-	int	*check2;
-
-	check2 = check_paired(&cmd->args[0][1], main->env, main->export,
-			ft_strlen(&cmd->args[0][1]));
-	if (cmd->args[0][0] == '$' && check2[0] != -1)
-	{
-		if (get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
-				+ 1], main->env))
-		{
-			execve(get_paths(&main->env[check2[0]]
-				[find_equal(main->env[check2[0]]) + 1], main->env),
-				ft_split(&main->env[check2[0]][find_equal(main->env[check2[0]])
-					+ 1], ' '), main->env);
-		}
-		if (check2[0] != -1)
-		{
-			printf("command not found: %s\n",
-				&main->env[check2[0]][find_equal(main->env[check2[0]]) + 1]);
-			free_every_thing(cmd, main, check);
-			free(check2);
-			exit(-1);
-		}
-	}
-	free(check2);
-}
 
 void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
@@ -128,48 +72,50 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	exit(0);
 }
 
-t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
-		t_main *main)
+void	closepipes_helper(t_cmd *cmd)
+{
+	if ((cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
+		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit", 4) == 0))
+		closepipes(cmd);
+}
+
+t_cmd	*execute_function_helper(t_main *main, char **envp, t_cmd *cmd,
+		char *user_input)
 {
 	pid_t	id;
 
+	id = fork();
+	if (id == 0)
+		child_process(user_input, envp, cmd, main);
+	if (cmd->redirectionoverall == 2)
+	{
+		while (waitpid(id, &main->status, 0) != -1)
+			;
+	}
+	closepipes(cmd);
+	cmd = cmd->next;
+	return (cmd);
+}
+
+t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
+		t_main *main)
+{
 	if (cmd->next || check_builtins2(cmd, envp, main) == 1
 		|| cmd->redirectionoverall != 0)
 	{
 		while (cmd)
 		{
+			closepipes_helper(cmd);
 			if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
-			{
-				closepipes(cmd);
 				return (export(cmd, envp, main));
-			}
 			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset",
 					5) == 0)
-			{
-				closepipes(cmd);
 				return (unset(cmd, main, envp));
-			}
 			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit",
 					4) == 0)
-			{
-				closepipes(cmd);
 				return (exitt(cmd, envp, main));
-			}
-			else
-			{
-				id = fork();
-				if (id == -1)
-					return (main);
-				if (id == 0)
-					child_process(user_input, envp, cmd, main);
-				if (cmd->redirectionoverall == 2)
-				{
-					while (waitpid(id, &main->status, 0) != -1)
-						;
-				}
-				closepipes(cmd);
-			}
-			cmd = cmd->next;
+			cmd = execute_function_helper(main, envp, cmd, user_input);
 		}
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 17:45:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 00:18:16 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ typedef struct s_ar
 	int	flag;
 }		t_ar;
 
+void				child2(t_cmd *cmd, t_main *main);
+void				check_nobuiltins_notexecutable(int *check, t_cmd *cmd,
+						t_main *main);
+int					check_equal(char *value);
+void				print_dolar(t_main *main, char *arg);
 int					count_dif_redirections(char **argv);
 char				*word_aloc3(char const *str, char c);
 void				closepipes(t_cmd *cmd);
