@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pars_helpers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guest <guest@student.42.fr>                +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/04 18:56:59 by guest            ###   ########.fr       */
+/*   Updated: 2024/08/19 14:33:09 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	set_comands2(t_cmd *cmd)
-{
-	if (pipe(cmd->fd) == -1)
-		return ;
-}
 
 t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 {

@@ -68,7 +68,7 @@ void	check_redirections2(t_cmd *cmd, char *arg, int j, int i)
 
 void	check_redirections(t_cmd *cmd, char *arg, int j)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (ft_strncmp(arg, ">", 1) == 0 && arg[1] != '>')

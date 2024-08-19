@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 12:05:02 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 14:49:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_cmd
 	int				check;
 }					t_cmd;
 
+int					count_dif_redirections(char **argv);
+char				*word_aloc3(char const *str, char c);
 void				closepipes(t_cmd *cmd);
 void				free_paths(char **paths, char **cmd);
 char				*get_paths(char *argv, char **envp);
