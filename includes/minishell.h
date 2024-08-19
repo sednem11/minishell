@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/09 00:04:32 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:05:02 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,6 @@ t_main				*set_main3(t_main *main, char **envp, char **envp2,
 						char *exported);
 t_main				*set_main(t_main *main, char **envp);
 void				signal_main(void);
+void				check_redirections(t_cmd *cmd, char *arg, int j);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/07/07 14:01:21 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 12:14:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,65 +90,7 @@ int	count_redirections(char **argv)
 		return (1);
 	return (j);
 }
-void	check_redirections(t_cmd *cmd, char *arg, int j)
-{
-	int	i;
 
-	i = 0;
-	if (ft_strncmp(arg, ">", 1) == 0 && arg[1] != '>')
-	{
-		while (i < count_redirections(cmd->args))
-		{
-			if (cmd->redirection[i] == 0)
-			{
-				cmd->redirection[i] = 1;
-				break ;
-			}
-			i++;
-		}
-		cmd->redirectionpos[i] = j;
-	}
-	else if (ft_strncmp(arg, "<", 1) == 0 && arg[1] != '<')
-	{
-		while (i < count_redirections(cmd->args))
-		{
-			if (cmd->redirection[i] == 0)
-			{
-				cmd->redirection[i] = 2;
-				break ;
-			}
-			i++;
-		}
-		cmd->redirectionpos[i] = j;
-	}
-	else if (ft_strncmp(arg, "<<", 2) == 0)
-	{
-		while (i < count_redirections(cmd->args))
-		{
-			if (cmd->redirection[i] == 0)
-			{
-				cmd->redirection[i] = 3;
-				break ;
-			}
-			i++;
-		}
-		cmd->redirectionpos[i] = j;
-	}
-	else if (ft_strncmp(arg, ">>", 2) == 0)
-	{
-		i = 0;
-		while (i < count_redirections(cmd->args))
-		{
-			if (cmd->redirection[i] == 0)
-			{
-				cmd->redirection[i] = 4;
-				break ;
-			}
-			i++;
-		}
-		cmd->redirectionpos[i] = j;
-	}
-}
 void	closeallpipes(t_cmd *cmd)
 {
 	while (cmd)
@@ -158,10 +100,33 @@ void	closeallpipes(t_cmd *cmd)
 		cmd = cmd->next;
 	}
 }
+void	free_cmd_args2(t_cmd *cmd)
+{
+	int		i;
+
+	i = 0;
+	while (cmd->args[i])
+	{
+		free(cmd->args[i]);
+		i++;
+	}
+	free(cmd->args);
+	i = 0;
+	while (cmd->realarg[i])
+	{
+		free(cmd->realarg[i]);
+		i++;
+	}
+	i = 0;
+	while (cmd->argv2[i])
+	{
+		free(cmd->argv2[i]);
+		i++;
+	}
+}
 
 void	free_cmd_args(t_cmd *cmd)
 {
-	int		i;
 	t_cmd	*temporary;
 
 	closeallpipes(cmd->begining);
@@ -169,25 +134,7 @@ void	free_cmd_args(t_cmd *cmd)
 	while (temporary)
 	{
 		cmd = temporary;
-		i = 0;
-		while (cmd->args[i])
-		{
-			free(cmd->args[i]);
-			i++;
-		}
-		free(cmd->args);
-		i = 0;
-		while (cmd->realarg[i])
-		{
-			free(cmd->realarg[i]);
-			i++;
-		}
-		i = 0;
-		while (cmd->argv2[i])
-		{
-			free(cmd->argv2[i]);
-			i++;
-		}
+		free_cmd_args2(cmd);
 		free(cmd->argv2);
 		free(cmd->realarg);
 		temporary = cmd->next;
@@ -197,6 +144,7 @@ void	free_cmd_args(t_cmd *cmd)
 		free(cmd);
 	}
 }
+
 
 int	count_dif_redirections(char **argv)
 {
