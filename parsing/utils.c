@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 14:26:35 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:03:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ void	print_export(t_main *main)
 
 char	*word_aloc3(char const *str, char c)
 {
-	char *word;
-	int word_len;
-	int ctd;
-	int ctd2;
-	int i;
+	char	*word;
+	int		word_len;
+	int		ctd;
+	int		ctd2;
+	int		i;
 
 	i = 0;
 	ctd = 0;

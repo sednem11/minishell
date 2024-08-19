@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_redirections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:03:29 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 12:04:38 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:06:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	check_redirections4(t_cmd *cmd, char *arg, int j, int i)
 		cmd->redirectionpos[i] = j;
 	}
 }
+
 void	check_redirections3(t_cmd *cmd, char *arg, int j, int i)
 {
 	if (ft_strncmp(arg, "<<", 2) == 0)
@@ -68,7 +69,7 @@ void	check_redirections2(t_cmd *cmd, char *arg, int j, int i)
 
 void	check_redirections(t_cmd *cmd, char *arg, int j)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (ft_strncmp(arg, ">", 1) == 0 && arg[1] != '>')

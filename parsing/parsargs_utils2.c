@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 14:36:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:05:43 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	count_dif_redirections(char **argv)
 	}
 	return (a + b);
 }
+
 int	pars_args(char **cmds)
 {
 	int	i;
@@ -82,9 +83,9 @@ t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 
 int	check_pipes(char *user_input)
 {
-	int i;
-	int flag;
-	int z;
+	int	i;
+	int	flag;
+	int	z;
 
 	z = 0;
 	flag = 1;

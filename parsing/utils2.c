@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/08 15:40:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:11:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ void	redirection3(t_cmd *cmd, int i, int file)
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 	{
 		while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-				ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+			ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 		{
 			if (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-					ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+				ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 			{
 				write(file, input, ft_strlen(input));
 				write(file, "\n", 1);
@@ -111,7 +111,7 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 		j = 2;
 		while (cmd->args[cmd->redirectionpos[i] + j]
 			&& cmd->args[cmd->redirectionpos[i]
-			+ j] != cmd->args[cmd->redirectionpos[i + 1]])
+				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
 		{
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
 			j++;
@@ -123,7 +123,7 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 		j = 1;
 		while (cmd->args[cmd->redirectionpos[i] + j]
 			&& cmd->args[cmd->redirectionpos[i]
-			+ j] != cmd->args[cmd->redirectionpos[i + 1]])
+				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
 		{
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
 			j++;

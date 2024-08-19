@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/08 23:53:34 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:02:40 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	last_reversed(t_cmd *cmd, int flag)
 
 void	aplly_redirections(t_cmd *cmd, t_main *main)
 {
-	int file;
-	int i;
+	int	file;
+	int	i;
 
 	i = 0;
 	file = 0;
