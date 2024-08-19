@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 00:17:44 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 00:26:13 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,11 @@
 
 void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
-	int		status;
 	char	**a;
 
 	a = NULL;
-	if (check_builtins2(cmd, envp, main) == 1 && check[0] == -1)
-		status = 127;
 	if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
-	{
-		if (cmd->realarg[0][0] == '/')
-			execve(cmd->realarg[0], cmd->realarg, envp);
-		execve(cmd->path, cmd->realarg, envp);
-		if (ft_strncmp(cmd->args[0], "./", 2) == 0)
-		{
-			write(2, " No such file or directory\n", 28);
-			status = 126;
-			free_every_thing(cmd, main, check);
-			exit(status);
-		}
-		if (ft_strncmp(cmd->args[0], "/", 1) == 0)
-			write(2, " No such file or directory\n", 28);
-		else if (cmd->args[0][0] == '$' && cmd->args[1]
-			&& check_paired(cmd->args[0], main->env, main->export,
-				ft_strlen(cmd->args[0]) - 1)[0] == -1)
-			execve(cmd->path, &cmd->args[1], envp);
-		else
-			write(2, " command not found\n", 19);
-		status = 127;
-		free_every_thing(cmd, main, check);
-		exit(status);
-	}
+		not_builtin_helper(check, envp, cmd, main);
 	else
 	{
 		execve("./minishell", a, envp);

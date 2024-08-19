@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 00:18:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 00:28:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ typedef struct s_ar
 	int	flag;
 }		t_ar;
 
+void				not_builtin_helper(int *check, char **envp, t_cmd *cmd,
+						t_main *main);
 void				child2(t_cmd *cmd, t_main *main);
 void				check_nobuiltins_notexecutable(int *check, t_cmd *cmd,
 						t_main *main);

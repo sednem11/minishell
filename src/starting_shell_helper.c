@@ -6,11 +6,39 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 00:15:01 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 00:28:02 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	not_builtin_helper(int *check, char **envp, t_cmd *cmd,
+		t_main *main)
+{
+	int	status;
+
+	if (cmd->realarg[0][0] == '/')
+		execve(cmd->realarg[0], cmd->realarg, envp);
+	execve(cmd->path, cmd->realarg, envp);
+	if (ft_strncmp(cmd->args[0], "./", 2) == 0)
+	{
+		write(2, " No such file or directory\n", 28);
+		status = 126;
+		free_every_thing(cmd, main, check);
+		exit(status);
+	}
+	if (ft_strncmp(cmd->args[0], "/", 1) == 0)
+		write(2, " No such file or directory\n", 28);
+	else if (cmd->args[0][0] == '$' && cmd->args[1]
+		&& check_paired(cmd->args[0], main->env, main->export,
+			ft_strlen(cmd->args[0]) - 1)[0] == -1)
+		execve(cmd->path, &cmd->args[1], envp);
+	else
+		write(2, " command not found\n", 19);
+	status = 127;
+	free_every_thing(cmd, main, check);
+	exit(status);
+}
 
 void	child2(t_cmd *cmd, t_main *main)
 {
