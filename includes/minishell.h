@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 01:41:35 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:29:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ int					count_redirections(char **argv);
 void				free_cmd_args(t_cmd *cmd);
 char				**ft_split2(char const *s, char c);
 void				closepipes(t_cmd *cmd);
-void				set_comands2(t_cmd *cmd);
+void				set_comands2(t_cmd *cmd, t_main *main, char **path2,
+						char **envp);
 t_main				*execute_function(char *user_input, char **envp, t_cmd *cmd,
 						t_main *main);
 int					pars_args(char **cmds);

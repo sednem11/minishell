@@ -6,17 +6,49 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 18:25:32 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:48:16 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+t_cmd	*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin)
+{
+	int	j;
+
+	j = 0;
+	cmd2->args = ft_split3(cmd2->argv2[i], '\3');
+	cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
+	cmd2->redirection = ft_calloc(sizeof(int),
+			count_redirections(cmd2->args));
+	cmd2->redirectionpos = ft_calloc(sizeof(int),
+			count_redirections(cmd2->args));
+	cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
+	while (cmd2->args[j])
+	{
+		check_redirections(cmd2, cmd2->args[j], j);
+		j++;
+	}
+	if (i == 0)
+		begin = cmd2;
+	return (begin);
+}
+
+t_cmd	*set_comands_help2(t_cmd *cmd2, char *argv, int i, t_cmd *begin)
+{
+	cmd2->begining = begin;
+	if (cmd2->argv2[i + 1])
+	{
+		cmd2->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
+		cmd2->next->argv2 = ft_split(argv, '\4');
+		cmd2 = cmd2->next;
+	}
+	return (cmd2);
+}
+
 t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 {
 	int		i;
-	int		j;
-	int		*place;
 	char	**path2;
 	t_cmd	*cmd2;
 	t_cmd	*begin;
@@ -24,43 +56,17 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	i = 0;
 	cmd2 = NULL;
 	path2 = ft_calloc(sizeof(char *), 2);
-	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin");
-	(void)envp;
+	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:");
+	path2[0] = ft_strjoin(path2[0], "/usr/sbin:/usr/bin:/sbin:/bin");
 	if (cmd)
 		free_cmd_args(cmd);
 	cmd2 = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 	cmd2->argv2 = ft_split(argv, '\4');
 	while (cmd2->argv2[i])
 	{
-		j = 0;
-		cmd2->args = ft_split3(cmd2->argv2[i], '\3');
-		cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
-		cmd2->redirection = ft_calloc(sizeof(int),
-				count_redirections(cmd2->args));
-		cmd2->redirectionpos = ft_calloc(sizeof(int),
-				count_redirections(cmd2->args));
-		cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
-		while (cmd2->args[j])
-		{
-			check_redirections(cmd2, cmd2->args[j], j);
-			j++;
-		}
-		place = check_paired("PATH=", main->env, main->export, 5);
-		if (place[1] == -1)
-			cmd2->path = get_paths(cmd2->args[0], path2);
-		else
-			cmd2->path = get_paths(cmd2->args[0], envp);
-		free(place);
-		if (i == 0)
-			begin = cmd2;
-		cmd2->begining = begin;
-		set_comands2(cmd2);
-		if (cmd2->argv2[i + 1])
-		{
-			cmd2->next = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
-			cmd2->next->argv2 = ft_split(argv, '\4');
-			cmd2 = cmd2->next;
-		}
+		begin = set_comands_help(i, cmd2, begin);
+		set_comands2(cmd2, main, path2, envp);
+		cmd2 = set_comands_help2(cmd2, argv, i, begin);
 		i++;
 	}
 	free(path2[0]);

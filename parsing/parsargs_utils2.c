@@ -6,14 +6,22 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 22:01:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 15:41:16 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	set_comands2(t_cmd *cmd)
+void	set_comands2(t_cmd *cmd, t_main *main, char **path2, char **envp)
 {
+	int	*place;
+
+	place = check_paired("PATH=", main->env, main->export, 5);
+	if (place[1] == -1)
+		cmd->path = get_paths(cmd->args[0], path2);
+	else
+		cmd->path = get_paths(cmd->args[0], envp);
+	free(place);
 	if (pipe(cmd->fd) == -1)
 		return ;
 }

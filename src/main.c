@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 22:45:34 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 16:40:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ t_main	*main_helper2(t_cmd *cmd, t_main *main, t_main *next, char *user_input)
 		next = main;
 	else
 		next = execute_function(user_input, main->env, cmd, main);
-	main = next;
-	return (main);
+	return (next);
 }
 
 int	main_helper(t_cmd *cmd, t_main *main, char *user_input)
