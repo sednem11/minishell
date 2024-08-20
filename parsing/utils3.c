@@ -6,11 +6,53 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 00:01:16 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 18:20:35 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 01:17:40 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	redirection4_helper(t_cmd *cmd, int i, int j)
+{
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3
+		&& cmd->args[cmd->redirectionpos[i] + 2])
+	{
+		while (cmd->args[cmd->redirectionpos[i] + j]
+			&& cmd->args[cmd->redirectionpos[i]
+				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
+		{
+			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
+			j++;
+		}
+	}
+	else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
+		&& cmd->args[cmd->redirectionpos[i] + 1])
+	{
+		j = 1;
+		while (cmd->args[cmd->redirectionpos[i] + j]
+			&& cmd->args[cmd->redirectionpos[i]
+				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
+		{
+			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
+			j++;
+		}
+	}
+}
+
+void	redirection3_help(t_cmd *cmd, int i, int file, char *input)
+{
+	while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+			ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+	{
+		if (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
+				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+		{
+			write(file, input, ft_strlen(input));
+			write(file, "\n", 1);
+		}
+		input = readline("heredoc> ");
+	}
+}
 
 void	free_paths(char **paths, char **cmd)
 {

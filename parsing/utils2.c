@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 15:23:23 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 01:17:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,19 +84,7 @@ void	redirection3(t_cmd *cmd, int i, int file)
 		}
 	}
 	else
-	{
-		while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
-		{
-			if (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-					ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
-			{
-				write(file, input, ft_strlen(input));
-				write(file, "\n", 1);
-			}
-			input = readline("heredoc> ");
-		}
-	}
+		redirection3_help(cmd, i, file, input);
 	if (check_last_redirection2(cmd, i) == 0)
 		alloc_heredoc(cmd, "temporary");
 }
@@ -105,30 +93,8 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 {
 	int	j;
 
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3
-		&& cmd->args[cmd->redirectionpos[i] + 2])
-	{
-		j = 2;
-		while (cmd->args[cmd->redirectionpos[i] + j]
-			&& cmd->args[cmd->redirectionpos[i]
-				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
-		{
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
-			j++;
-		}
-	}
-	else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
-		&& cmd->args[cmd->redirectionpos[i] + 1])
-	{
-		j = 1;
-		while (cmd->args[cmd->redirectionpos[i] + j]
-			&& cmd->args[cmd->redirectionpos[i]
-				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
-		{
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
-			j++;
-		}
-	}
+	j = 2;
+	redirection4_helper(cmd, i, j);
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 		file = (open(&cmd->args[cmd->redirectionpos[i]][2],
 					O_WRONLY | O_CREAT | O_APPEND, 0777));

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 22:01:31 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 01:43:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,43 +49,38 @@ int	check_last(t_main *main)
 	return (n);
 }
 
+int	print_export_help(t_main *main, int i, int n, int z)
+{
+	if (ft_strlen_upd(main->export[i]) > ft_strlen_upd(main->export[n]))
+		z = ft_strlen_upd(main->export[n]);
+	else
+		z = ft_strlen_upd(main->export[i]);
+	return (z);
+}
+
 void	print_export(t_main *main)
 {
-	int	i;
-	int	n;
-	int	z;
-	int	a;
-	int	c;
-
-	a = 0;
-	c = 0;
-	while (matrixlen(main->export) > a + 1)
+	main->a = 0;
+	main->c = 0;
+	while (matrixlen(main->export) > main->a + 1)
 	{
-		n = check_last(main);
-		i = 0;
-		while (main->export[i])
+		main->n = check_last(main);
+		main->i = 0;
+		while (main->export[main->i])
 		{
-			if (ft_strlen_upd(main->export[i]) > ft_strlen_upd(main->export[n]))
-				z = ft_strlen_upd(main->export[n]);
-			else
-				z = ft_strlen_upd(main->export[i]);
-			if (ft_strncmp(main->export[i], main -> export[n], z) < 0 && a == 0)
-				n = i;
-			else if (a > 0 && ft_strncmp(main->export[i], main -> export[c],
-					ft_strlen_upd(main->export[i])) > 0)
-			{
-				if (ft_strncmp(main->export[i], main -> export[n], z) < 0)
-					n = i;
-				else if (ft_strncmp(main->export[i], main -> export[n], z) == 0
-					&& ft_strlen_upd(main->export[i])
-					!= ft_strlen_upd(main->export[n]))
-					n = i;
-			}
-			i++;
+			main->z = print_export_help(main, main->i, main->n, main->z);
+			if (ft_strncmp(main->export[main->i],
+					main->export[main->n], main->z) < 0 && main->a == 0)
+				main->n = main->i;
+			else if (main->a > 0 && ft_strncmp(main->export[main->i],
+					main -> export[main->c],
+					ft_strlen_upd(main->export[main->i])) > 0)
+				main->n = print_export_help2(main, main->i, main->n, main->z);
+			main->i++;
 		}
-		printf("declare -x %s\n", main->export[n]);
-		c = n;
-		a++;
+		printf("declare -x %s\n", main->export[main->n]);
+		main->c = main->n;
+		main->a++;
 	}
 }
 

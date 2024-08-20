@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:05:09 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 22:05:15 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/20 00:43:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ int	check_equal(char *value)
 		i++;
 	}
 	return (-1);
+}
+
+void	print_dolar_helper(t_main *main, char **value)
+{
+	int	i;
+
+	i = 0;
+	while (main->env[i])
+	{
+		if (ft_strncmp(value[0], main->env[i], ft_strlen(value[0])) == 0
+			&& main->env[i][ft_strlen(value[0])] == '='
+			&& check_equal(value[0]) == -1)
+			printf("%s", &main->env[i][ft_strlen(value[0]) + 1]);
+		i++;
+	}
 }
 
 void	print_dolar(t_main *main, char *arg)
@@ -48,15 +63,5 @@ void	print_dolar(t_main *main, char *arg)
 		}
 	}
 	else
-	{
-		i = 0;
-		while (main->env[i])
-		{
-			if (ft_strncmp(value[0], main->env[i], ft_strlen(value[0])) == 0
-				&& main->env[i][ft_strlen(value[0])] == '='
-				&& check_equal(value[0]) == -1)
-				printf("%s", &main->env[i][ft_strlen(value[0]) + 1]);
-			i++;
-		}
-	}
+		print_dolar_helper(main, value);
 }
