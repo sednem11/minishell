@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 15:48:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/21 00:08:50 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,16 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	char	**path2;
 	t_cmd	*cmd2;
 	t_cmd	*begin;
+	char	*temp;
 
 	i = 0;
+	(void)cmd;
 	cmd2 = NULL;
 	path2 = ft_calloc(sizeof(char *), 2);
 	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:");
+	temp = path2[0];
 	path2[0] = ft_strjoin(path2[0], "/usr/sbin:/usr/bin:/sbin:/bin");
-	if (cmd)
-		free_cmd_args(cmd);
+	free(temp);
 	cmd2 = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 	cmd2->argv2 = ft_split(argv, '\4');
 	while (cmd2->argv2[i])
