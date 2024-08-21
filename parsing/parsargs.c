@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/21 00:08:50 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/21 12:17:27 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	t_cmd	*begin;
 	char	*temp;
 
-	i = 0;
+	i = -1;
 	(void)cmd;
 	cmd2 = NULL;
 	path2 = ft_calloc(sizeof(char *), 2);
@@ -64,12 +64,11 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	free(temp);
 	cmd2 = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
 	cmd2->argv2 = ft_split(argv, '\4');
-	while (cmd2->argv2[i])
+	while (cmd2->argv2[++i])
 	{
 		begin = set_comands_help(i, cmd2, begin);
 		set_comands2(cmd2, main, path2, envp);
 		cmd2 = set_comands_help2(cmd2, argv, i, begin);
-		i++;
 	}
 	free(path2[0]);
 	free(path2);

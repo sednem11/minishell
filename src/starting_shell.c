@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 16:43:23 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/21 17:39:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ t_cmd	*execute_function_helper(t_main *main, char **envp, t_cmd *cmd,
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		t_main *main)
 {
+	char	*line;
+
 	if (cmd->next || check_builtins2(cmd, envp, main) == 1
 		|| cmd->redirectionoverall != 0)
 	{
@@ -96,7 +98,15 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 	else
 		main = check_builtins(cmd, envp, main, user_input);
 	while (waitpid(-1, &main->status, 0) != -1)
-		;
+	{
+		line = get_next_line(1);
+		if (line && ft_strncmp(line, "\n", 2) == 0)
+		{
+			free(line);
+			break;
+		}
+		free(line);
+	}
 	if (WIFEXITED(main->status))
 		main->status = WEXITSTATUS(main->status);
 	return (main);
