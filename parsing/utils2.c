@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 18:19:46 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:55:32 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,11 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 {
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
 	{
-		if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
 		file = (open(&cmd->args[cmd->redirectionpos[i]][1],
 					O_WRONLY | O_CREAT | O_TRUNC, 0777));
 	}
 	else
 	{
-		if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 2]);
 		file = (open(cmd->args[cmd->redirectionpos[i] + 1],
 					O_WRONLY | O_CREAT | O_TRUNC, 0777));
 	}
