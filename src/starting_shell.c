@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 11:06:04 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:39:51 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		not_builtin(check, envp, cmd, main);
 	check_builtins(cmd, envp, main, user_input);
 	free_every_thing(cmd, main, check);
+	free(main->cmd);
+	free(main->pid);
 	exit(0);
 }
 
@@ -125,6 +127,7 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		waitpid(main->pid[i], &main->status, 0);
 		i++;
 	}
+	free(main->cmd);
 	free(main->pid);
 	if (WIFEXITED(main->status))
 		main->status = WEXITSTATUS(main->status);

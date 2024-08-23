@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/21 16:07:29 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:47:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd,
 
 	if (cmd->realarg[0][0] == '/')
 		execve(cmd->realarg[0], cmd->realarg, envp);
-	execve(cmd->path, cmd->realarg, envp);
+	if (cmd->path)
+		execve(cmd->path, cmd->realarg, envp);
 	if (ft_strncmp(cmd->args[0], "./", 2) == 0)
 	{
 		write(2, " No such file or directory\n", 28);
@@ -94,4 +95,6 @@ void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
 		}
 	}
 	free(check2);
+	free(main->cmd);
+	free(main->pid);
 }
