@@ -19,8 +19,7 @@ t_cmd	*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin)
 	j = 0;
 	cmd2->args = ft_split3(cmd2->argv2[i], '\3');
 	cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
-	cmd2->redirection = ft_calloc(sizeof(int),
-			count_redirections(cmd2->args));
+	cmd2->redirection = ft_calloc(sizeof(int), count_redirections(cmd2->args));
 	cmd2->redirectionpos = ft_calloc(sizeof(int),
 			count_redirections(cmd2->args));
 	cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
@@ -72,7 +71,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	}
 	i = 0;
 	cmd = cmd2->begining;
-	while(cmd)
+	while (cmd)
 	{
 		i++;
 		cmd = cmd->next;

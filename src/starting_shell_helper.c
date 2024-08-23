@@ -12,8 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	not_builtin_helper(int *check, char **envp, t_cmd *cmd,
-		t_main *main)
+void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
 	int	status;
 
@@ -80,8 +79,8 @@ void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
 		if (get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
 				+ 1], main->env))
 		{
-			execve(get_paths(&main->env[check2[0]]
-				[find_equal(main->env[check2[0]]) + 1], main->env),
+			execve(get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
+					+ 1], main->env),
 				ft_split(&main->env[check2[0]][find_equal(main->env[check2[0]])
 					+ 1], ' '), main->env);
 		}

@@ -61,25 +61,25 @@ typedef struct s_main
 
 typedef struct s_path
 {
-	char	**paths;
-	char	*part_path;
-	char	*path;
-	int		i;
-}			t_path;
+	char			**paths;
+	char			*part_path;
+	char			*path;
+	int				i;
+}					t_path;
 
 typedef struct s_split
 {
-	int		word_len;
-	int		ctd;
-	int		ctd2;
-}			t_split;
+	int				word_len;
+	int				ctd;
+	int				ctd2;
+}					t_split;
 
 typedef struct s_ar
 {
-	int	i;
-	int	j;
-	int	flag;
-}		t_ar;
+	int				i;
+	int				j;
+	int				flag;
+}					t_ar;
 
 int					print_export_help2(t_main *main, int i, int n, int z);
 void				redirection4_helper(t_cmd *cmd, int i, int j);

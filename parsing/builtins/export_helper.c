@@ -17,8 +17,7 @@ int	print_export_help2(t_main *main, int i, int n, int z)
 	if (ft_strncmp(main->export[i], main -> export[n], z) < 0)
 		n = i;
 	else if (ft_strncmp(main->export[i], main -> export[n], z) == 0
-		&& ft_strlen_upd(main->export[i])
-		!= ft_strlen_upd(main->export[n]))
+		&& ft_strlen_upd(main->export[i]) != ft_strlen_upd(main->export[n]))
 		n = i;
 	return (n);
 }

@@ -69,11 +69,11 @@ void	print_export(t_main *main)
 		while (main->export[main->i])
 		{
 			main->z = print_export_help(main, main->i, main->n, main->z);
-			if (ft_strncmp(main->export[main->i],
-					main->export[main->n], main->z) < 0 && main->a == 0)
+			if (ft_strncmp(main->export[main->i], main -> export[main->n], main
+					-> z) < 0 && main->a == 0)
 				main->n = main->i;
-			else if (main->a > 0 && ft_strncmp(main->export[main->i],
-					main -> export[main->c],
+			else if (main->a > 0 && ft_strncmp(main->export[main->i], main
+					-> export[main->c],
 					ft_strlen_upd(main->export[main->i])) > 0)
 				main->n = print_export_help2(main, main->i, main->n, main->z);
 			main->i++;
