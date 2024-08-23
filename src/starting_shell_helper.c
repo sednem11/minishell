@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell_helper.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 12:58:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 18:09:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 
 	if (cmd->realarg[0][0] == '/')
 		execve(cmd->realarg[0], cmd->realarg, envp);
+	if(!cmd->path)
+		cmd->path = get_paths(cmd->realarg[0], main->env);
 	if (cmd->path)
 		execve(cmd->path, cmd->realarg, envp);
 	if (ft_strncmp(cmd->args[0], "./", 2) == 0)
@@ -34,7 +36,7 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 			ft_strlen(cmd->args[0]) - 1)[0] == -1)
 		execve(cmd->path, &cmd->args[1], envp);
 	else
-		write(2, " command not found\n", 19);
+		write(2, "command not found\n", 19);
 	status = 127;
 	free_every_thing(cmd, main, check);
 	exit(status);
