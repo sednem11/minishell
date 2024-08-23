@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 16:29:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:04:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_main
 	int				z;
 	int				a;
 	int				c;
+	pid_t			*pid;
 }					t_main;
 
 typedef struct s_cmd
@@ -50,7 +51,6 @@ typedef struct s_cmd
 	int				*spaces;
 	int				fd[2];
 	int				numb;
-	pid_t			pid;
 	int				i;
 	int				j;
 	struct s_cmd	*next;

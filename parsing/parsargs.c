@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/21 12:17:27 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/22 14:18:23 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,14 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 		set_comands2(cmd2, main, path2, envp);
 		cmd2 = set_comands_help2(cmd2, argv, i, begin);
 	}
+	i = 0;
+	cmd = cmd2->begining;
+	while(cmd)
+	{
+		i++;
+		cmd = cmd->next;
+	}
+	cmd2->numb = i;
 	free(path2[0]);
 	free(path2);
 	free(argv);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/21 17:39:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/22 16:16:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,15 @@ void	closepipes_helper(t_cmd *cmd)
 		closepipes(cmd);
 }
 
-t_cmd	*execute_function_helper(t_main *main, char **envp, t_cmd *cmd,
+t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
-	pid_t	id;
-
-	id = fork();
-	if (id == 0)
-		child_process(user_input, envp, cmd, main);
+	main->pid[i] = fork();
+	if (main->pid[i] == 0)
+		child_process(user_input, main->env, cmd, main);
 	if (cmd->redirectionoverall == 2)
 	{
-		while (waitpid(id, &main->status, 0) != -1)
+		while (waitpid(main->pid[i], &main->status, 0) != -1)
 			;
 	}
 	closepipes(cmd);
@@ -76,8 +74,10 @@ t_cmd	*execute_function_helper(t_main *main, char **envp, t_cmd *cmd,
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		t_main *main)
 {
-	char	*line;
+	int	i;
 
+	i = 0;
+	main->pid = ft_calloc(cmd->numb + 1, sizeof(pid_t));
 	if (cmd->next || check_builtins2(cmd, envp, main) == 1
 		|| cmd->redirectionoverall != 0)
 	{
@@ -92,21 +92,21 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit",
 					4) == 0)
 				return (exitt(cmd, envp, main));
-			cmd = execute_function_helper(main, envp, cmd, user_input);
+			cmd = execute_function_helper(main, i, cmd, user_input);
+			i++;
 		}
 	}
 	else
 		main = check_builtins(cmd, envp, main, user_input);
-	while (waitpid(-1, &main->status, 0) != -1)
+	i = 0;
+	while(main->pid[i])
 	{
-		line = get_next_line(1);
-		if (line && ft_strncmp(line, "\n", 2) == 0)
-		{
-			free(line);
-			break;
-		}
-		free(line);
+		waitpid(main->pid[i], &main->status, 0);
+		getchar();
+		kill(main->pid[i], SIGUSR1);
+		i++;
 	}
+	free(main->pid);
 	if (WIFEXITED(main->status))
 		main->status = WEXITSTATUS(main->status);
 	return (main);
