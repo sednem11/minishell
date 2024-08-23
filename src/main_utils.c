@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:45:13 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 22:54:59 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:42:04 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,27 @@ t_main	*set_main(t_main *main, char **envp)
 	}
 	main = set_main_helper(main, envp);
 	return (main);
+}
+
+int	check_cmds(t_main *main)
+{
+	int	i;
+
+	i = 0;
+	while (main->cmd[i])
+	{
+		if (ft_strncmp(main->cmd[i]->args[0], "cat", 3) != 0
+			|| main->cmd[i]->args[1])
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	closepipes_helper(t_cmd *cmd)
+{
+	if ((cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
+		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit", 4) == 0))
+		closepipes(cmd);
 }

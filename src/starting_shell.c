@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 12:34:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:52:08 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	exit(0);
 }
 
-void	closepipes_helper(t_cmd *cmd)
-{
-	if ((cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
-		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
-		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit", 4) == 0))
-		closepipes(cmd);
-}
-
 t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
@@ -72,23 +64,7 @@ t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 	return (cmd);
 }
 
-int	check_cmds(t_main *main)
-{
-	int	i;
-
-	i = 0;
-	while (main->cmd[i])
-	{
-		if (ft_strncmp(main->cmd[i]->args[0], "cat", 3) != 0
-			|| main->cmd[i]->args[1])
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
-		t_main *main)
+t_main	*execute_cmd(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 {
 	int	i;
 
@@ -101,25 +77,31 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		while (cmd)
 		{
 			closepipes_helper(cmd);
-			if (cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
+			if (!cmd->next && !ft_strncmp(cmd->args[0], "export", 6))
 				return (export(cmd, envp, main));
-			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset",
-					5) == 0)
+			if (!cmd->next && !ft_strncmp(cmd->args[0], "unset", 5))
 				return (unset(cmd, main, envp));
-			else if (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit",
-					4) == 0)
+			if (!cmd->next && !ft_strncmp(cmd->args[0], "exit", 4))
 				return (exitt(cmd, envp, main));
-			cmd = execute_function_helper(main, i, cmd, user_input);
-			i++;
+			cmd = execute_function_helper(main, i++, cmd, user_input);
 		}
 	}
 	else
 		main = check_builtins(cmd, envp, main, user_input);
+	return (main);
+}
+
+t_main	*execute_function(char *user_input, char **envp,
+	t_cmd *cmd, t_main *main)
+{
+	int	i;
+
+	main = execute_cmd(cmd, envp, main, user_input);
 	i = 0;
 	while (main->pid[i])
 	{
-		if (check_cmds(main) == 1 && ft_strncmp(main->cmd[i]->args[0], "cat",
-				3) == 0 && !main->cmd[i]->args[1])
+		if (check_cmds(main) == 1 && !ft_strncmp(main->cmd[i]->args[0],
+				"cat", 3) && !main->cmd[i]->args[1])
 		{
 			getchar();
 			kill(main->pid[i], SIGUSR1);
@@ -127,8 +109,8 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		waitpid(main->pid[i], &main->status, 0);
 		i++;
 	}
-	free(main->cmd);
 	free(main->pid);
+	free(main->cmd);
 	if (WIFEXITED(main->status))
 		main->status = WEXITSTATUS(main->status);
 	return (main);

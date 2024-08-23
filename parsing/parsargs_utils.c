@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:13:45 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 16:42:13 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:40:12 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,19 @@ void	free_cmd_args(t_cmd *cmd)
 		free(cmd->path);
 		free(cmd);
 	}
+}
+
+char	**initialize_pathss(char *argv, t_cmd **cmd2)
+{
+	char	**path2;
+	char	*temp;
+
+	path2 = ft_calloc(sizeof(char *), 2);
+	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:");
+	temp = path2[0];
+	path2[0] = ft_strjoin(path2[0], "/usr/sbin:/usr/bin:/sbin:/bin");
+	free(temp);
+	*cmd2 = ft_calloc(1, sizeof(t_cmd));
+	(*cmd2)->argv2 = ft_split(argv, '\4');
+	return (path2);
 }

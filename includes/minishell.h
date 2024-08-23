@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 10:50:35 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:43:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,5 +146,8 @@ t_main				*set_main3(t_main *main, char **envp, char **envp2,
 t_main				*set_main(t_main *main, char **envp);
 void				signal_main(void);
 void				check_redirections(t_cmd *cmd, char *arg, int j);
+char				**initialize_pathss(char *argv, t_cmd **cmd2);
+int					check_cmds(t_main *main);
+void				closepipes_helper(t_cmd *cmd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell_helper.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 11:47:52 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:58:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ void	child2(t_cmd *cmd, t_main *main)
 		aplly_redirections(cmd, main);
 }
 
+void	free_both(t_main *main)
+{
+	free(main->cmd);
+	free(main->pid);
+}
+
 void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
 {
 	int	*check2;
@@ -79,8 +85,8 @@ void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
 		if (get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
 				+ 1], main->env))
 		{
-			execve(get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
-					+ 1], main->env),
+			execve(get_paths(&main->env[check2[0]]
+				[find_equal(main->env[check2[0]]) + 1], main->env),
 				ft_split(&main->env[check2[0]][find_equal(main->env[check2[0]])
 					+ 1], ' '), main->env);
 		}
@@ -94,6 +100,5 @@ void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
 		}
 	}
 	free(check2);
-	free(main->cmd);
-	free(main->pid);
+	free_both(main);
 }

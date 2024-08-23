@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/22 14:18:23 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 12:39:58 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,23 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	char	**path2;
 	t_cmd	*cmd2;
 	t_cmd	*begin;
-	char	*temp;
 
 	i = -1;
-	(void)cmd;
-	cmd2 = NULL;
-	path2 = ft_calloc(sizeof(char *), 2);
-	path2[0] = ft_strdup("PATH=/usr/local/sbin:/usr/local/bin:");
-	temp = path2[0];
-	path2[0] = ft_strjoin(path2[0], "/usr/sbin:/usr/bin:/sbin:/bin");
-	free(temp);
-	cmd2 = ft_calloc(sizeof(t_cmd), sizeof(t_cmd));
-	cmd2->argv2 = ft_split(argv, '\4');
+	begin = NULL;
+	path2 = initialize_pathss(argv, &cmd2);
 	while (cmd2->argv2[++i])
 	{
 		begin = set_comands_help(i, cmd2, begin);
 		set_comands2(cmd2, main, path2, envp);
 		cmd2 = set_comands_help2(cmd2, argv, i, begin);
 	}
-	i = 0;
+	cmd2->numb = 0;
 	cmd = cmd2->begining;
 	while (cmd)
 	{
-		i++;
+		cmd2->numb++;
 		cmd = cmd->next;
 	}
-	cmd2->numb = i;
 	free(path2[0]);
 	free(path2);
 	free(argv);
