@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/22 14:04:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 10:50:35 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,6 @@
 # include <string.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
-
-typedef struct s_main
-{
-	char			**env;
-	char			**export;
-	int				status;
-	int				spaces;
-	struct s_main	*next;
-	int				i;
-	int				n;
-	int				z;
-	int				a;
-	int				c;
-	pid_t			*pid;
-}					t_main;
 
 typedef struct s_cmd
 {
@@ -57,6 +42,22 @@ typedef struct s_cmd
 	struct s_cmd	*begining;
 	int				check;
 }					t_cmd;
+
+typedef struct s_main
+{
+	char			**env;
+	char			**export;
+	int				status;
+	int				spaces;
+	struct s_main	*next;
+	int				i;
+	int				n;
+	int				z;
+	int				a;
+	int				c;
+	pid_t			*pid;
+	t_cmd			**cmd;
+}					t_main;
 
 typedef struct s_path
 {

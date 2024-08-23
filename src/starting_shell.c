@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/22 16:16:52 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 11:06:04 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
 	main->pid[i] = fork();
+	main->cmd[i] = cmd;
 	if (main->pid[i] == 0)
 		child_process(user_input, main->env, cmd, main);
 	if (cmd->redirectionoverall == 2)
@@ -71,6 +72,20 @@ t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 	return (cmd);
 }
 
+int		check_cmds(t_main *main)
+{
+	int	i;
+
+	i = 0;
+	while(main->cmd[i])
+	{
+		if (ft_strncmp(main->cmd[i]->args[0], "cat", 3) != 0 || main->cmd[i]->args[1])
+			return(1);
+		i++;
+	}
+	return(0);
+}
+
 t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		t_main *main)
 {
@@ -78,6 +93,7 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 
 	i = 0;
 	main->pid = ft_calloc(cmd->numb + 1, sizeof(pid_t));
+	main->cmd = ft_calloc(cmd->numb + 1, sizeof(t_cmd));
 	if (cmd->next || check_builtins2(cmd, envp, main) == 1
 		|| cmd->redirectionoverall != 0)
 	{
@@ -101,9 +117,12 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 	i = 0;
 	while(main->pid[i])
 	{
+		if (check_cmds(main) == 1 && ft_strncmp(main->cmd[i]->args[0], "cat", 3) == 0 && !main->cmd[i]->args[1])
+		{
+			getchar();
+			kill(main->pid[i], SIGUSR1);
+		}
 		waitpid(main->pid[i], &main->status, 0);
-		getchar();
-		kill(main->pid[i], SIGUSR1);
 		i++;
 	}
 	free(main->pid);
