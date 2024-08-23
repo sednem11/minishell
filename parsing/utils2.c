@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 12:36:44 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:15:35 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,8 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 
 void	free_every_thing(t_cmd *cmd, t_main *main, int *check)
 {
-	free_cmd_args(cmd);
 	free_env_and_export(main);
 	free(main);
+	free_cmd_args(cmd);
 	free(check);
 }

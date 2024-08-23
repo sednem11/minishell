@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:45:13 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 12:42:04 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 16:32:17 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ int	check_cmds(t_main *main)
 void	closepipes_helper(t_cmd *cmd)
 {
 	if ((cmd->next == NULL && ft_strncmp(cmd->args[0], "export", 6) == 0)
-		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0)
-		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "exit", 4) == 0))
+		|| (cmd->next == NULL && ft_strncmp(cmd->args[0], "unset", 5) == 0))
 		closepipes(cmd);
 }

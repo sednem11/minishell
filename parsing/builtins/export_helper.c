@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:17:38 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 01:41:17 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 17:21:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,23 @@ void	free_env_and_export(t_main *main)
 	int	i;
 
 	i = 0;
-	while (main->env[i])
+	if (main && main->env)
 	{
-		free(main->env[i]);
-		i++;
+		while (main->env[i])
+		{
+			free(main->env[i]);
+			i++;
+		}
+		free(main->env);
 	}
-	free(main->env);
 	i = 0;
-	while (main->export[i])
+	if (main && main->export)
 	{
-		free(main->export[i]);
-		i++;
+		while (main->export[i])
+		{
+			free(main->export[i]);
+			i++;
+		}
+		free(main->export);
 	}
-	free(main->export);
 }
