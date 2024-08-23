@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 18:55:32 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:07:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,20 +38,7 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 {
 	if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
-	{
-		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
-			file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY,
-						0777));
-		else
-			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY,
-						0777));
-		if (file == -1)
-		{
-			write(2, " no such file or directory\n", 28);
-			main->status = 1;
-			exit(main->status);
-		}
-	}
+		open_file2(cmd, i, &file, main);
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
 		&& check_last_redirection2(cmd, i) == 0)
 	{
@@ -74,19 +61,7 @@ void	redirection3(t_cmd *cmd, int i, int file)
 	input = readline("heredoc> ");
 	file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644));
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
-	{
-		while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-			ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
-		{
-			if (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-				ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
-			{
-				write(file, input, ft_strlen(input));
-				write(file, "\n", 1);
-			}
-			input = readline("heredoc> ");
-		}
-	}
+		process_heredoc3(cmd, i, file, input);
 	else
 		redirection3_help(cmd, i, file, input);
 	if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])

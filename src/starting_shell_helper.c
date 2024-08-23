@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 18:54:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:10:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	exit_helper(t_cmd *cmd, t_main *main, int *check)
 {
-	int status;
-	
+	int	status;
+
 	status = 127;
 	free_every_thing(cmd, main, check);
 	exit(status);

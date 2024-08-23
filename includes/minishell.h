@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 12:43:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/23 19:09:11 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,5 +149,7 @@ void				check_redirections(t_cmd *cmd, char *arg, int j);
 char				**initialize_pathss(char *argv, t_cmd **cmd2);
 int					check_cmds(t_main *main);
 void				closepipes_helper(t_cmd *cmd);
+void				process_heredoc3(t_cmd *cmd, int i, int file, char *input);
+void				open_file2(t_cmd *cmd, int i, int *file, t_main *main);
 
 #endif
