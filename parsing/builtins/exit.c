@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 00:41:15 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/24 20:57:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ void	exitt3(t_cmd *cmd, char *truearg, t_main *main)
 	if (cmd->args[1])
 		free(truearg);
 	free_env_and_export(main);
+	if (main->cmd)
+	{
+		free(main->cmd);
+		main->cmd = NULL;
+	}
 	free(main);
 	if (!cmd->args[1])
 	{

@@ -6,11 +6,24 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:05:09 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 00:43:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/24 13:01:17 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	free_value(char	**value)
+{
+	int	i;
+
+	i = 0;
+	while (value[i])
+	{
+		free(value[i]);
+		i++;
+	}
+	free(value);
+}
 
 int	check_equal(char *value)
 {
@@ -51,6 +64,7 @@ void	print_dolar(t_main *main, char *arg)
 	if (!arg[0] || arg[0] == ' ')
 	{
 		printf("$");
+		free_value(value);
 		return ;
 	}
 	if (arg[0] == '?')
@@ -64,4 +78,5 @@ void	print_dolar(t_main *main, char *arg)
 	}
 	else
 		print_dolar_helper(main, value);
+	free_value(value);
 }

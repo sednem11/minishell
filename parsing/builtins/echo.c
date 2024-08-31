@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 22:05:51 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/29 23:56:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,34 @@ int	check_dolar(char *user_input)
 	return (1);
 }
 
-void	echo_redirections(t_cmd *cmd)
+int	check_backward_redirection(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd->redirection[i])
+	{
+		if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	echo_redirections2(t_cmd *cmd)
 {
 	int	i;
 
 	i = 1;
-	while (cmd->realarg[i])
+	if (cmd->redirectionoverall == 1 && check_backward_redirection(cmd) == 0)
 	{
-		printf("%s", cmd->realarg[i]);
-		if (cmd->realarg[i + 1])
-			printf("%s", " ");
-		i++;
+		while (cmd->realarg[i])
+		{
+			printf("%s", cmd->realarg[i]);
+			if (cmd->realarg[i + 1])
+				printf("%s", " ");
+			i++;
+		}
 	}
 	printf("\n");
 }
@@ -74,7 +91,7 @@ void	print_args(char **args, char *user_input, int i, t_main *main)
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 {
 	if (cmd->args[1] && cmd->redirectionoverall != 0)
-		echo_redirections(cmd);
+		echo_redirections2(cmd);
 	else if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 2) == 0
 		&& ft_strlen(cmd->args[1]) == 2 && cmd->args[3] == NULL)
 	{

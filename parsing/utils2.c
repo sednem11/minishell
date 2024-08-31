@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 19:07:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/24 12:36:11 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,6 @@ void	free_every_thing(t_cmd *cmd, t_main *main, int *check)
 	free_env_and_export(main);
 	free(main);
 	free_cmd_args(cmd);
-	free(check);
+	if (check)
+		free(check);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 17:42:40 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:09:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	child2(cmd, main);
-	check_nobuiltins_notexecutable(check, cmd, main);
 	if (check_builtins2(cmd, envp, main) == 1 && check[0] == -1)
 	{
 		execve(b, cmd->realarg, envp);
@@ -42,6 +41,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	}
 	if (check_builtins2(cmd, envp, main) == 1 && check[0] != -1)
 		not_builtin(check, envp, cmd, main);
+	free(check);
+	check = NULL;
 	main = check_builtins(cmd, envp, main, user_input);
 	free_every_thing(cmd, main, check);
 	exit(0);
@@ -69,10 +70,10 @@ t_main	*execute_cmd(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 	int	i;
 
 	i = 0;
-	main->cmd = ft_calloc(10000, sizeof(t_cmd));
 	if (cmd->next || check_builtins2(cmd, envp, main) == 1
 		|| cmd->redirectionoverall != 0)
 	{
+		main->cmd = ft_calloc(10000, sizeof(t_cmd));
 		main->pid = ft_calloc(10000, sizeof(pid_t));
 		while (cmd)
 		{
@@ -103,13 +104,17 @@ t_main	*execute_function(char *user_input, char **envp,
 				kill(main->pid[i], SIGUSR1);
 			}
 			waitpid(main->pid[i], &main->status, 0);
+			if (WIFEXITED(main->status))
+				main->status = WEXITSTATUS(main->status);
 			i++;
 		}
 		free(main->pid);
 		main->pid = NULL;
 	}
-	free(main->cmd);
-	if (WIFEXITED(main->status))
-		main->status = WEXITSTATUS(main->status);
+	if (main->cmd)
+	{
+		free(main->cmd);
+		main->cmd = NULL;
+	}
 	return (main);
 }

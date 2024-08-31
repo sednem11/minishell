@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell_helper.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 19:10:34 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/30 04:26:14 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void	child2(t_cmd *cmd, t_main *main)
 void	free_both(t_main *main)
 {
 	free(main->cmd);
+	main->cmd = NULL;
 	free(main->pid);
+	main->pid = NULL;
 }
 
 void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)

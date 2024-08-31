@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/22 12:50:40 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/24 12:26:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ int	main(int argc, char **argv, char **envp)
 			return (1);
 		if (*user_input != '\0' && check_input(user_input) == 0)
 			main = main_helper2(cmd, main, next, user_input);
+		free(user_input);
 	}
 }
