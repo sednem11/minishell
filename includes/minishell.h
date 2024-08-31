@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/30 04:27:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/31 20:32:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_ar
 	int				flag;
 }					t_ar;
 
+void				free_both(t_main *main);
 int					print_export_help2(t_main *main, int i, int n, int z);
 void				redirection4_helper(t_cmd *cmd, int i, int j);
 void				redirection3_help(t_cmd *cmd, int i, int file, char *input);

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/30 04:26:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/31 20:33:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,33 +83,4 @@ void	free_both(t_main *main)
 	main->cmd = NULL;
 	free(main->pid);
 	main->pid = NULL;
-}
-
-void	check_nobuiltins_notexecutable(int *check, t_cmd *cmd, t_main *main)
-{
-	int	*check2;
-
-	check2 = check_paired(&cmd->args[0][1], main->env, main->export,
-			ft_strlen(&cmd->args[0][1]));
-	if (cmd->args[0][0] == '$' && check2[0] != -1)
-	{
-		if (get_paths(&main->env[check2[0]][find_equal(main->env[check2[0]])
-				+ 1], main->env))
-		{
-			execve(get_paths(&main->env[check2[0]]
-				[find_equal(main->env[check2[0]]) + 1], main->env),
-				ft_split(&main->env[check2[0]][find_equal(main->env[check2[0]])
-					+ 1], ' '), main->env);
-		}
-		if (check2[0] != -1)
-		{
-			printf("command not found: %s\n",
-				&main->env[check2[0]][find_equal(main->env[check2[0]]) + 1]);
-			free_every_thing(cmd, main, check);
-			free(check2);
-			exit(-1);
-		}
-	}
-	free(check2);
-	free_both(main);
 }

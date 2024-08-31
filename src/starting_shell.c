@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/31 17:09:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/31 20:33:12 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	child2(cmd, main);
+	free_both(main);
 	if (check_builtins2(cmd, envp, main) == 1 && check[0] == -1)
 	{
 		execve(b, cmd->realarg, envp);

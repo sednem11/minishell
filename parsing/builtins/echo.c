@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/29 23:56:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/08/31 23:11:38 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ int	check_backward_redirection(t_cmd *cmd)
 	return (0);
 }
 
-void	echo_redirections2(t_cmd *cmd)
+
+
+void	echo_redirections3(t_cmd *cmd)
 {
 	int	i;
 
@@ -60,6 +62,36 @@ void	echo_redirections2(t_cmd *cmd)
 		}
 	}
 	printf("\n");
+}
+
+void	echo_redirections2(t_cmd *cmd)
+{
+	int	i;
+
+	i = 1;
+	if (check_backward_redirection(cmd) == 0)
+		echo_redirections3(cmd);
+	else
+	{
+		if (cmd->redirectionoverall == 1)
+		{
+			while (cmd->args[i])
+			{
+				if (ft_strncmp(cmd->args[i], ">", 1) == 0 || (ft_strncmp(cmd->args[i - 1], ">", 1) == 0 &&
+					ft_strlen(cmd->args[i - 1]) <= 2) || ft_strncmp(cmd->args[i], "<", 1) == 0 ||
+					(ft_strncmp(cmd->args[i - 1], "<", 1) == 0 && ft_strlen(cmd->args[i - 1]) <= 2))
+					;
+				else
+				{
+				printf("%s", cmd->args[i]);
+				if (cmd->args[i + 1])
+					printf("%s", " ");
+				}
+				i++;
+			}
+		}
+		printf("\n");
+	}
 }
 
 void	print_args(char **args, char *user_input, int i, t_main *main)
