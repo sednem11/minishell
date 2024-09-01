@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/31 20:32:45 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:26:44 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ typedef struct s_ar
 
 void				free_both(t_main *main);
 int					print_export_help2(t_main *main, int i, int n, int z);
-void				redirection4_helper(t_cmd *cmd, int i, int j);
 void				redirection3_help(t_cmd *cmd, int i, int file, char *input);
 void				not_builtin_helper(int *check, char **envp, t_cmd *cmd,
 						t_main *main);

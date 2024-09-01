@@ -3,41 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 00:01:16 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 12:36:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:26:03 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	redirection4_helper(t_cmd *cmd, int i, int j)
-{
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) < 3
-		&& cmd->args[cmd->redirectionpos[i] + 2])
-	{
-		while (cmd->args[cmd->redirectionpos[i] + j]
-			&& cmd->args[cmd->redirectionpos[i]
-				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
-		{
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
-			j++;
-		}
-	}
-	else if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
-		&& cmd->args[cmd->redirectionpos[i] + 1])
-	{
-		j = 1;
-		while (cmd->args[cmd->redirectionpos[i] + j]
-			&& cmd->args[cmd->redirectionpos[i]
-				+ j] != cmd->args[cmd->redirectionpos[i + 1]])
-		{
-			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + j]);
-			j++;
-		}
-	}
-}
 
 void	redirection3_help(t_cmd *cmd, int i, int file, char *input)
 {

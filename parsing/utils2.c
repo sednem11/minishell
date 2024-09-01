@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/31 23:14:38 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:26:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,6 @@ void	redirection3(t_cmd *cmd, int i, int file)
 
 void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 {
-	int	j;
-
-	j = 2;
-	redirection4_helper(cmd, i, j);
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 		file = (open(&cmd->args[cmd->redirectionpos[i]][2],
 					O_WRONLY | O_CREAT | O_APPEND, 0777));

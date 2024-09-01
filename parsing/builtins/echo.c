@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/31 23:11:38 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:23:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	check_backward_redirection(t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd->redirection[i])
+	while (i < count_redirections(cmd->args))
 	{
 		if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
 			return (1);
@@ -43,8 +43,6 @@ int	check_backward_redirection(t_cmd *cmd)
 	}
 	return (0);
 }
-
-
 
 void	echo_redirections3(t_cmd *cmd)
 {
@@ -77,15 +75,18 @@ void	echo_redirections2(t_cmd *cmd)
 		{
 			while (cmd->args[i])
 			{
-				if (ft_strncmp(cmd->args[i], ">", 1) == 0 || (ft_strncmp(cmd->args[i - 1], ">", 1) == 0 &&
-					ft_strlen(cmd->args[i - 1]) <= 2) || ft_strncmp(cmd->args[i], "<", 1) == 0 ||
-					(ft_strncmp(cmd->args[i - 1], "<", 1) == 0 && ft_strlen(cmd->args[i - 1]) <= 2))
+				if (ft_strncmp(cmd->args[i], ">", 1) == 0
+					|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0
+						&& ft_strlen(cmd->args[i - 1]) <= 2)
+					|| ft_strncmp(cmd->args[i], "<", 1) == 0
+					|| (ft_strncmp(cmd->args[i - 1], "<", 1) == 0
+						&& ft_strlen(cmd->args[i - 1]) <= 2))
 					;
 				else
 				{
-				printf("%s", cmd->args[i]);
-				if (cmd->args[i + 1])
-					printf("%s", " ");
+					printf("%s", cmd->args[i]);
+					if (cmd->args[i + 1])
+						printf("%s", " ");
 				}
 				i++;
 			}

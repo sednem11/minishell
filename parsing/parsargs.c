@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/31 20:51:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:19:17 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,25 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 	k = 0;
 	while (fakeargs[k])
 	{
-		if (ft_strncmp(fakeargs[k], "$", 1) == 0 && fakeargs[k][1] != '?' && fakeargs[k][1])
+		if (ft_strncmp(fakeargs[k], "$", 1) == 0
+			&& fakeargs[k][1] != '?' && fakeargs[k][1])
 		{
-		 	check = check_paired(&fakeargs[i][1], main->env, main->export,
-				ft_strlen(&fakeargs[i][1]));
+			check = check_paired(&fakeargs[i][1], main->env, main->export,
+					ft_strlen(&fakeargs[i][1]));
 			if (check[0] != -1)
 			{
-				expansion = ft_split(&main->env[check[0]][find_equal(main->env[check[0]])
-						+ 1], ' ');
+				expansion = ft_split(&main->env[check[0]]
+					[find_equal(main->env[check[0]]) + 1], ' ');
 				j = 0;
 				while (expansion[j])
 				{
 					cmd->args[i] = ft_strdup(expansion[j]);
+					free(expansion[j]);
 					i++;
 					j++;
 				}
+				free(expansion);
+				free(check);
 			}
 		}
 		else

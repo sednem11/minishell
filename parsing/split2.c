@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tgrunho- <tgrunho-@student.42.fr>>         +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/09 08:38:49 by tgrunho-         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:29:53 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,48 +55,63 @@ static int	count_words3(char const *s, char c)
 	return (j);
 }
 
-static int	count_words2(char const *s, char c)
-{
-	size_t	i;
-	size_t	j;
-	int		check;
+// static int	count_words2(char const *s, char c)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	int		check;
 
-	j = 0;
-	i = 0;
-	check = 1;
-	while (s[i])
-	{
-		if ((s[i] == '>' || s[i] == '<') && check == 1)
-			return (j);
-		if (s[i] != c && check == 1)
-		{
-			j++;
-			check = 0;
-		}
-		else if (s[i] == c)
-			check = 1;
-		i++;
-	}
-	return (j);
-}
+// 	j = 0;
+// 	i = 0;
+// 	check = 1;
+// 	while (s[i])
+// 	{
+// 		if ((s[i] == '>' || s[i] == '<') && check == 1)
+// 			return (j);
+// 		if (s[i] != c && check == 1)
+// 		{
+// 			j++;
+// 			check = 0;
+// 		}
+// 		else if (s[i] == c)
+// 			check = 1;
+// 		i++;
+// 	}
+// 	return (j);
+// }
 
 char	**ft_split2(char const *s, char c)
 {
 	int		i;
+	int		k;
 	int		j;
 	char	**ptr;
+	int		flag;
 
+	flag = 0;
 	i = 0;
 	j = 0;
-	ptr = malloc((count_words2(s, c) + 1) * sizeof(char *));
+	ptr = ft_calloc(100, sizeof (char *));
 	if (!ptr)
 		return (NULL);
 	while (s[i])
 	{
-		while (s[i] == c)
+		k = 0;
+		while (s[i] && (s[i] == c || s[i] == '>' || s[i] == '<' || flag == 1))
+		{
+			if (s[i] == '>' || s[i] == '<')
+				flag = 1;
+			else if (s[i] == c && k == 1)
+				flag = 0;
+			if ((s[i] == '>' || s[i] == '<') && s[i + 1] != c
+				&& s[i + 1] != '>' && s[i + 1] != '<')
+				k = 1;
+			else if ((s[i] == '>' || s[i] == '<') && s[i + 1] == c)
+				k = 0;
+			else if (s[i] != '>' && s[i] != '<' && s[i + 1] != c)
+				k = 1;
 			i++;
-		if (s[i] == '>' || s[i] == '<')
-			break ;
+		}
 		if (s[i] != '\0' && s[i] != c)
 		{
 			ptr[j] = word_aloc(s + i, c);
@@ -105,7 +120,6 @@ char	**ft_split2(char const *s, char c)
 		while (s[i] && s[i] != c)
 			i++;
 	}
-	ptr[j] = NULL;
 	return (ptr);
 }
 
