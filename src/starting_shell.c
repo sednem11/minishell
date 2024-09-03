@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 13:03:54 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:36:23 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 	{
 		execve("./minishell", a, envp);
 		printf("%s\n", strerror(errno));
+		exit(1);
 	}
 }
 
@@ -30,6 +31,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	char	*b;
 
+	signal_main2();
 	main->check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	child2(cmd, main);
@@ -38,6 +40,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	{
 		execve(b, cmd->realarg, envp);
 		write(2, " No such file or directory\n", 28);
+		exit(1);
 	}
 	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] != -1)
 		not_builtin(main->check, envp, cmd, main);
@@ -91,6 +94,9 @@ t_main	*execute_function(char *user_input, char **envp,
 {
 	int	i;
 
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal_main2();
 	main = execute_cmd(cmd, envp, main, user_input);
 	i = 0;
 	if (main->pid)

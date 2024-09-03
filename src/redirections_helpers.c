@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 13:02:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:31:46 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,10 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 		if (cmd->redirection[i] == 2)
 			redirection2(cmd, i, file, main);
 		else if (cmd->redirection[i] == 3)
+		{
+			// signal_main3(main, cmd);
 			redirection3(cmd, i, file);
+		}
 		i++;
 	}
 	i = 0;

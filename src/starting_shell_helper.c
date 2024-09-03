@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 13:02:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 18:23:14 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exit_helper(t_cmd *cmd, t_main *main, int *check)
 void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
 	int	status;
-	int file;
+	int	file;
 
 	if (cmd->realarg[0][0] == '/')
 		execve(cmd->realarg[0], cmd->realarg, envp);

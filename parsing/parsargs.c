@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/02 17:14:32 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 14:24:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 	while (fakeargs[k])
 	{
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0
-			&& fakeargs[k][1] != '?' && fakeargs[k][1] && check_dolar(main->user_input) == 1)
+			&& fakeargs[k][1] != '?' && fakeargs[k][1]
+			&& check_dolar(main->user_input) == 1)
 		{
 			check = check_paired(&fakeargs[i][1], main->env, main->export,
 					ft_strlen(&fakeargs[i][1]));

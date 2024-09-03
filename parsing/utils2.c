@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 13:04:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 16:18:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 {
 	int	status;
-	
+
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
 	{
 		file = (open(&cmd->args[cmd->redirectionpos[i]][1],
