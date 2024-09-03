@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/01 16:29:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/01 16:35:49 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,31 +54,6 @@ static int	count_words3(char const *s, char c)
 	}
 	return (j);
 }
-
-// static int	count_words2(char const *s, char c)
-// {
-// 	size_t	i;
-// 	size_t	j;
-// 	int		check;
-
-// 	j = 0;
-// 	i = 0;
-// 	check = 1;
-// 	while (s[i])
-// 	{
-// 		if ((s[i] == '>' || s[i] == '<') && check == 1)
-// 			return (j);
-// 		if (s[i] != c && check == 1)
-// 		{
-// 			j++;
-// 			check = 0;
-// 		}
-// 		else if (s[i] == c)
-// 			check = 1;
-// 		i++;
-// 	}
-// 	return (j);
-// }
 
 char	**ft_split2(char const *s, char c)
 {

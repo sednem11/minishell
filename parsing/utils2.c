@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/01 16:26:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:14:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	redirection3(t_cmd *cmd, int i, int file)
 		alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 2]);
 	if (check_last_redirection2(cmd, i) == 0)
 		alloc_heredoc(cmd, "temporary");
+	close(file);
 }
 
 void	redirection4(t_cmd *cmd, int i, int file, t_main *main)

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/01 16:19:17 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:14:32 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 	while (fakeargs[k])
 	{
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0
-			&& fakeargs[k][1] != '?' && fakeargs[k][1])
+			&& fakeargs[k][1] != '?' && fakeargs[k][1] && check_dolar(main->user_input) == 1)
 		{
 			check = check_paired(&fakeargs[i][1], main->env, main->export,
 					ft_strlen(&fakeargs[i][1]));
@@ -92,7 +92,7 @@ t_cmd	*set_comands_help2(t_cmd *cmd2, char *argv, int i, t_cmd *begin)
 	return (cmd2);
 }
 
-t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
+t_cmd	*set_comands(char *argv, t_cmd *cmd, t_main *main)
 {
 	int		i;
 	char	**path2;
@@ -105,7 +105,7 @@ t_cmd	*set_comands(char *argv, char **envp, t_cmd *cmd, t_main *main)
 	while (cmd2->argv2[++i])
 	{
 		begin = set_comands_help(i, cmd2, begin, main);
-		set_comands2(cmd2, main, path2, envp);
+		set_comands2(cmd2, main, path2, main->env);
 		cmd2 = set_comands_help2(cmd2, argv, i, begin);
 	}
 	cmd2->numb = 0;
@@ -148,6 +148,7 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	t_ar	*ar;
 	char	*argv;
 
+	(void)envp;
 	ar = malloc(sizeof(t_ar));
 	ar->j = 0;
 	ar->i = 0;
@@ -166,7 +167,7 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		return (NULL);
 	}
 	free(ar);
-	return (set_comands(argv, envp, cmd, main));
+	return (set_comands(argv, cmd, main));
 }
 
 // echo hello > out | cat < Makefile < infile

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/24 12:26:54 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:08:26 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmd;
 	t_main	*main;
 	t_main	*next;
-	char	*user_input;
 
 	if (argc != 1)
 		return (1);
@@ -79,11 +78,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		signal_main();
-		user_input = readline("minishell> ");
-		if (main_helper(cmd, main, user_input) == 1)
+		main->user_input = readline("minishell> ");
+		if (main_helper(cmd, main, main->user_input) == 1)
 			return (1);
-		if (*user_input != '\0' && check_input(user_input) == 0)
-			main = main_helper2(cmd, main, next, user_input);
-		free(user_input);
+		if (*main->user_input != '\0' && check_input(main->user_input) == 0)
+			main = main_helper2(cmd, main, next, main->user_input);
+		free(main->user_input);
 	}
 }

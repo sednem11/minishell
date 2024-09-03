@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/01 16:23:45 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/02 18:18:09 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_dolar(char *user_input)
 		if (user_input[i] == 39)
 			flag *= -1;
 		if (user_input[i] == '$' && flag == 1)
-			return (i);
+			return (2);
 		i++;
 	}
 	return (1);
@@ -66,29 +66,25 @@ void	echo_redirections2(t_cmd *cmd)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
 	if (check_backward_redirection(cmd) == 0)
 		echo_redirections3(cmd);
 	else
 	{
-		if (cmd->redirectionoverall == 1)
+		while (cmd->args[++i])
 		{
-			while (cmd->args[i])
+			if (ft_strncmp(cmd->args[i], ">", 1) == 0
+				|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0
+					&& ft_strlen(cmd->args[i - 1]) <= 2)
+				|| ft_strncmp(cmd->args[i], "<", 1) == 0
+				|| (ft_strncmp(cmd->args[i - 1], "<", 1) == 0
+					&& ft_strlen(cmd->args[i - 1]) <= 2))
+				;
+			else
 			{
-				if (ft_strncmp(cmd->args[i], ">", 1) == 0
-					|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0
-						&& ft_strlen(cmd->args[i - 1]) <= 2)
-					|| ft_strncmp(cmd->args[i], "<", 1) == 0
-					|| (ft_strncmp(cmd->args[i - 1], "<", 1) == 0
-						&& ft_strlen(cmd->args[i - 1]) <= 2))
-					;
-				else
-				{
-					printf("%s", cmd->args[i]);
-					if (cmd->args[i + 1])
-						printf("%s", " ");
-				}
-				i++;
+				printf("%s", cmd->args[i]);
+				if (cmd->args[i + 1])
+					printf("%s", " ");
 			}
 		}
 		printf("\n");
