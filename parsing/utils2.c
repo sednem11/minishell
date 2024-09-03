@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/02 18:14:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:04:16 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 	{
 		write(2, " permission denied\n", 20);
 		main->status = 1;
+		close(file);
 		exit(main->status);
 	}
 	else if (check_last_redirection(cmd, i) == 1)
@@ -37,6 +38,29 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 
 void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 {
+	int	status;
+	
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
+	{
+		file = (open(&cmd->args[cmd->redirectionpos[i]][1],
+					O_RDONLY));
+	}
+	else
+	{
+		file = (open(cmd->args[cmd->redirectionpos[i] + 1],
+					O_RDONLY));
+	}
+	if (file == -1)
+	{
+		write(2, " no such file or directory\n", 28);
+		status = 1;
+		close(file);
+		closepipes(cmd);
+		free_both(main);
+		free(main->check);
+		free_every_thing(cmd, main, NULL);
+		exit(status);
+	}
 	if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
 		open_file2(cmd, i, &file, main);
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
@@ -85,6 +109,7 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 	{
 		write(2, " permission denied\n", 20);
 		main->status = 1;
+		close(file);
 		exit(main->status);
 	}
 	dup2(file, STDOUT_FILENO);

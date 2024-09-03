@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/02 18:30:17 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/03 13:03:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,22 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	char	*b;
-	int		*check;
 
-	check = check_paired("PATH=", main->env, main->export, 5);
+	main->check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	child2(cmd, main);
 	free_both(main);
-	if (check_builtins2(cmd, envp, main) == 1 && check[0] == -1)
+	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] == -1)
 	{
 		execve(b, cmd->realarg, envp);
 		write(2, " No such file or directory\n", 28);
 	}
-	if (check_builtins2(cmd, envp, main) == 1 && check[0] != -1)
-		not_builtin(check, envp, cmd, main);
-	free(check);
-	check = NULL;
+	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] != -1)
+		not_builtin(main->check, envp, cmd, main);
+	free(main->check);
+	main->check = NULL;
 	main = check_builtins(cmd, envp, main, user_input);
-	free_every_thing(cmd, main, check);
+	free_every_thing(cmd, main, main->check);
 	exit(0);
 }
 
