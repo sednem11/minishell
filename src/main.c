@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 15:31:48 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:04:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	main(int argc, char **argv, char **envp)
 	main = set_main(main, envp);
 	while (1)
 	{
+		// printf("MAIN: %i\n", getpid());
 		signal_main();
 		main->user_input = readline("minishell> ");
 		if (main_helper(cmd, main, main->user_input) == 1)

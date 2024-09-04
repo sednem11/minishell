@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 18:23:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/04 17:40:45 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void	child2(t_cmd *cmd, t_main *main)
 	}
 	else
 		aplly_redirections(cmd, main);
+	closepipes(cmd);
 }
 
 void	free_both(t_main *main)
