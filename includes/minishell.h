@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/04 12:47:01 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:35:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int					check_cmds(t_main *main);
 void				closepipes_helper(t_cmd *cmd);
 void				process_heredoc3(t_cmd *cmd, int i, int file, char *input);
 void				open_file2(t_cmd *cmd, int i, int *file, t_main *main);
-void				signal_main3(void);
+void				signal_main3(t_main *main, t_cmd *cmd, int file);
 void				ctrl_slash(int signal);
 void				ctrlc_signal2(int signal);
 

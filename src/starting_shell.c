@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/04 17:45:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/04 19:29:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	char	*b;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	signal_main2();
 	main->check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
 	child2(cmd, main);
@@ -57,8 +54,6 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
-	signal(SIGINT, ctrlc_signal2);
-	signal(SIGQUIT, SIG_DFL);
 	main->cmd[i] = cmd;
 	main->pid[i] = fork();
 	if (main->pid[i] == 0)
@@ -95,34 +90,20 @@ t_main	*execute_cmd(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 	return (main);
 }
 
-// void	kill_process(t_main *main, int i)
-// {
-// 	if (getchar() == 10)
-// 		kill(main->pid[i], SIGUSR1);
-// 	else
-// 		kill_process(main, i);
-// }
-
 t_main	*execute_function(char *user_input, char **envp,
 	t_cmd *cmd, t_main *main)
 {
 	int	i;
 
-	main = execute_cmd(cmd, envp, main, user_input);
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	signal_main2();
+	main = execute_cmd(cmd, envp, main, user_input);
 	i = 0;
 	if (main->pid)
 	{
 		while (main->pid[i])
 		{
-			signal(SIGINT, SIG_IGN);
-			signal(SIGQUIT, SIG_IGN);
-			signal_main2();
-			// if (check_cmds(main) == 1 && !ft_strncmp(main->cmd[i]->args[0],
-			// 		"cat", 3) && !main->cmd[i]->args[1])
-			// 	kill_process(main, i);
 			waitpid(main->pid[i], &main->status, 0);
 			if (WIFEXITED(main->status))
 				main->status = WEXITSTATUS(main->status);

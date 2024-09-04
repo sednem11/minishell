@@ -6,7 +6,7 @@
 #    By: macampos <macampos@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/09/04 17:34:47 by macampos         ###   ########.fr        #
+#    Updated: 2024/09/04 19:18:49 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ norminette:
 	python3 -m norminette $(SRC) includes/minishell.h
 
 valgrind: $(NAME)
-	valgrind --suppressions=readline.supp --leak-check=full --track-fds=yes --track-origins=yes --show-leak-kinds=all --trace-children=yes ./${NAME}
+	valgrind --suppressions=readline.supp --leak-check=full --track-fds=yes --track-origins=yes --show-leak-kinds=all ./${NAME}
 #valgrind --suppressions=readline.supp --tool=memcheck --tool=callgrind  --track-fds=yes ./${NAME}
 
 re: fclean all
