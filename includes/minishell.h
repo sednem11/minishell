@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 16:48:16 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:02:02 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,4 +159,5 @@ void				ctrlc_signal2(int signal);
 
 
 t_cmd *get_cmd(void);
+t_main *get_main(void);
 #endif

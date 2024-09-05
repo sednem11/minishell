@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 16:17:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:01:21 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 
 	main->check = check_paired("PATH=", main->env, main->export, 5);
 	b = NULL;
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal_main2();
 	child2(cmd, main);
 	closeallpipes(cmd);
 	free_both(main);

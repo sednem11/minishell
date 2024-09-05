@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 16:51:24 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/05 18:35:04 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,13 @@ t_cmd *get_cmd(void)
 	return (&cmd);
 }
 
+t_main *get_main(void)
+{
+	static t_main cmd;
+
+	return (&cmd);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*cmd;
@@ -77,8 +84,8 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1)
 		return (1);
-	main = NULL;
-	cmd = NULL;
+	main = get_main();
+	cmd = get_cmd();
 	next = NULL;
 	(void)argv;
 	main = set_main(main, envp);
