@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/04 19:29:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:17:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,17 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal_main2();
 	main->cmd[i] = cmd;
 	main->pid[i] = fork();
 	if (main->pid[i] == 0)
 		child_process(user_input, main->env, cmd, main);
 	if (cmd->redirectionoverall == 2)
 	{
-		
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		while (waitpid(main->pid[i], &main->status, 0) != -1)
 			;
 	}
@@ -95,9 +99,6 @@ t_main	*execute_function(char *user_input, char **envp,
 {
 	int	i;
 
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-	signal_main2();
 	main = execute_cmd(cmd, envp, main, user_input);
 	i = 0;
 	if (main->pid)

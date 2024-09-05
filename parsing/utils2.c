@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 16:18:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:48:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,17 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 	}
 }
 
-void	redirection3(t_cmd *cmd, int i, int file)
+void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 {
 	char	*input;
+	(void)main;
 
-	input = readline("heredoc> ");
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	printf("%s\n", get_cmd()->args[0]);
 	file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644));
+	signal_main3(main, cmd, file);
+	input = readline("heredoc> ");
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 		process_heredoc3(cmd, i, file, input);
 	else
