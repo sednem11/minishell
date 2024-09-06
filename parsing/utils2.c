@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 17:34:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:33:58 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 	signal_main3(main, cmd, file);
 	input = readline("heredoc> ");
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
-		process_heredoc3(cmd, i, file, input);
+		process_heredoc3(cmd, i, file, input, main);
 	else
-		redirection3_help(cmd, i, file, input);
+		redirection3_help(cmd, i, file, input, main);
 	if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
 		alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
 	if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])

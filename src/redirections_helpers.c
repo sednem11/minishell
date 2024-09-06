@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 16:50:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/06 10:15:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,8 @@ void	aplly_redirections(t_cmd *cmd, t_main *main)
 	{
 		if (cmd->redirection[i] == 2)
 			redirection2(cmd, i, file, main);
-		else if (cmd->redirection[i] == 3) {
+		else if (cmd->redirection[i] == 3)
 			redirection3(cmd, i, file, main);
-		}
 		i++;
 	}
 	i = 0;

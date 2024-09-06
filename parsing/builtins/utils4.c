@@ -3,20 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 16:23:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:57:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_heredoc3(t_cmd *cmd, int i, int file, char *input)
+void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
 {
 	while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
 		ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		signal_main3(main, cmd, file);
+			// printf("%i\n", check_signal_received());
 		if (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
 			ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 		{
