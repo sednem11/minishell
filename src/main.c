@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/05 18:35:04 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:06:11 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,6 @@ int	main_helper(t_cmd *cmd, t_main *main, char *user_input)
 	return (0);
 }
 
-t_cmd *get_cmd(void)
-{
-	static t_cmd cmd;
-
-	return (&cmd);
-}
-
-t_main *get_main(void)
-{
-	static t_main cmd;
-
-	return (&cmd);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmd	*cmd;
@@ -84,8 +70,8 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 1)
 		return (1);
-	main = get_main();
-	cmd = get_cmd();
+	main = NULL;
+	cmd = NULL;
 	next = NULL;
 	(void)argv;
 	main = set_main(main, envp);

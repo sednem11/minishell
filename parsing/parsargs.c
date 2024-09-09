@@ -6,19 +6,89 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/03 14:24:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/09 15:50:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int		ft_strlen_updated(char *line)
+{
+	int	i;
+
+	i = 0;
+	while(line[i] && line[i] != '$')
+	{
+		i++;
+	}
+	return(i);
+}
+
+char	**get_expansion2(t_main *main, char *fakeargs, int *check)
+{
+	char	**expansion;
+	char	**new;
+	int		i;
+	int		j;
+	int		k;
+
+	i = 0;
+	k = 0;
+	new = calloc(sizeof(char *), 100);
+	while(fakeargs[i])
+	{
+		j = 0;
+		if (fakeargs[i] == '$')
+		{
+			check = check_paired(&fakeargs[i + 1], main->env, main->export,
+			ft_strlen_updated(&fakeargs[i + 1]));
+			if (check[0] != -1)
+			{
+				expansion = ft_split(&main->env[check[0]]
+					[find_equal(main->env[check[0]]) + 1], ' ');
+				while (expansion[j])
+				{
+					new[k] = ft_strdup(expansion[j]);
+					free(expansion[j]);
+					k++;
+					j++;
+				}
+				free(expansion);
+			}
+			free(check);
+		}
+		i++;
+	}
+	return(new);
+}
+
+void	get_expansion(t_main *main, t_cmd *cmd, char *fakeargs, int i)
+{
+	char	**expansion;
+	int 	*check;
+	int		j;
+
+	check = check_paired(&fakeargs[1], main->env, main->export,
+			ft_strlen_updated(&fakeargs[1]));
+	if (check[0] != -1)
+	{
+		expansion = get_expansion2(main, fakeargs, check);
+		j = 0;
+		while (expansion[j])
+		{
+			cmd->args[i] = ft_strdup(expansion[j]);
+			free(expansion[j]);
+			i++;
+			j++;
+		}
+		free(expansion);
+	}
+}
+
 void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 {
 	int		i;
 	int		k;
-	int		j;
-	int		*check;
-	char	**expansion;
 
 	i = 0;
 	k = 0;
@@ -27,25 +97,7 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0
 			&& fakeargs[k][1] != '?' && fakeargs[k][1]
 			&& check_dolar(main->user_input) == 1)
-		{
-			check = check_paired(&fakeargs[i][1], main->env, main->export,
-					ft_strlen(&fakeargs[i][1]));
-			if (check[0] != -1)
-			{
-				expansion = ft_split(&main->env[check[0]]
-					[find_equal(main->env[check[0]]) + 1], ' ');
-				j = 0;
-				while (expansion[j])
-				{
-					cmd->args[i] = ft_strdup(expansion[j]);
-					free(expansion[j]);
-					i++;
-					j++;
-				}
-				free(expansion);
-				free(check);
-			}
-		}
+			get_expansion(main, cmd, fakeargs[k], i);
 		else
 		{
 			cmd->args[i] = ft_strdup(fakeargs[k]);

@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 15:34:01 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:05:02 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,12 @@ t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	signal_main2();
 	main->cmd[i] = cmd;
 	main->pid[i] = fork();
 	if (main->pid[i] == 0)
 		child_process(user_input, main->env, cmd, main);
 	if (cmd->redirectionoverall == 2)
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
 		while (waitpid(main->pid[i], &main->status, 0) != -1)
 			;
 	}

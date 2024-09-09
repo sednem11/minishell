@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 18:21:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/09 16:05:33 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,4 @@ void				ctrlc_signal2(int signal);
 void				check_signal_received(t_main *main, t_cmd *cmd, int file);
 sig_atomic_t		check_signal_received2(void);
 
-
-t_cmd *get_cmd(void);
-t_main *get_main(void);
 #endif
