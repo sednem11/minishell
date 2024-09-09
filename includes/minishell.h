@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 11:56:33 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:21:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ void				open_file2(t_cmd *cmd, int i, int *file, t_main *main);
 void				signal_main3(t_main *main, t_cmd *cmd, int file);
 void				ctrl_slash(int signal);
 void				ctrlc_signal2(int signal);
-int					check_signal_received(void);
+void				check_signal_received(t_main *main, t_cmd *cmd, int file);
+sig_atomic_t		check_signal_received2(void);
 
 
 t_cmd *get_cmd(void);

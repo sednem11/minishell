@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:51:11 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 11:54:12 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/06 18:21:03 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,41 +58,39 @@ void	signal_main2(void)
 
 volatile sig_atomic_t signal_received = 0;
 
+
 void	ctrlc_signal3(int signal)
 {
 	if (signal == SIGINT)
 	{
+		signal_received = 1;
 		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		rl_redisplay();
-		signal_received = 1;
-		// printf("two %i\n", signal_received);
 	}
 }
 
-int		check_signal_received(void)
+sig_atomic_t	check_signal_received2(void)
 {
 	return(signal_received);
 }
 
+void	check_signal_received(t_main *main, t_cmd *cmd, int file)
+{
+	if (signal_received == 1)
+	{
+		closeallpipes(cmd);
+		close(file);
+		free_both(main);
+		free_every_thing(cmd, main, main->check);
+		exit(0);
+	}
+}
+
 void	signal_main3(t_main *main, t_cmd *cmd, int file)
 {
-	// int *check;
-
-	// check = NULL;
 	(void)main;
 	(void)cmd;
 	(void)file;
-	printf("one %i\n", signal_received);
-	if (signal_received == 1)
-	{
-		// close(file);
-		// free_both(main);
-		// free_env_and_export(main);
-		// free_every_thing(cmd, main, check);
-		exit(0);
-	}
 	signal(SIGINT, ctrlc_signal3);
-	printf(" three %i\n", signal_received);
 }
