@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 18:21:26 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:14:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,20 @@
 
 void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
 {
+	(void)main;
 	while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
 		ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		signal_main3(main, cmd, file);
 		if (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
 			ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
 		{
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
 		}
-		while(!check_signal_received2())
-			input = readline("heredoc> ");
+		input = readline("heredoc> ");
 		check_signal_received(main, cmd, file);
 	}
 }

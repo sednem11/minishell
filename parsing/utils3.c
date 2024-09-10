@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 00:01:16 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 18:22:01 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:13:55 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,16 @@ void	redirection3_help(t_cmd *cmd, int i, int file, char *input, t_main *main)
 	while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
 			ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
+		signal_main3(main, cmd, file);
 		if (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
 				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
 		{
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
 		}
-		while(!check_signal_received2())
-			input = readline("heredoc> ");
+		input = readline("heredoc> ");
 		check_signal_received(main, cmd, file);
 	}
 }
