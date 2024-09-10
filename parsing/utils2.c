@@ -6,7 +6,7 @@
 /*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/10 12:12:09 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/10 12:50:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 
 void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 {
+	printf("AHHHHHH\n");
 	char	*input;
 	(void)main;
 
