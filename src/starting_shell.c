@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/09 16:05:02 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/13 18:26:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,16 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
-	char	*b;
-
 	main->check = check_paired("PATH=", main->env, main->export, 5);
-	b = NULL;
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	signal_main2();
 	child2(cmd, main);
 	closeallpipes(cmd);
 	free_both(main);
 	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] == -1)
 	{
-		execve(b, cmd->realarg, envp);
+		if (cmd->args)
 		write(2, " No such file or directory\n", 28);
+		free_every_thing(cmd, main, main->check);
 		exit(1);
 	}
 	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] != -1)
@@ -57,16 +53,13 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 	main->cmd[i] = cmd;
 	main->pid[i] = fork();
 	if (main->pid[i] == 0)
 		child_process(user_input, main->env, cmd, main);
 	if (cmd->redirectionoverall == 2)
 	{
-		while (waitpid(main->pid[i], &main->status, 0) != -1)
-			;
+		while (waitpid(main->pid[i], &main->status, 0) != -1);
 	}
 	closepipes(cmd);
 	cmd = cmd->next;
@@ -85,8 +78,11 @@ t_main	*execute_cmd(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 		main->pid = ft_calloc(10000, sizeof(pid_t));
 		while (cmd)
 		{
+			signal(SIGINT, SIG_IGN);
+			signal(SIGQUIT, SIG_IGN);
 			closepipes_helper(cmd);
 			cmd = execute_function_helper(main, i++, cmd, user_input);
+			signal_main2();
 		}
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/02 18:18:09 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/18 17:53:08 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_dolar(char *user_input)
 	flag = -1;
 	while (user_input[i])
 	{
-		if (user_input[i] == 39)
+		if (user_input[i] == '\'')
 			flag *= -1;
 		if (user_input[i] == '$' && flag == 1)
 			return (2);
@@ -91,29 +91,29 @@ void	echo_redirections2(t_cmd *cmd)
 	}
 }
 
-void	print_args(char **args, char *user_input, int i, t_main *main)
+void	print_args(t_cmd *cmd, char *user_input, int i, t_main *main)
 {
 	int	j;
 	int	flag;
 
 	flag = 1;
 	j = 0;
-	while (j < (int)ft_strlen(args[i]))
+	while (j < (int)ft_strlen(cmd->args[i]))
 	{
-		if (args[i][j] == '$' && check_dolar(user_input) == 1)
+		if (cmd->args[i][j] == '$' && check_aspas(user_input, i) == 0)
 		{
-			print_dolar(main, &args[i][j + 1]);
-			while (args[i][j] && args[i][j] != ' ')
+			print_dolar(main, &cmd->args[i][j + 1]);
+			while (cmd->args[i][j] && cmd->args[i][j] != ' ' && cmd->args[i][j] != '\'')
 				j++;
 			flag = 0;
 		}
 		else
 		{
-			printf("%c", args[i][j]);
+			printf("%c", cmd->args[i][j]);
 			j++;
 		}
 	}
-	if (args[i + 1] && user_input[5 + ft_strlen(args[i])] == ' ' && flag == 1)
+	if (cmd->args[i + 1] && flag == 1)
 		printf("%s", " ");
 }
 
@@ -138,7 +138,7 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 		i = 1;
 		while (cmd->args[i])
 		{
-			print_args(cmd->args, user_input, i, main);
+			print_args(cmd, user_input, i, main);
 			i++;
 		}
 		printf("\n");

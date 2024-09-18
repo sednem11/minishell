@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell_helper.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/09 16:59:49 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/17 18:01:08 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,11 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 	if (!cmd->path)
 		cmd->path = get_paths(cmd->realarg[0], main->env);
 	if (cmd->path)
+	{
+		if (arg_len(cmd->args) == 1)
+			execve(cmd->path, cmd->args, envp);
 		execve(cmd->path, cmd->realarg, envp);
+	}
 	if (ft_strncmp(cmd->args[0], "./", 2) == 0)
 	{
 		file = open(cmd->args[0], O_RDONLY);
@@ -63,21 +67,24 @@ void	child2(t_cmd *cmd, t_main *main)
 	{
 		if (cmd == cmd->begining)
 		{
+			if (cmd->redirectionoverall == 2)
+				aplly_redirections(cmd, main);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			aplly_redirections(cmd, main);
+			if (cmd->redirectionoverall != 2)
+				aplly_redirections(cmd, main);
 			closepipes(cmd);
 		}
 		else if (cmd->next == NULL)
 		{
-			dup2(cmd->fd[0], STDIN_FILENO);
 			aplly_redirections(cmd, main);
+			dup2(cmd->fd[0], STDIN_FILENO);
 			closepipes(cmd);
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
+			aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
-			aplly_redirections(cmd, main);
 			closepipes(cmd);
 		}
 	}

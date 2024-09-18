@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/10 12:50:18 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/18 19:17:58 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,13 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 {
 	int	status;
 
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
+		&& get_paths(cmd->args[0], main->env) != NULL)
 	{
 		file = (open(&cmd->args[cmd->redirectionpos[i]][1],
 					O_RDONLY));
 	}
-	else
+	else if (get_paths(cmd->args[0], main->env) != NULL)
 	{
 		file = (open(cmd->args[cmd->redirectionpos[i] + 1],
 					O_RDONLY));
@@ -80,7 +81,6 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 
 void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 {
-	printf("AHHHHHH\n");
 	char	*input;
 	(void)main;
 
@@ -95,9 +95,10 @@ void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 	else
 		redirection3_help(cmd, i, file, input, main);
 	if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
+	{
 		alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
-	if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
 		alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 2]);
+	}
 	if (check_last_redirection2(cmd, i) == 0)
 		alloc_heredoc(cmd, "temporary");
 	close(file);
@@ -105,10 +106,11 @@ void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 
 void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 {
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
+		&& get_paths(cmd->args[0], main->env) != NULL)
 		file = (open(&cmd->args[cmd->redirectionpos[i]][2],
 					O_WRONLY | O_CREAT | O_APPEND, 0777));
-	else
+	else if (get_paths(cmd->args[0], main->env) != NULL)
 		file = (open(cmd->args[cmd->redirectionpos[i] + 1],
 					O_WRONLY | O_CREAT | O_APPEND, 0777));
 	if (file == -1)
