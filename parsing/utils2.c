@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/18 19:17:58 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:07:53 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 	}
 	if (file == -1)
 	{
-		write(2, " permission denied\n", 20);
+		write(2, " Permission denied\n", 19);
 		main->status = 1;
 		close(file);
 		exit(main->status);
@@ -53,7 +53,7 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 	}
 	if (file == -1)
 	{
-		write(2, " no such file or directory\n", 28);
+		ft_putstr_fd(" No such file or directory", 2);
 		status = 1;
 		close(file);
 		closepipes(cmd);
@@ -65,13 +65,13 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 	if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
 		open_file2(cmd, i, &file, main);
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
-		&& check_last_redirection2(cmd, i) == 0)
+		&& check_last_redirection2(cmd, i) == 0 && check_overall_args(cmd) == 0)
 	{
 		if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
 		alloc_heredoc(cmd, &cmd->args[cmd->redirectionpos[i]][1]);
 	}
-	else if (check_last_redirection2(cmd, i) == 0)
+	else if (check_last_redirection2(cmd, i) == 0 && check_overall_args(cmd) == 0)
 	{
 		if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 2]);
@@ -115,7 +115,7 @@ void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 					O_WRONLY | O_CREAT | O_APPEND, 0777));
 	if (file == -1)
 	{
-		write(2, " permission denied\n", 20);
+		write(2, " Permission denied\n", 19);
 		main->status = 1;
 		close(file);
 		exit(main->status);

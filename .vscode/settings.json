@@ -1,7 +1,8 @@
 {
   "files.associations": {
     "history.h": "c",
-    "minishell.h": "c"
+    "minishell.h": "c",
+    "ouhv": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",

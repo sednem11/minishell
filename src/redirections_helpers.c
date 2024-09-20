@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 10:15:00 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/19 17:20:50 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,26 @@ void	alloc_heredoc(t_cmd *cmd, char *alocated)
 		new[i] = ft_strdup(alocated);
 	free(cmd->realarg);
 	cmd->realarg = new;
+}
+
+int	check_overall_args(t_cmd *cmd)
+{
+	int	i;
+
+	i = 1;
+	if (ft_strncmp(cmd->args[0], "grep", 4) == 0)
+		i = 2;
+	while (cmd->args[i])
+	{
+		if (ft_strncmp(cmd->args[i], "<", 1) != 0 && ft_strncmp(cmd->args[i], ">", 1) != 0)
+		{
+			if (ft_strncmp(cmd->args[i - 1], "<", 1) != 0 || ft_strncmp(cmd->args[i - 1], "<<", 2) != 0
+			|| ft_strncmp(cmd->args[i - 1], ">", 1) != 0 || ft_strncmp(cmd->args[i - 1], ">>", 2) != 0)
+				return(1);
+		}
+		i++;
+	}
+	return(0);
 }
 
 int	check_last_redirection2(t_cmd *cmd, int i)

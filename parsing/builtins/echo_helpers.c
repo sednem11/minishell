@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:05:09 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/17 16:07:40 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:21:07 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	count_words4(char const *s, char c, char c2)
 	return (j);
 }
 
-static char	*word_aloc4(char const *str, char c, char c2)
+char	*word_aloc4(char const *str, char c, char c2)
 {
 	char	*word;
 	int		word_len;

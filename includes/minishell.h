@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/17 17:54:50 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:23:31 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,8 @@ sig_atomic_t		check_signal_received2(void);
 int					check_aspas(char *user_input, int k);
 int					arg_len(char **args);
 char				**ft_split4(char const *s, char c, char c2);
+int					ft_strlen_updated(char *line);
+int					check_overall_args(t_cmd *cmd);
+char				*word_aloc4(char const *str, char c, char c2);
 
 #endif

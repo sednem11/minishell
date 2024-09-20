@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:51:11 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/06 18:21:03 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/19 19:11:51 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	ctrlc_signal3(int signal)
 		signal_received = 1;
 		printf("\n");
 		rl_replace_line("", 0);
-		rl_on_new_line();
 	}
 }
 
