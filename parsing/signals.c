@@ -33,7 +33,6 @@ void	ctrlc_signal(int signal)
 	}
 }
 
-
 void	ctrl_slash(int signal)
 {
 	if (signal == SIGQUIT)
@@ -56,8 +55,7 @@ void	signal_main2(void)
 	signal(SIGQUIT, ctrl_slash);
 }
 
-volatile sig_atomic_t signal_received = 0;
-
+volatile sig_atomic_t	signal_received = 0;
 
 void	ctrlc_signal3(int signal)
 {
@@ -71,7 +69,7 @@ void	ctrlc_signal3(int signal)
 
 sig_atomic_t	check_signal_received2(void)
 {
-	return(signal_received);
+	return (signal_received);
 }
 
 void	check_signal_received(t_main *main, t_cmd *cmd, int file)

@@ -86,7 +86,8 @@ typedef struct s_ar
 int					check_dolar(char *user_input);
 void				free_both(t_main *main);
 int					print_export_help2(t_main *main, int i, int n, int z);
-void				redirection3_help(t_cmd *cmd, int i, int file, char *input, t_main *main);
+void				redirection3_help(t_cmd *cmd, int i, int file, char *input,
+						t_main *main);
 void				not_builtin_helper(int *check, char **envp, t_cmd *cmd,
 						t_main *main);
 void				child2(t_cmd *cmd, t_main *main);
@@ -151,7 +152,8 @@ void				check_redirections(t_cmd *cmd, char *arg, int j);
 char				**initialize_pathss(char *argv, t_cmd **cmd2);
 int					check_cmds(t_main *main);
 void				closepipes_helper(t_cmd *cmd);
-void				process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main);
+void				process_heredoc3(t_cmd *cmd, int i, int file, char *input,
+						t_main *main);
 void				open_file2(t_cmd *cmd, int i, int *file, t_main *main);
 void				signal_main3(t_main *main, t_cmd *cmd, int file);
 void				ctrl_slash(int signal);

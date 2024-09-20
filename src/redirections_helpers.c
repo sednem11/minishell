@@ -39,15 +39,18 @@ int	check_overall_args(t_cmd *cmd)
 		i = 2;
 	while (cmd->args[i])
 	{
-		if (ft_strncmp(cmd->args[i], "<", 1) != 0 && ft_strncmp(cmd->args[i], ">", 1) != 0)
+		if (ft_strncmp(cmd->args[i], "<", 1) != 0 && ft_strncmp(cmd->args[i],
+				">", 1) != 0)
 		{
-			if (ft_strncmp(cmd->args[i - 1], "<", 1) != 0 || ft_strncmp(cmd->args[i - 1], "<<", 2) != 0
-			|| ft_strncmp(cmd->args[i - 1], ">", 1) != 0 || ft_strncmp(cmd->args[i - 1], ">>", 2) != 0)
-				return(1);
+			if (ft_strncmp(cmd->args[i - 1], "<", 1) != 0
+				|| ft_strncmp(cmd->args[i - 1], "<<", 2) != 0
+				|| ft_strncmp(cmd->args[i - 1], ">", 1) != 0
+				|| ft_strncmp(cmd->args[i - 1], ">>", 2) != 0)
+				return (1);
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 int	check_last_redirection2(t_cmd *cmd, int i)
@@ -104,7 +107,6 @@ int	last_reversed(t_cmd *cmd, int flag)
 	}
 	return (j);
 }
-
 
 void	aplly_redirections(t_cmd *cmd, t_main *main)
 {

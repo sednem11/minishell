@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/20 15:49:28 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:53:28 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 	{
 		if (get_paths(cmd->realarg[0], main->env) == NULL)
 		{
-			ft_putstr_fd(" No such file or directory", 2);
+			ft_putstr_fd(" No such file or directory\n", 2);
 			free_every_thing(cmd, main, check);
 			exit(127);
 		}
@@ -39,14 +39,15 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 	}
 	if (cmd->path)
 	{
-		if (arg_len(cmd->args) == 1 || (get_paths(cmd->realarg[1], main->env) == NULL
-			&& cmd->redirectionoverall == 0))
+		if (arg_len(cmd->args) == 1 || (get_paths(cmd->realarg[1],
+					main->env) == NULL && cmd->redirectionoverall == 0))
 			execve(cmd->path, cmd->args, envp);
 		execve(cmd->path, cmd->realarg, envp);
 	}
 	if (ft_strncmp(cmd->args[0], "./", 2) == 0)
 	{
-		if (get_paths(cmd->args[0], main->env) == NULL && access(cmd->args[0], F_OK) == -1)
+		if (get_paths(cmd->args[0], main->env) == NULL && access(cmd->args[0],
+				F_OK) == -1)
 		{
 			status = 127;
 			ft_putstr_fd(" No such file or directory\n", 2);
@@ -60,7 +61,8 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 		exit(status);
 	}
 	free(check);
-	check = check_paired(&cmd->realarg[0][1], main->env, main->export, ft_strlen_updated(&cmd->realarg[0][1]));
+	check = check_paired(&cmd->realarg[0][1], main->env, main->export,
+			ft_strlen_updated(&cmd->realarg[0][1]));
 	if (cmd->realarg[0][0] == '/')
 		write(2, " No such file or directory\n", 28);
 	else if (cmd->args[0][0] == '$' && cmd->args[1]

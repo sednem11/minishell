@@ -16,7 +16,8 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
 	char	**a;
 
-	a = NULL;;
+	a = NULL;
+	;
 	if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
 		not_builtin_helper(check, envp, cmd, main);
 	else
@@ -37,7 +38,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] == -1)
 	{
 		if (cmd->args)
-		write(2, " No such file or directory\n", 28);
+			write(2, " No such file or directory\n", 28);
 		free_every_thing(cmd, main, main->check);
 		exit(1);
 	}
@@ -59,7 +60,8 @@ t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		child_process(user_input, main->env, cmd, main);
 	if (cmd->redirectionoverall == 2)
 	{
-		while (waitpid(main->pid[i], &main->status, 0) != -1);
+		while (waitpid(main->pid[i], &main->status, 0) != -1)
+			;
 	}
 	closepipes(cmd);
 	cmd = cmd->next;
@@ -90,8 +92,8 @@ t_main	*execute_cmd(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 	return (main);
 }
 
-t_main	*execute_function(char *user_input, char **envp,
-	t_cmd *cmd, t_main *main)
+t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
+		t_main *main)
 {
 	int	i;
 

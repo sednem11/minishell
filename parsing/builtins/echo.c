@@ -73,9 +73,8 @@ void	echo_redirections2(t_cmd *cmd)
 	{
 		while (cmd->args[++i])
 		{
-			if (ft_strncmp(cmd->args[i], ">", 1) == 0
-				|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0
-					&& ft_strlen(cmd->args[i - 1]) <= 2)
+			if (ft_strncmp(cmd->args[i], ">", 1) == 0 || (ft_strncmp(cmd->args[i
+						- 1], ">", 1) == 0 && ft_strlen(cmd->args[i - 1]) <= 2)
 				|| ft_strncmp(cmd->args[i], "<", 1) == 0
 				|| (ft_strncmp(cmd->args[i - 1], "<", 1) == 0
 					&& ft_strlen(cmd->args[i - 1]) <= 2))
@@ -103,7 +102,8 @@ void	print_args(t_cmd *cmd, char *user_input, int i, t_main *main)
 		if (cmd->args[i][j] == '$' && check_aspas(user_input, i) == 0)
 		{
 			print_dolar(main, &cmd->args[i][j + 1]);
-			while (cmd->args[i][j] && cmd->args[i][j] != ' ' && cmd->args[i][j] != '\'')
+			while (cmd->args[i][j] && cmd->args[i][j] != ' '
+				&& cmd->args[i][j] != '\'')
 				j++;
 			flag = 0;
 		}

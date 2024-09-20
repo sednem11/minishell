@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	free_value(char	**value)
+void	free_value(char **value)
 {
 	int	i;
 
@@ -65,7 +65,7 @@ static int	count_words4(char const *s, char c, char c2)
 	check = 1;
 	while (s[i])
 	{
-		if (s[i] != c && s[i] != c2  && check == 1)
+		if (s[i] != c && s[i] != c2 && check == 1)
 		{
 			j++;
 			check = 0;
@@ -85,7 +85,7 @@ char	*word_aloc4(char const *str, char c, char c2)
 
 	ctd = 0;
 	word_len = 0;
-	while (str[word_len] && str[word_len] != c  && str[word_len] != c2)
+	while (str[word_len] && str[word_len] != c && str[word_len] != c2)
 		word_len++;
 	word = (char *)malloc(word_len + 1);
 	while (ctd < word_len)

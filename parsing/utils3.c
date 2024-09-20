@@ -12,7 +12,8 @@
 
 #include "../includes/minishell.h"
 
-void	redirection3_help(t_cmd *cmd, int i, int file, char *input, t_main *main)
+void	redirection3_help(t_cmd *cmd, int i, int file, char *input,
+		t_main *main)
 {
 	while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
 			ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))

@@ -12,29 +12,29 @@
 
 #include "../includes/minishell.h"
 
-int		ft_strlen_updated(char *line)
+int	ft_strlen_updated(char *line)
 {
 	int	i;
 
 	i = 0;
-	while(line[i] && line[i] != '$' && line[i] != ' ')
+	while (line[i] && line[i] != '$' && line[i] != ' ')
 	{
 		i++;
 	}
-	return(i);
+	return (i);
 }
 
-int		arg_len(char **args)
+int	arg_len(char **args)
 {
 	int	i;
 
 	i = 0;
-	while(args && args[i])
+	while (args && args[i])
 		i++;
-	return(i);
+	return (i);
 }
 
-int		check_aspas(char *user_input, int k)
+int	check_aspas(char *user_input, int k)
 {
 	int	i;
 	int	j;
@@ -45,24 +45,27 @@ int		check_aspas(char *user_input, int k)
 	check = 0;
 	j = 0;
 	i = 0;
-	while(user_input[i])
+	while (user_input[i])
 	{
 		if (user_input[i] == '"' && check == 0 && check2 == 0)
 			check2 = 1;
 		else if (user_input[i] == '"' && check == 0 && check2 == 1)
 			check2 = 0;
-		if ((user_input[i] == '"' || user_input[i] == ' ' || user_input[i] == '\'') && check == 1 && check2 == 0)
+		if ((user_input[i] == '"' || user_input[i] == ' '
+				|| user_input[i] == '\'') && check == 1 && check2 == 0)
 			check = 0;
-		else if ((user_input[i] == '"' || user_input[i] == ' ' || user_input[i] == '\'') && check == 0 && check2 == 0)
+		else if ((user_input[i] == '"' || user_input[i] == ' '
+				|| user_input[i] == '\'') && check == 0 && check2 == 0)
 		{
 			j++;
-			while (user_input[i] == '"' || user_input[i] == ' ' || user_input[i] == '\'')
+			while (user_input[i] == '"' || user_input[i] == ' '
+				|| user_input[i] == '\'')
 			{
 				if (user_input[i] == '"')
-					break;
+					break ;
 				if (user_input[i] == '\'' && j == k && check2 == 0)
 				{
-					return(1);
+					return (1);
 				}
 				i++;
 				check = 1;
@@ -70,7 +73,7 @@ int		check_aspas(char *user_input, int k)
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 char	**get_expansion2(t_main *main, char *fakeargs, int *check)
@@ -84,7 +87,7 @@ char	**get_expansion2(t_main *main, char *fakeargs, int *check)
 	i = 0;
 	k = 0;
 	new = calloc(sizeof(char *), 100);
-	while(fakeargs[i])
+	while (fakeargs[i])
 	{
 		j = 0;
 		if (fakeargs[i] == ' ')
@@ -92,11 +95,11 @@ char	**get_expansion2(t_main *main, char *fakeargs, int *check)
 		if (fakeargs[i] == '$')
 		{
 			check = check_paired(&fakeargs[i + 1], main->env, main->export,
-			ft_strlen_updated(&fakeargs[i + 1]));
+					ft_strlen_updated(&fakeargs[i + 1]));
 			if (check[0] != -1)
 			{
-				expansion = ft_split(&main->env[check[0]]
-					[find_equal(main->env[check[0]]) + 1], ' ');
+				expansion = ft_split(&main->env[check[0]][find_equal(main->env[check[0]])
+						+ 1], ' ');
 				while (expansion[j])
 				{
 					if (!new[k])
@@ -114,7 +117,7 @@ char	**get_expansion2(t_main *main, char *fakeargs, int *check)
 		}
 		i++;
 	}
-	return(new);
+	return (new);
 }
 
 void	get_expansion(t_main *main, t_cmd *cmd, char *fakeargs, int i)
@@ -124,7 +127,7 @@ void	get_expansion(t_main *main, t_cmd *cmd, char *fakeargs, int i)
 	int		*check;
 
 	check = check_paired(&fakeargs[1], main->env, main->export,
-		ft_strlen_updated(&fakeargs[1]));
+			ft_strlen_updated(&fakeargs[1]));
 	if (check[0] != -1)
 	{
 		expansion = get_expansion2(main, fakeargs, check);
@@ -142,16 +145,15 @@ void	get_expansion(t_main *main, t_cmd *cmd, char *fakeargs, int i)
 
 void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 {
-	int		i;
-	int		k;
+	int	i;
+	int	k;
 
 	i = 0;
 	k = 0;
 	while (fakeargs[k])
 	{
-		if (ft_strncmp(fakeargs[k], "$", 1) == 0
-			&& fakeargs[k][1] != '?' && fakeargs[k][1]
-			&& check_aspas(main->user_input, k) == 0)
+		if (ft_strncmp(fakeargs[k], "$", 1) == 0 && fakeargs[k][1] != '?'
+			&& fakeargs[k][1] && check_aspas(main->user_input, k) == 0)
 			get_expansion(main, cmd, fakeargs[k], i);
 		else
 		{
@@ -241,7 +243,8 @@ void	check_args(char *user_input, t_ar *ar, char *argv)
 	}
 	if (ar->flag == -1 && user_input[ar->i] == '|')
 		argv[ar->i] = '\4';
-	else if (ar->flag == -1 && (user_input[ar->i] == ' ' || user_input[ar->i] == '\t'))
+	else if (ar->flag == -1 && (user_input[ar->i] == ' '
+			|| user_input[ar->i] == '\t'))
 		argv[ar->i] = '\3';
 	else if ((ar->flag == -1 && (user_input[ar->i] == '"'
 				|| user_input[ar->i] == 39)) || ((user_input[ar->i] == '"'

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/19 19:07:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/20 15:58:26 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,15 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
 		&& get_paths(cmd->args[0], main->env) != NULL)
 	{
-		file = (open(&cmd->args[cmd->redirectionpos[i]][1],
-					O_RDONLY));
+		file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY));
 	}
 	else if (get_paths(cmd->args[0], main->env) != NULL)
 	{
-		file = (open(cmd->args[cmd->redirectionpos[i] + 1],
-					O_RDONLY));
+		file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY));
 	}
 	if (file == -1)
 	{
-		ft_putstr_fd(" No such file or directory", 2);
+		ft_putstr_fd(" No such file or directory\n", 2);
 		status = 1;
 		close(file);
 		closepipes(cmd);
@@ -71,7 +69,8 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
 		alloc_heredoc(cmd, &cmd->args[cmd->redirectionpos[i]][1]);
 	}
-	else if (check_last_redirection2(cmd, i) == 0 && check_overall_args(cmd) == 0)
+	else if (check_last_redirection2(cmd, i) == 0
+		&& check_overall_args(cmd) == 0)
 	{
 		if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
 			alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 2]);
@@ -82,8 +81,8 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 {
 	char	*input;
-	(void)main;
 
+	(void)main;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644));

@@ -66,7 +66,7 @@ char	**ft_split2(char const *s, char c)
 	flag = 0;
 	i = 0;
 	j = 0;
-	ptr = ft_calloc(100, sizeof (char *));
+	ptr = ft_calloc(100, sizeof(char *));
 	if (!ptr)
 		return (NULL);
 	while (s[i])
@@ -78,8 +78,8 @@ char	**ft_split2(char const *s, char c)
 				flag = 1;
 			else if (s[i] == c && k == 1)
 				flag = 0;
-			if ((s[i] == '>' || s[i] == '<') && s[i + 1] != c
-				&& s[i + 1] != '>' && s[i + 1] != '<')
+			if ((s[i] == '>' || s[i] == '<') && s[i + 1] != c && s[i + 1] != '>'
+				&& s[i + 1] != '<')
 				k = 1;
 			else if ((s[i] == '>' || s[i] == '<') && s[i + 1] == c)
 				k = 0;
