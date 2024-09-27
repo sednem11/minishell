@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 15:41:27 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:58:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,11 +212,7 @@ t_cmd	*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin, t_main *main)
 	cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
 	while (cmd2->args[j])
 	{
-		// if (cmd2->valid_arg_for_redirection[j] == 1)
-		// {
-			// printf("valid\n");
 			check_redirections(cmd2, cmd2->args[j], j);
-		// }
 		j++;
 	}
 	if (i == 0)

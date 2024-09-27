@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 16:26:52 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 18:29:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
 {
-	while (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-			ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+	while (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
+			&& ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		signal_main3(main, cmd, file);
-		if (ft_strncmp(input, &cmd->args[cmd->redirectionpos[i]][2],
-				ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]) != 0))
+		if (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
+			&& ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
 		{
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);

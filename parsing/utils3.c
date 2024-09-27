@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 00:01:16 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/10 12:13:55 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 19:04:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	redirection3_help(t_cmd *cmd, int i, int file, char *input,
 		t_main *main)
 {
-	while (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-			ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+	while (strcmp(input, cmd->args[cmd->redirectionpos[i] + 1]) != 0
+			&& ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]))
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
 		signal_main3(main, cmd, file);
-		if (ft_strncmp(input, cmd->args[cmd->redirectionpos[i] + 1],
-				ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) != 0))
+		if (strcmp(input, cmd->args[cmd->redirectionpos[i] + 1]) != 0
+			&& ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]))
 		{
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
@@ -68,7 +68,10 @@ char	*get_paths(char *argv, char **envp)
 	while (path.paths[++path.i])
 	{
 		path.part_path = ft_strjoin(path.paths[path.i], "/");
-		path.path = ft_strjoin(path.part_path, cmd[0]);
+		if(!cmd[0] && argv)
+			path.path = ft_strjoin(path.part_path, argv);
+		else
+			path.path = ft_strjoin(path.part_path, cmd[0]);
 		free(path.part_path);
 		if (access(path.path, X_OK) == 0)
 		{
