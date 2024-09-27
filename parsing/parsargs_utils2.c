@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/23 16:04:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:45:02 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_main	*check_builtins(t_cmd *cmd, char **envp, t_main *main, char *user_input)
 		main = unset(cmd, main, envp);
 	else if (ft_strncmp(cmd->args[0], "pwd", 3) == 0
 		&& ft_strlen(cmd->args[0]) == 3)
-		pwd(cmd, envp);
+		pwd(cmd, envp, main);
 	else if (ft_strncmp(cmd->args[0], "env", 3) == 0
 		&& ft_strlen(cmd->args[0]) == 3)
 		env(cmd, envp);

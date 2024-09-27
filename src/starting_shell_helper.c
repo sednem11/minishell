@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/25 18:09:10 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:33:53 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,19 +64,19 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 	check = check_paired(&cmd->realarg[0][1], main->env, main->export,
 			ft_strlen_updated(&cmd->realarg[0][1]));
 	if (cmd->realarg[0][0] == '/')
-		write(2, " No such file or directory\n", 28);
+		ft_putstr_fd(" No such file or directory\n", 2);
 	else if (cmd->args[0][0] == '$' && cmd->args[1]
 		&& check_paired(cmd->args[0], main->env, main->export,
 			ft_strlen(cmd->args[0]) - 1)[0] == -1)
 		execve(cmd->path, &cmd->args[1], envp);
 	else if (cmd->realarg[0][0] == '$' && check[0] != -1 && cmd->realarg[0][1])
 	{
-		write(2, " is a directory\n", 17);
+		ft_putstr_fd(" Is a directory\n", 2);
 		free_every_thing(cmd, main, check);
 		exit(126);
 	}
 	else
-		write(2, " command not found\n", 19);
+		ft_putstr_fd(" command not found\n", 2);
 	exit_helper(cmd, main, check);
 }
 

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/23 15:53:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:26:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] == -1)
 	{
 		if (cmd->args)
-			write(2, " No such file or directory\n", 28);
+			ft_putstr_fd(" No such file or directory\n", 2);
 		free_every_thing(cmd, main, main->check);
 		exit(1);
 	}

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/24 20:57:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:38:13 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,10 @@ void	exitt2(t_cmd *cmd, char *truearg, t_main *main)
 	if (!ft_atoi(cmd->args[1]) && !cmd->args[2])
 	{
 		status = 2;
-		write(2, " numeric argument required\n", 28);
+		ft_putstr_fd(" numeric argument required\n", 2);
 	}
 	else if (cmd->args[1])
-	{
 		status = 100;
-		write(2, " numeric argument required\n", 28);
-	}
 	free_env_and_export(main);
 	free(main);
 	free_cmd(cmd);
@@ -93,7 +90,7 @@ t_main	*exitt(t_cmd *cmd, char **envp, t_main *main)
 				ft_strlen(cmd->args[1])) == 0)
 		{
 			main->status = 1;
-			write(2, " to many arguments\n", 20);
+			ft_putstr_fd(" too many arguments\n", 2);
 			free(truearg);
 			return (main);
 		}

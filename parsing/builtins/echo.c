@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/18 17:53:08 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:37:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 			print_args(cmd, user_input, i, main);
 			i++;
 		}
+		main->status = 0;
 		printf("\n");
 	}
 }
