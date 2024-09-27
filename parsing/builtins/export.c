@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 16:48:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:21:47 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,31 @@ int	find_equal(char *arg)
 		i++;
 	}
 	return (-1);
+}
+
+int	*check_paired2(char *exported, char **envp, char **envp2, int len)
+{
+	int	*place;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	place = ft_calloc(3, sizeof(int));
+	place[0] = -1;
+	place[1] = -1;
+	while (envp[i] || envp2[j])
+	{
+		if (envp[i] && ft_strncmp(envp[i], exported, len) == 0 && envp[i][len] == '=')
+			place[0] = i;
+		if (envp2[j] && ft_strncmp(envp2[j], exported, len) == 0 && envp[i][len] == '=')
+			place[1] = j;
+		if (envp[i])
+			i++;
+		if (envp2[j])
+			j++;
+	}
+	return (place);
 }
 
 int	*check_paired(char *exported, char **envp, char **envp2, int len)

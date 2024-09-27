@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/20 15:23:02 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:41:27 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,30 @@ int	arg_len(char **args)
 	while (args && args[i])
 		i++;
 	return (i);
+}
+
+int	check_aspas2(char *user_input, int k)
+{
+	int	i;
+	int	j;
+	int	check;
+
+	check = 0;
+	j = 0;
+	i = 0;
+	while (user_input[i])
+	{
+		if (j == k && user_input[i] == '"' && check == 0)
+			return(1);
+		if (user_input[i] == '"' && check == 0)
+			check = 1;
+		else if (user_input[i] == '"' && check == 1)
+			check = 0;
+		if ((user_input[i] == ' ' || user_input[i] == '\'') && check == 0)
+			j++;
+		i++;
+	}
+	return (0);
 }
 
 int	check_aspas(char *user_input, int k)
@@ -126,7 +150,7 @@ void	get_expansion(t_main *main, t_cmd *cmd, char *fakeargs, int i)
 	int		j;
 	int		*check;
 
-	check = check_paired(&fakeargs[1], main->env, main->export,
+	check = check_paired2(&fakeargs[1], main->env, main->export,
 			ft_strlen_updated(&fakeargs[1]));
 	if (check[0] != -1)
 	{
@@ -141,6 +165,7 @@ void	get_expansion(t_main *main, t_cmd *cmd, char *fakeargs, int i)
 		}
 		free(expansion);
 	}
+	free(check);
 }
 
 void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
@@ -150,6 +175,7 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 
 	i = 0;
 	k = 0;
+	cmd->valid_arg_for_redirection = ft_calloc(100, sizeof(int));
 	while (fakeargs[k])
 	{
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0 && fakeargs[k][1] != '?'
@@ -160,6 +186,10 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 			cmd->args[arg_len(cmd->args)] = ft_strdup(fakeargs[k]);
 			i++;
 		}
+		if (check_aspas2(main->user_input, k) == 1)
+			cmd->valid_arg_for_redirection[k] = -1;
+		else
+			cmd->valid_arg_for_redirection[k] = 1;
 		free(fakeargs[k]);
 		k++;
 	}
@@ -182,7 +212,11 @@ t_cmd	*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin, t_main *main)
 	cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
 	while (cmd2->args[j])
 	{
-		check_redirections(cmd2, cmd2->args[j], j);
+		// if (cmd2->valid_arg_for_redirection[j] == 1)
+		// {
+			// printf("valid\n");
+			check_redirections(cmd2, cmd2->args[j], j);
+		// }
 		j++;
 	}
 	if (i == 0)
@@ -254,6 +288,54 @@ void	check_args(char *user_input, t_ar *ar, char *argv)
 		argv[ar->i] = user_input[ar->i];
 }
 
+int	check_args2(char *user_input)
+{
+	int	i;
+	int	flag;
+	int	j;
+
+	flag = 0;
+	i = 0;
+	while(user_input[i])
+	{
+		if (user_input[i] == '\"' && flag == 0)
+			flag = 1;
+		else if (user_input[i] == '\"' && flag == 1)
+			flag = 0;
+		if ((user_input[i] == '<' || user_input[i] == '>') && flag == 0)
+		{
+			j = i + 1;
+			while (user_input[j])
+			{
+				if (user_input[j] != ' ' && user_input[j] != '<' && user_input[j] != '>')
+					break;
+				j++;
+			}
+			if (!user_input[j])
+				return(2);
+		}
+		if ((user_input[i] == '<' || user_input[i] == '>') && flag == 0)
+		{
+			if ((user_input[i] == '<' || user_input[i] == '>')
+				&& (user_input[i + 1] == '<' || user_input[i + 1] == '>')
+				&& (user_input[i + 2] == '<' || user_input[i + 2] == '>'))
+					return(2);
+			if (user_input[i + 1] != '<' && user_input[i] == '<' && user_input[i + 1] != ' ')
+			{
+				if (user_input[i + 1] <= 65 && user_input[i + 1] >= 91 && user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
+					return(1);
+			}
+			if (user_input[i + 1] != '>' && user_input[i] == '>' && user_input[i + 1] != ' ')
+			{
+				if (user_input[i + 1] <= 65 && user_input[i + 1] >= 91 && user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
+					return(1);
+			}
+		}
+		i++;
+	}
+	return(0);
+}
+
 t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
 	t_ar	*ar;
@@ -267,6 +349,15 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 	argv = ft_calloc(sizeof(char), ft_strlen(user_input) + 1);
 	while (user_input[ar->i])
 	{
+		if (check_args2(user_input) == 1 || check_args2(user_input) == 2)
+		{
+			if (check_args2(user_input) == 1)
+				printf(" unexpected token\n");
+			else
+				printf(" sintax error\n");
+			free(ar);
+			return (NULL);
+		}
 		check_args(user_input, ar, argv);
 		ar->i++;
 	}

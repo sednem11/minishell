@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/20 15:03:00 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:53:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 	char	**a;
 
 	a = NULL;
-	;
 	if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
 		not_builtin_helper(check, envp, cmd, main);
 	else

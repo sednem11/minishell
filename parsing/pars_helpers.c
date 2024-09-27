@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/20 16:34:39 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 16:05:39 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ t_main	*main2_help(int *place, t_main *mainn, char **envp2, char *exported)
 		if (j != place[1])
 			mainn->export[j] = envp2[j];
 		else
+		{
+			free(envp2[j]);
 			mainn->export[j] = ft_strdup(exported);
+		}
 		j++;
 	}
 	if (place[1] == -1)
@@ -103,7 +106,7 @@ t_main	*set_main3(t_main *main, char **envp, char **envp2, char *exported)
 	int		*place;
 	t_main	*mainn;
 
-	place = check_paired(exported, envp, envp2, ft_strlen_upd(exported));
+	place = check_paired2(exported, envp, envp2, ft_strlen_upd(exported));
 	mainn = ft_calloc(sizeof(t_main), sizeof(t_main));
 	mainn->env = ft_calloc(sizeof(char *), matrixlen(envp) + 1);
 	mainn->export = ft_calloc(sizeof(char *), matrixlen(envp2) + 1);

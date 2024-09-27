@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsargs_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 17:13:45 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/23 17:42:56 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/27 15:40:06 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_cmd_args(t_cmd *cmd)
 		free_cmd_args2(cmd);
 		free(cmd->argv2);
 		free(cmd->realarg);
+		free(cmd->valid_arg_for_redirection);
 		temporary = cmd->next;
 		free(cmd->redirection);
 		free(cmd->redirectionpos);

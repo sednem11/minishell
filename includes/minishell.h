@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/20 15:23:31 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:41:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 typedef struct s_cmd
 {
 	int				*redirection;
+	int				*valid_arg_for_redirection;
 	int				*redirectionpos;
 	int				redirectionoverall;
 	char			*path;
@@ -166,5 +167,7 @@ char				**ft_split4(char const *s, char c, char c2);
 int					ft_strlen_updated(char *line);
 int					check_overall_args(t_cmd *cmd);
 char				*word_aloc4(char const *str, char c, char c2);
+int					check_builtins3(t_cmd *cmd, char **envp, t_main *main);
+int					*check_paired2(char *exported, char **envp, char **envp2, int len);
 
 #endif

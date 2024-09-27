@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/19 16:34:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/25 16:38:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_input(char *input)
 
 t_main	*main_helper2(t_cmd *cmd, t_main *main, t_main *next, char *user_input)
 {
-	cmd = initiate_args(user_input, main->env, cmd, main);
+	cmd = initiate_args(user_input, main->env, cmd, main);		
 	add_history(user_input);
 	if (cmd == NULL)
 		next = main;

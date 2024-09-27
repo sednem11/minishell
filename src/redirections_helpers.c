@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/19 17:20:50 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:45:17 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ int	check_overall_args(t_cmd *cmd)
 		if (ft_strncmp(cmd->args[i], "<", 1) != 0 && ft_strncmp(cmd->args[i],
 				">", 1) != 0)
 		{
-			if (ft_strncmp(cmd->args[i - 1], "<", 1) != 0
-				|| ft_strncmp(cmd->args[i - 1], "<<", 2) != 0
-				|| ft_strncmp(cmd->args[i - 1], ">", 1) != 0
-				|| ft_strncmp(cmd->args[i - 1], ">>", 2) != 0)
+			if ((ft_strncmp(cmd->args[i - 1], "<", 1) == 0 && ft_strlen(cmd->args[i - 1]) != 1)
+				|| (ft_strncmp(cmd->args[i - 1], "<<", 2) == 0 && ft_strlen(cmd->args[i - 1]) != 2)
+				|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0 && ft_strlen(cmd->args[i - 1]) != 1)
+				|| (ft_strncmp(cmd->args[i - 1], ">>", 2) == 0 && ft_strlen(cmd->args[i - 1]) != 2))
 				return (1);
 		}
 		i++;

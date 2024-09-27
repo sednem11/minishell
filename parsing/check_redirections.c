@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_redirections.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
+/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 12:03:29 by macampos          #+#    #+#             */
-/*   Updated: 2024/08/19 15:06:06 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:02:32 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
