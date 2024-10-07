@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 16:49:41 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:31:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exit_helper(t_cmd *cmd, t_main *main, int *check)
 void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
 	int		status;
-	char	**a;
+	char 	**a;
 	char	*PATH;
 
 	a = NULL;
@@ -79,8 +79,7 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 		&& check_paired(cmd->args[0], main->env, main->export,
 			ft_strlen(cmd->args[0]) - 1)[0] == -1)
 		execve(cmd->path, &cmd->args[1], envp);
-	else if (cmd->realarg[0] && cmd->realarg[0][0] == '$' && check[0] != -1
-		&& cmd->realarg[0][1])
+	else if (cmd->realarg[0] && cmd->realarg[0][0] == '$' && check[0] != -1 && cmd->realarg[0][1])
 	{
 		ft_putstr_fd(" Is a directory\n", 2);
 		free_every_thing(cmd, main, check);

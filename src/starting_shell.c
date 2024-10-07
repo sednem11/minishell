@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 12:42:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:21:05 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		{
 			signal(SIGINT, SIG_IGN);
 			signal(SIGQUIT, SIG_IGN);
-			waitpid(main->pid[i], &main->status, 0);
+			while (waitpid(main->pid[i], &main->status, 0) != -1);
 			if (WIFEXITED(main->status))
 				main->status = WEXITSTATUS(main->status);
 			i++;
