@@ -39,9 +39,11 @@ int	*check_paired2(char *exported, char **envp, char **envp2, int len)
 	place[1] = -1;
 	while (envp[i] || envp2[j])
 	{
-		if (envp[i] && ft_strncmp(envp[i], exported, len) == 0 && envp[i][len] == '=')
+		if (envp[i] && ft_strncmp(envp[i], exported, len) == 0
+			&& envp[i][len] == '=')
 			place[0] = i;
-		if (envp2[j] && ft_strncmp(envp2[j], exported, len) == 0 && envp[i][len] == '=')
+		if (envp2[j] && ft_strncmp(envp2[j], exported, len) == 0
+			&& envp[i][len] == '=')
 			place[1] = j;
 		if (envp[i])
 			i++;

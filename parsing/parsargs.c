@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 09:04:59 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:05:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@ int	ft_strlen_updated(char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] && line[i] != '$' && line[i] != ' ')
+	if (line)
 	{
-		i++;
+		while (line[i] != '\0' && line[i] != '$' && line[i] != ' ')
+			i++;
 	}
 	return (i);
 }
@@ -46,7 +47,7 @@ int	check_aspas2(char *user_input, int k)
 	while (user_input[i])
 	{
 		if (j == k && user_input[i] == '"' && check == 0)
-			return(1);
+			return (1);
 		if (user_input[i] == '"' && check == 0)
 			check = 1;
 		else if (user_input[i] == '"' && check == 1)
@@ -179,10 +180,10 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 	while (fakeargs[k])
 	{
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0 && fakeargs[k][1] != '?'
-			&& fakeargs[k][1] && check_aspas(main->user_input, k) == 0
-			&& (k - 1 == -1 || cmd->args[k - 1][0] != '<')
-			&& (k - 1 == -1 || cmd->args[k - 1][1] != '<')
-			&& (k - 1 == -1 || !cmd->args[k - 1][2]))
+			&& fakeargs[k][1] && check_aspas(main->user_input, k) == 0 && (k
+				- 1 == -1 || cmd->args[k - 1][0] != '<') && (k - 1 == -1
+				|| cmd->args[k - 1][1] != '<') && (k - 1 == -1 || !cmd->args[k
+				- 1][2]))
 			get_expansion(main, cmd, fakeargs[k], i);
 		else
 		{
@@ -215,7 +216,7 @@ t_cmd	*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin, t_main *main)
 	cmd2->redirectionoverall = count_dif_redirections(cmd2->args);
 	while (cmd2->args[j])
 	{
-			check_redirections(cmd2, cmd2->args[j], j);
+		check_redirections(cmd2, cmd2->args[j], j);
 		j++;
 	}
 	if (i == 0)
@@ -261,6 +262,12 @@ t_cmd	*set_comands(char *argv, t_cmd *cmd, t_main *main)
 	free(path2[0]);
 	free(path2);
 	free(argv);
+	if (cmd2->begining == NULL)
+	{
+		free(cmd2->argv2);
+		free(cmd2);
+		return (NULL);
+	}
 	return (cmd2->begining);
 }
 
@@ -295,7 +302,7 @@ int	check_args2(char *user_input)
 
 	flag = 0;
 	i = 0;
-	while(user_input[i])
+	while (user_input[i])
 	{
 		if (user_input[i] == '\"' && flag == 0)
 			flag = 1;
@@ -306,33 +313,41 @@ int	check_args2(char *user_input)
 			j = i + 1;
 			while (user_input[j])
 			{
-				if (user_input[j] != ' ' && user_input[j] != '<' && user_input[j] != '>')
-					break;
+				if (user_input[j] != ' ' && user_input[j] != '<'
+					&& user_input[j] != '>' && user_input[j] != '\t'
+					&& user_input[j] != '|')
+					break ;
 				j++;
 			}
 			if (!user_input[j])
-				return(2);
+				return (2);
 		}
 		if ((user_input[i] == '<' || user_input[i] == '>') && flag == 0)
 		{
-			if ((user_input[i] == '<' || user_input[i] == '>')
-				&& (user_input[i + 1] == '<' || user_input[i + 1] == '>')
-				&& (user_input[i + 2] == '<' || user_input[i + 2] == '>'))
-					return(2);
-			if (user_input[i + 1] != '<' && user_input[i] == '<' && user_input[i + 1] != ' ')
+			if ((user_input[i] == '<' || user_input[i] == '>') && (user_input[i
+					+ 1] == '<' || user_input[i + 1] == '>') && (user_input[i
+					+ 2] == '<' || user_input[i + 2] == '>'))
+				return (2);
+			if (user_input[i + 1] != '<' && user_input[i] == '<' && user_input[i
+				+ 1] != ' ' && user_input[i + 1] != '\t')
 			{
-				if (user_input[i + 1] <= 65 && user_input[i + 1] >= 91 && user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
-					return(1);
+				if ((user_input[i + 1] <= 65 && user_input[i + 1] >= 91
+						&& user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
+					|| user_input[i + 1] == '|')
+					return (1);
 			}
-			if (user_input[i + 1] != '>' && user_input[i] == '>' && user_input[i + 1] != ' ')
+			if (user_input[i + 1] != '>' && user_input[i] == '>' && user_input[i
+				+ 1] != ' ' && user_input[i + 1] != '\t')
 			{
-				if (user_input[i + 1] <= 65 && user_input[i + 1] >= 91 && user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
-					return(1);
+				if ((user_input[i + 1] <= 65 && user_input[i + 1] >= 91
+						&& user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
+					|| user_input[i + 1] == '|')
+					return (1);
 			}
 		}
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
@@ -355,6 +370,7 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 			else
 				printf(" sintax error\n");
 			free(ar);
+			free(argv);
 			return (NULL);
 		}
 		check_args(user_input, ar, argv);

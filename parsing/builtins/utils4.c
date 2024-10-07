@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 11:03:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 12:57:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ void	open_file2(t_cmd *cmd, int i, int *file, t_main *main)
 	if (*file == -1)
 	{
 		ft_putstr_fd(" No such file or directory\n", 2);
-		main->status = 1;
-		exit(main->status);
+		closepipes(cmd);
+		free_both(main);
+		free_every_thing(cmd, main, main->check);
+		exit(127);
 	}
 }

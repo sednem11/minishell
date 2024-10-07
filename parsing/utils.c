@@ -19,12 +19,15 @@ int	check_builtins2(t_cmd *cmd, char **envp, t_main *main)
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (0);
 	if ((ft_strncmp(cmd->args[0], "cd", 2) == 0 && ft_strlen(cmd->args[0]) == 2)
-		|| (ft_strncmp(cmd->args[0], "export", 6) == 0 && ft_strlen(cmd->args[0]) == 6)
-		|| (ft_strncmp(cmd->args[0], "pwd", 3) == 0 && ft_strlen(cmd->args[0]) == 3)
-		|| (ft_strncmp(cmd->args[0], "env", 3) == 0 && ft_strlen(cmd->args[0]) == 3)
-		|| (ft_strncmp(cmd->args[0], "exit", 4) == 0 && ft_strlen(cmd->args[0]) == 4)
-		|| (ft_strncmp(cmd->args[0], "echo", 4) == 0 && ft_strlen(cmd->args[0]) == 4)
-		|| (ft_strncmp(cmd->args[0], "unset", 5) == 0 && ft_strlen(cmd->args[0]) == 5))
+		|| (ft_strncmp(cmd->args[0], "export", 6) == 0
+			&& ft_strlen(cmd->args[0]) == 6) || (ft_strncmp(cmd->args[0], "pwd",
+				3) == 0 && ft_strlen(cmd->args[0]) == 3)
+		|| (ft_strncmp(cmd->args[0], "env", 3) == 0
+			&& ft_strlen(cmd->args[0]) == 3) || (ft_strncmp(cmd->args[0],
+				"exit", 4) == 0 && ft_strlen(cmd->args[0]) == 4)
+		|| (ft_strncmp(cmd->args[0], "echo", 4) == 0
+			&& ft_strlen(cmd->args[0]) == 4) || (ft_strncmp(cmd->args[0],
+				"unset", 5) == 0 && ft_strlen(cmd->args[0]) == 5))
 		return (0);
 	else
 		return (1);

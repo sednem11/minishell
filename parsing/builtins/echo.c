@@ -117,21 +117,21 @@ void	print_args(t_cmd *cmd, char *user_input, int i, t_main *main)
 		printf("%s", " ");
 }
 
-int check_nonl(char *arg)
+int	check_nonl(char *arg)
 {
-	int i;
-	
+	int	i;
+
 	if (arg[0] != '-')
-		return(-1);
+		return (-1);
 	i = 1;
 	while (arg[i])
 	{
 		if (arg[i] != 'n')
-			return(-1);
-		while(arg[i] && arg[i] == 'n')
+			return (-1);
+		while (arg[i] && arg[i] == 'n')
 			i++;
 	}
-	return(0);
+	return (0);
 }
 
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
@@ -141,7 +141,7 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 	else if (cmd->args[1] && check_nonl(cmd->args[1]) == 0)
 	{
 		i = 1;
-		while(cmd->args[i] && check_nonl(cmd->args[i]) != -1)
+		while (cmd->args[i] && check_nonl(cmd->args[i]) != -1)
 			i++;
 		while (cmd->args[i])
 		{

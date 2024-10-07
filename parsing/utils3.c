@@ -15,10 +15,12 @@
 void	redirection3_help(t_cmd *cmd, int i, int file, char *input)
 {
 	while (input && (strcmp(input, cmd->args[cmd->redirectionpos[i] + 1]) != 0
-			|| ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i] + 1])))
+			|| ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i]
+				+ 1])))
 	{
 		if (strcmp(input, cmd->args[cmd->redirectionpos[i] + 1]) != 0
-			&& ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]))
+			&& ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i]
+				+ 1]))
 		{
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
@@ -63,7 +65,7 @@ char	*get_paths(char *argv, char **envp)
 	while (path.paths[++path.i])
 	{
 		path.part_path = ft_strjoin(path.paths[path.i], "/");
-		if(!cmd[0] && argv)
+		if (!cmd[0] && argv)
 			path.path = ft_strjoin(path.part_path, argv);
 		else
 			path.path = ft_strjoin(path.part_path, cmd[0]);

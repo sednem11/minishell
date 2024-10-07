@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 11:48:48 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 16:49:41 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,24 @@ void	exit_helper(t_cmd *cmd, t_main *main, int *check)
 
 void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
-	int	status;
-	char **a;
+	int		status;
+	char	**a;
+	char	*PATH;
 
 	a = NULL;
 	if (!cmd->path)
 		cmd->path = get_paths(cmd->realarg[0], main->env);
-	if (cmd->realarg[0][0] == '/')
+	if (cmd->realarg[0] && cmd->realarg[0][0] == '/')
 	{
-		if (get_paths(cmd->realarg[0], main->env) == NULL)
+		PATH = get_paths(cmd->realarg[0], main->env);
+		if (PATH == NULL)
 		{
 			ft_putstr_fd(" No such file or directory\n", 2);
 			free_every_thing(cmd, main, check);
+			free(PATH);
 			exit(127);
 		}
+		free(PATH);
 		execve(cmd->realarg[0], cmd->realarg, envp);
 	}
 	if (cmd->path && check_builtins3(cmd, main->env, main) == 1)
@@ -63,21 +67,26 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 		exit(status);
 	}
 	free(check);
-	check = check_paired(&cmd->realarg[0][1], main->env, main->export,
-			ft_strlen_updated(&cmd->realarg[0][1]));
-	if (cmd->realarg[0][0] == '/')
+	check = NULL;
+	if (cmd->realarg[0] && cmd->realarg[0][0] == '$')
+	{
+		check = check_paired(&cmd->realarg[0][1], main->env, main->export,
+				ft_strlen_updated(&cmd->realarg[0][1]));
+	}
+	if (cmd->realarg[0] && cmd->realarg[0][0] == '/')
 		ft_putstr_fd(" No such file or directory\n", 2);
 	else if (cmd->args[0][0] == '$' && cmd->args[1]
 		&& check_paired(cmd->args[0], main->env, main->export,
 			ft_strlen(cmd->args[0]) - 1)[0] == -1)
 		execve(cmd->path, &cmd->args[1], envp);
-	else if (cmd->realarg[0][0] == '$' && check[0] != -1 && cmd->realarg[0][1])
+	else if (cmd->realarg[0] && cmd->realarg[0][0] == '$' && check[0] != -1
+		&& cmd->realarg[0][1])
 	{
 		ft_putstr_fd(" Is a directory\n", 2);
 		free_every_thing(cmd, main, check);
 		exit(126);
 	}
-	else
+	else if (cmd->realarg[0])
 		ft_putstr_fd(" command not found\n", 2);
 	exit_helper(cmd, main, check);
 }

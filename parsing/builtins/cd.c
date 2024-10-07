@@ -15,7 +15,7 @@
 void	cd(t_cmd *cmd, char **envp, t_main *main)
 {
 	int	*place;
-	
+
 	(void)envp;
 	if (cmd->args[2])
 	{

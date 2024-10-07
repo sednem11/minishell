@@ -59,9 +59,9 @@ volatile sig_atomic_t	signal_received = 0;
 
 void	ctrlc_signal3(int signal, t_main **buf, t_cmd **buf2)
 {
-	static t_cmd *something2 = NULL;
-	static t_main *somethign = NULL;
-	int	i;
+	static t_cmd	*something2 = NULL;
+	static t_main	*somethign = NULL;
+	int				i;
 
 	i = 0;
 	if (!somethign)
@@ -77,7 +77,7 @@ void	ctrlc_signal3(int signal, t_main **buf, t_cmd **buf2)
 		rl_replace_line("", 0);
 		free_both(somethign);
 		free_every_thing(something2, somethign, somethign->check);
-		while(i < FOPEN_MAX)
+		while (i < FOPEN_MAX)
 			close(i++);
 		somethign = NULL;
 		something2 = NULL;

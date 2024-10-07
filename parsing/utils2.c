@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 11:01:26 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 17:47:10 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 {
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 || ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0)
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
+		|| (cmd->args[cmd->redirectionpos[i] + 1]
+			&& ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0))
 	{
 		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1)
 		{
@@ -29,9 +31,10 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 		if (file == -1)
 		{
 			ft_putstr_fd(" Permission denied\n", 2);
-			main->status = 1;
-			close(file);
-			exit(main->status);
+			closepipes(cmd);
+			free_both(main);
+			free_every_thing(cmd, main, main->check);
+			exit(1);
 		}
 		else if (check_last_redirection(cmd, i) == 1)
 			dup2(file, STDOUT_FILENO);
@@ -43,16 +46,19 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 
 void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 {
-	int	status;
+	int		status;
+	char	*PATH;
 
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 || ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0)
+	PATH = get_paths(cmd->args[0], main->env);
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
+		|| (cmd->args[cmd->redirectionpos[i] + 1]
+			&& ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0))
 	{
-		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
-			&& get_paths(cmd->args[0], main->env) != NULL)
+		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 && PATH != NULL)
 		{
 			file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY));
 		}
-		else if (get_paths(cmd->args[0], main->env) != NULL)
+		else if (PATH != NULL)
 		{
 			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY));
 		}
@@ -60,17 +66,17 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 		{
 			ft_putstr_fd(" No such file or directory\n", 2);
 			status = 1;
-			close(file);
+			free(PATH);
 			closepipes(cmd);
 			free_both(main);
-			free(main->check);
-			free_every_thing(cmd, main, NULL);
+			free_every_thing(cmd, main, main->check);
 			exit(status);
 		}
-		if (ft_strncmp(cmd->args[0], "echo", 4) != 0)
+		if (strcmp(cmd->args[0], "echo") != 0 || ft_strlen(cmd->args[0]) != 4)
 			open_file2(cmd, i, &file, main);
 		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
-			&& check_last_redirection2(cmd, i) == 0 && check_overall_args(cmd) == 0)
+			&& check_last_redirection2(cmd, i) == 0
+			&& check_overall_args(cmd) == 0)
 		{
 			if (cmd->args[0] == cmd->args[cmd->redirectionpos[i]])
 				alloc_heredoc(cmd, cmd->args[cmd->redirectionpos[i] + 1]);
@@ -93,15 +99,16 @@ void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 	char	*input;
 
 	(void)main;
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2 || ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0)
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
+		|| (cmd->args[cmd->redirectionpos[i] + 1]
+			&& ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0))
 	{
 		signal(SIGINT, SIG_IGN);
 		signal(SIGQUIT, SIG_IGN);
-		
-		file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644));
+		file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND,
+					0644));
 		signal_main3(main, cmd, file);
 		input = readline("heredoc> ");
-		
 		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2 && input)
 			process_heredoc3(cmd, i, file, input);
 		else if (input)
@@ -121,23 +128,26 @@ void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 
 void	redirection4(t_cmd *cmd, int i, int file, t_main *main)
 {
-	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2 || ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0)
+	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
+		|| (cmd->args[cmd->redirectionpos[i] + 1]
+			&& ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0))
 	{
-		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2
-			&& get_paths(cmd->args[0], main->env) != NULL)
+		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 			file = (open(&cmd->args[cmd->redirectionpos[i]][2],
-						O_WRONLY | O_CREAT | O_APPEND, 0777));
-		else if (get_paths(cmd->args[0], main->env) != NULL)
+						O_CREAT | O_WRONLY | O_APPEND, 0777));
+		else
 			file = (open(cmd->args[cmd->redirectionpos[i] + 1],
-						O_WRONLY | O_CREAT | O_APPEND, 0777));
+						O_CREAT | O_WRONLY | O_APPEND, 0777));
 		if (file == -1)
 		{
 			ft_putstr_fd(" Permission denied\n", 2);
-			main->status = 1;
-			close(file);
-			exit(main->status);
+			closepipes(cmd);
+			free_both(main);
+			free_every_thing(cmd, main, main->check);
+			exit(1);
 		}
 		dup2(file, STDOUT_FILENO);
+		close(file);
 	}
 	else
 		ft_putstr_fd(" No such file or directory", 2);

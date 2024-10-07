@@ -166,6 +166,7 @@ int					ft_strlen_updated(char *line);
 int					check_overall_args(t_cmd *cmd);
 char				*word_aloc4(char const *str, char c, char c2);
 int					check_builtins3(t_cmd *cmd, char **envp, t_main *main);
-int					*check_paired2(char *exported, char **envp, char **envp2, int len);
+int					*check_paired2(char *exported, char **envp, char **envp2,
+						int len);
 
 #endif

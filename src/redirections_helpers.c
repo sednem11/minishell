@@ -42,10 +42,14 @@ int	check_overall_args(t_cmd *cmd)
 		if (ft_strncmp(cmd->args[i], "<", 1) != 0 && ft_strncmp(cmd->args[i],
 				">", 1) != 0)
 		{
-			if ((ft_strncmp(cmd->args[i - 1], "<", 1) == 0 && ft_strlen(cmd->args[i - 1]) != 1)
-				|| (ft_strncmp(cmd->args[i - 1], "<<", 2) == 0 && ft_strlen(cmd->args[i - 1]) != 2)
-				|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0 && ft_strlen(cmd->args[i - 1]) != 1)
-				|| (ft_strncmp(cmd->args[i - 1], ">>", 2) == 0 && ft_strlen(cmd->args[i - 1]) != 2))
+			if ((ft_strncmp(cmd->args[i - 1], "<", 1) == 0
+					&& ft_strlen(cmd->args[i - 1]) != 1)
+				|| (ft_strncmp(cmd->args[i - 1], "<<", 2) == 0
+					&& ft_strlen(cmd->args[i - 1]) != 2)
+				|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0
+					&& ft_strlen(cmd->args[i - 1]) != 1)
+				|| (ft_strncmp(cmd->args[i - 1], ">>", 2) == 0
+					&& ft_strlen(cmd->args[i - 1]) != 2))
 				return (1);
 		}
 		i++;
