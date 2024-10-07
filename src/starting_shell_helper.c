@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 16:33:53 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 11:48:48 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	exit_helper(t_cmd *cmd, t_main *main, int *check)
 void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
 	int	status;
+	char **a;
 
+	a = NULL;
 	if (!cmd->path)
 		cmd->path = get_paths(cmd->realarg[0], main->env);
 	if (cmd->realarg[0][0] == '/')
@@ -46,13 +48,13 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 	}
 	if (ft_strncmp(cmd->args[0], "./", 2) == 0)
 	{
-		if (get_paths(cmd->args[0], main->env) == NULL && access(cmd->args[0],
-				F_OK) == -1)
+		execve(cmd->args[0], a, envp);
+		if (access(cmd->args[0], F_OK) == -1)
 		{
 			status = 127;
 			ft_putstr_fd(" No such file or directory\n", 2);
 		}
-		else if (get_paths(cmd->args[0], main->env) == NULL)
+		else if (get_paths(&cmd->args[0][1], main->env) == NULL)
 		{
 			ft_putstr_fd(" Permission denied\n", 2);
 			status = 126;

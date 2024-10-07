@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 10:00:41 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 11:50:44 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 	char	**a;
 
 	a = NULL;
-	if (ft_strncmp(cmd->args[0], "./minishell", 11) != 0)
+	if (strcmp(cmd->args[0], "./minishell") != 0 || ft_strlen(cmd->args[0]) != 11)
 		not_builtin_helper(check, envp, cmd, main);
 	else
 	{
@@ -39,7 +39,7 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		if (cmd->args)
 			ft_putstr_fd(" No such file or directory\n", 2);
 		free_every_thing(cmd, main, main->check);
-		exit(1);
+		exit(127);
 	}
 	if (check_builtins2(cmd, envp, main) == 1 && main->check[0] != -1)
 		not_builtin(main->check, envp, cmd, main);

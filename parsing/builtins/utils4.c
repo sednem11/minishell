@@ -6,16 +6,16 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 09:15:43 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 11:03:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
+void	process_heredoc3(t_cmd *cmd, int i, int file, char *input)
 {
-	while (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
-			|| ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
+	while (input && (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
+			|| ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2])))
 	{
 		if (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
 			&& ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
@@ -24,8 +24,6 @@ void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
 			write(file, "\n", 1);
 		}
 		input = readline("heredoc> ");
-		if (check_signal_received(main, cmd, file) == 0)
-			exit(0);
 	}
 }
 
