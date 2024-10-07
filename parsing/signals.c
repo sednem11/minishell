@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:51:11 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/19 19:11:51 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 10:03:47 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	ctrlc_signal3(int signal)
 		signal_received = 1;
 		printf("\n");
 		rl_replace_line("", 0);
+		exit(0);
 	}
 }
 
@@ -72,7 +73,7 @@ sig_atomic_t	check_signal_received2(void)
 	return (signal_received);
 }
 
-void	check_signal_received(t_main *main, t_cmd *cmd, int file)
+int	check_signal_received(t_main *main, t_cmd *cmd, int file)
 {
 	if (signal_received == 1)
 	{
@@ -80,8 +81,9 @@ void	check_signal_received(t_main *main, t_cmd *cmd, int file)
 		close(file);
 		free_both(main);
 		free_every_thing(cmd, main, main->check);
-		exit(0);
+		return(0);
 	}
+	return(1);
 }
 
 void	signal_main3(t_main *main, t_cmd *cmd, int file)

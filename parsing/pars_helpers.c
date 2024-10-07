@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 00:59:17 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 16:05:39 by macampos         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:20:57 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,13 @@ t_main	*set_main2(t_main *main, char **envp, char **envp2, char *exported)
 	mainn->env = ft_calloc(sizeof(char *), matrixlen(envp) + 2);
 	while (envp[j])
 	{
-		if (j != place[0] || find_equal(exported) == -1)
+		if (j != place[0])
 			mainn->env[j] = envp[j];
 		else if (j == place[0] && find_equal(exported) > 0)
+		{
+			free(envp[j]);
 			mainn->env[j] = ft_strdup(exported);
+		}
 		j++;
 	}
 	if (find_equal(exported) > 0 && place[0] == -1)

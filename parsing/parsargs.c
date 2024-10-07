@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 18:58:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 09:04:59 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,10 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 	while (fakeargs[k])
 	{
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0 && fakeargs[k][1] != '?'
-			&& fakeargs[k][1] && check_aspas(main->user_input, k) == 0)
+			&& fakeargs[k][1] && check_aspas(main->user_input, k) == 0
+			&& (k - 1 == -1 || cmd->args[k - 1][0] != '<')
+			&& (k - 1 == -1 || cmd->args[k - 1][1] != '<')
+			&& (k - 1 == -1 || !cmd->args[k - 1][2]))
 			get_expansion(main, cmd, fakeargs[k], i);
 		else
 		{

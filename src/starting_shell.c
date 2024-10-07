@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:53:21 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 16:26:52 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 10:00:41 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	not_builtin(int *check, char **envp, t_cmd *cmd, t_main *main)
 
 void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 {
-	main->check = check_paired("PATH=", main->env, main->export, 5);
 	signal_main2();
+	main->check = check_paired("PATH=", main->env, main->export, 5);
 	child2(cmd, main);
 	closeallpipes(cmd);
 	free_both(main);
@@ -53,6 +53,8 @@ void	child_process(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 t_cmd	*execute_function_helper(t_main *main, int i, t_cmd *cmd,
 		char *user_input)
 {
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	main->cmd[i] = cmd;
 	main->pid[i] = fork();
 	if (main->pid[i] == 0)

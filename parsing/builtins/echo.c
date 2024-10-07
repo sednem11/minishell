@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 17:37:36 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/01 11:07:42 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,36 @@ void	print_args(t_cmd *cmd, char *user_input, int i, t_main *main)
 		printf("%s", " ");
 }
 
+int check_nonl(char *arg)
+{
+	int i;
+	
+	if (arg[0] != '-')
+		return(-1);
+	i = 1;
+	while (arg[i])
+	{
+		if (arg[i] != 'n')
+			return(-1);
+		while(arg[i] && arg[i] == 'n')
+			i++;
+	}
+	return(0);
+}
+
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 {
 	if (cmd->args[1] && cmd->redirectionoverall != 0)
 		echo_redirections2(cmd);
-	else if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 2) == 0
-		&& ft_strlen(cmd->args[1]) == 2 && cmd->args[3] == NULL)
+	else if (cmd->args[1] && check_nonl(cmd->args[1]) == 0)
 	{
-		i = 2;
+		i = 1;
+		while(cmd->args[i] && check_nonl(cmd->args[i]) != -1)
+			i++;
 		while (cmd->args[i])
 		{
-			printf("%s", cmd->args[i]);
+			if (cmd->args[i])
+				printf("%s", cmd->args[i]);
 			if (cmd->args[i + 1])
 				printf("%s", " ");
 			i++;

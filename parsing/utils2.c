@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 18:19:22 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 10:00:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ void	redirection3(t_cmd *cmd, int i, int file, t_main *main)
 		file = (open("temporary", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 0644));
 		signal_main3(main, cmd, file);
 		input = readline("heredoc> ");
-		check_signal_received(main, cmd, file);
+		printf("AHHHH\n");
+		if (check_signal_received(main, cmd, file) == 0)
+			exit(0);
 		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 2)
 			process_heredoc3(cmd, i, file, input, main);
 		else

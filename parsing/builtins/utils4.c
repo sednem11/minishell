@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 18:29:52 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/07 09:15:43 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,8 @@
 void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
 {
 	while (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
-			&& ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
+			|| ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
 	{
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-		signal_main3(main, cmd, file);
 		if (strcmp(input, &cmd->args[cmd->redirectionpos[i]][2]) != 0
 			&& ft_strlen(input) != ft_strlen(&cmd->args[cmd->redirectionpos[i]][2]))
 		{
@@ -27,7 +24,8 @@ void	process_heredoc3(t_cmd *cmd, int i, int file, char *input, t_main *main)
 			write(file, "\n", 1);
 		}
 		input = readline("heredoc> ");
-		check_signal_received(main, cmd, file);
+		if (check_signal_received(main, cmd, file) == 0)
+			exit(0);
 	}
 }
 
