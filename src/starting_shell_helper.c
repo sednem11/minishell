@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 19:31:34 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:07:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,24 @@ void	child2(t_cmd *cmd, t_main *main)
 		}
 		else if (cmd->next == NULL)
 		{
-			aplly_redirections(cmd, main);
+			if (cmd->redirectionoverall == 2)
+				aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
+			if (cmd->redirectionoverall != 2)
+				aplly_redirections(cmd, main);
 			closepipes(cmd);
+	
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{
-			aplly_redirections(cmd, main);
+			if (cmd->redirectionoverall == 2)
+				aplly_redirections(cmd, main);
 			dup2(cmd->fd[0], STDIN_FILENO);
 			dup2(cmd->next->fd[1], STDOUT_FILENO);
+			if (cmd->redirectionoverall != 2)
+				aplly_redirections(cmd, main);
 			closepipes(cmd);
+			close(cmd->next->fd[1]);
 		}
 	}
 	else
