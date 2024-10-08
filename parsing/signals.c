@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:51:11 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 10:49:52 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:43:09 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void	signal_main2(void)
 	signal(SIGQUIT, ctrl_slash);
 }
 
-volatile sig_atomic_t	signal_received = 0;
-
 void	ctrlc_signal3(int signal, t_main **buf, t_cmd **buf2)
 {
 	static t_cmd	*something2 = NULL;
@@ -72,7 +70,6 @@ void	ctrlc_signal3(int signal, t_main **buf, t_cmd **buf2)
 			something2 = *buf2;
 	if (signal == SIGINT)
 	{
-		signal_received = 1;
 		printf("\n");
 		rl_replace_line("", 0);
 		free_both(somethign);

@@ -6,14 +6,14 @@
 #    By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/02 15:42:27 by macampos          #+#    #+#              #
-#    Updated: 2024/10/07 11:24:44 by macampos         ###   ########.fr        #
+#    Updated: 2024/10/08 17:12:14 by macampos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
 SRC = src/main.c src/starting_shell.c parsing/parsargs.c parsing/pars_helpers.c parsing/builtins/cd.c parsing/builtins/echo.c parsing/builtins/env.c parsing/builtins/pwd.c parsing/builtins/export.c \
-		parsing/builtins/echo_helpers.c parsing/builtins/export_helper.c parsing/builtins/unset.c parsing/builtins/exit.c parsing/parsargs_utils2.c parsing/parsargs_utils.c parsing/utils.c parsing/split2.c \
+		parsing/builtins/echo_helpers.c parsing/builtins/export_helper.c parsing/builtins/unset.c parsing/builtins/exit.c parsing/parsargs_utils2.c parsing/parsargs_utils3.c parsing/parsargs_utils4.c parsing/parsargs_utils.c parsing/utils.c parsing/split2.c \
 		parsing/signals.c src/starting_shell_helper.c parsing/builtins/utils4.c parsing/utils2.c src/redirections_helpers.c parsing/utils3.c parsing/check_redirections.c src/main_utils.c\
 
 OBJ = $(SRC:.c=.o)

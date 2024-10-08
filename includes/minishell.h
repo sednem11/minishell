@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 10:51:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 17:10:33 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,15 @@ typedef struct s_ar
 	int				flag;
 }					t_ar;
 
+void				get_expansion3(char **new, char **expansion, int k, int j);
+void				check_args(char *user_input, t_ar *ar, char *argv);
+t_cmd				*set_comands(char *argv, t_cmd *cmd, t_main *main);
+int					check_args2(char *user_input);
+void				check_for_expansion(t_cmd *cmd, char **fakeargs,
+						t_main *main);
+t_cmd				*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin,
+						t_main *main);
+int					check_aspas2(char *user_input, int k);
 int					check_dolar(char *user_input);
 void				free_both(t_main *main);
 int					print_export_help2(t_main *main, int i, int n, int z);
@@ -157,8 +166,6 @@ void				open_file2(t_cmd *cmd, int i, int *file, t_main *main);
 void				signal_main3(t_main *main, t_cmd *cmd, int file);
 void				ctrl_slash(int signal);
 void				ctrlc_signal2(int signal);
-int					check_signal_received(t_main *main, t_cmd *cmd, int file);
-sig_atomic_t		check_signal_received2(void);
 int					check_aspas(char *user_input, int k);
 int					arg_len(char **args);
 char				**ft_split4(char const *s, char c, char c2);

@@ -107,7 +107,8 @@ t_main	*execute_function(char *user_input, char **envp, t_cmd *cmd,
 		{
 			signal(SIGINT, SIG_IGN);
 			signal(SIGQUIT, SIG_IGN);
-			while (waitpid(main->pid[i], &main->status, 0) != -1);
+			while (waitpid(main->pid[i], &main->status, 0) != -1)
+				;
 			if (WIFEXITED(main->status))
 				main->status = WEXITSTATUS(main->status);
 			i++;

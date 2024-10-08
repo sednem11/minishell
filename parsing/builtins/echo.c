@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/01 11:07:42 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:48:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ void	echo_redirections2(t_cmd *cmd)
 	{
 		while (cmd->args[++i])
 		{
-			if (ft_strncmp(cmd->args[i], ">", 1) == 0 || (ft_strncmp(cmd->args[i
-						- 1], ">", 1) == 0 && ft_strlen(cmd->args[i - 1]) <= 2)
+			if (ft_strncmp(cmd->args[i], ">", 1) == 0
+				|| (ft_strncmp(cmd->args[i - 1], ">", 1) == 0
+					&& ft_strlen(cmd->args[i - 1]) <= 2)
 				|| ft_strncmp(cmd->args[i], "<", 1) == 0
 				|| (ft_strncmp(cmd->args[i - 1], "<", 1) == 0
 					&& ft_strlen(cmd->args[i - 1]) <= 2))

@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 00:01:16 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 19:55:25 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:54:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	redirection3_help(t_cmd *cmd, int i, int file, char *input)
 {
 	while (input && (strcmp(input, cmd->args[cmd->redirectionpos[i] + 1]) != 0
 			|| ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i]
-				+ 1])))
+					+ 1])))
 	{
 		if (strcmp(input, cmd->args[cmd->redirectionpos[i] + 1]) != 0
 			&& ft_strlen(input) != ft_strlen(cmd->args[cmd->redirectionpos[i]
-				+ 1]))
+					+ 1]))
 		{
 			write(file, input, ft_strlen(input));
 			write(file, "\n", 1);
@@ -49,6 +49,16 @@ void	free_paths(char **paths, char **cmd)
 	free(paths);
 }
 
+void	get_paths_help(t_path *path, char *argv, char **cmd)
+{
+	path->part_path = ft_strjoin(path->paths[path->i], "/");
+	if (!cmd[0] && argv)
+		path->path = ft_strjoin(path->part_path, argv);
+	else
+		path->path = ft_strjoin(path->part_path, cmd[0]);
+	free(path->part_path);
+}
+
 char	*get_paths(char *argv, char **envp)
 {
 	t_path	path;
@@ -64,12 +74,7 @@ char	*get_paths(char *argv, char **envp)
 	path.i = -1;
 	while (path.paths[++path.i])
 	{
-		path.part_path = ft_strjoin(path.paths[path.i], "/");
-		if (!cmd[0] && argv)
-			path.path = ft_strjoin(path.part_path, argv);
-		else
-			path.path = ft_strjoin(path.part_path, cmd[0]);
-		free(path.part_path);
+		get_paths_help(&path, argv, cmd);
 		if (access(path.path, X_OK) == 0)
 		{
 			free_paths(path.paths, cmd);

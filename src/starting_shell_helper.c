@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/20 00:14:14 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 15:07:20 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:49:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,23 @@ void	exit_helper(t_cmd *cmd, t_main *main, int *check)
 void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
 	int		status;
-	char 	**a;
-	char	*PATH;
+	char	**a;
+	char	*path;
 
 	a = NULL;
 	if (!cmd->path)
 		cmd->path = get_paths(cmd->realarg[0], main->env);
 	if (cmd->realarg[0] && cmd->realarg[0][0] == '/')
 	{
-		PATH = get_paths(cmd->realarg[0], main->env);
-		if (PATH == NULL)
+		path = get_paths(cmd->realarg[0], main->env);
+		if (path == NULL)
 		{
 			ft_putstr_fd(" No such file or directory\n", 2);
 			free_every_thing(cmd, main, check);
-			free(PATH);
+			free(path);
 			exit(127);
 		}
-		free(PATH);
+		free(path);
 		execve(cmd->realarg[0], cmd->realarg, envp);
 	}
 	if (cmd->path && check_builtins3(cmd, main->env, main) == 1)
@@ -79,7 +79,8 @@ void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 		&& check_paired(cmd->args[0], main->env, main->export,
 			ft_strlen(cmd->args[0]) - 1)[0] == -1)
 		execve(cmd->path, &cmd->args[1], envp);
-	else if (cmd->realarg[0] && cmd->realarg[0][0] == '$' && check[0] != -1 && cmd->realarg[0][1])
+	else if (cmd->realarg[0] && cmd->realarg[0][0] == '$' && check[0] != -1
+		&& cmd->realarg[0][1])
 	{
 		ft_putstr_fd(" Is a directory\n", 2);
 		free_every_thing(cmd, main, check);
@@ -111,7 +112,6 @@ void	child2(t_cmd *cmd, t_main *main)
 			if (cmd->redirectionoverall != 2)
 				aplly_redirections(cmd, main);
 			closepipes(cmd);
-	
 		}
 		else if (cmd->next && cmd != cmd->begining)
 		{

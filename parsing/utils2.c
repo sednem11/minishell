@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 14:41:30 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/07 17:47:10 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:45:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,18 @@ void	redirection_1(t_cmd *cmd, int file, int i, t_main *main)
 void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 {
 	int		status;
-	char	*PATH;
+	char	*path;
 
-	PATH = get_paths(cmd->args[0], main->env);
+	path = get_paths(cmd->args[0], main->env);
 	if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1
 		|| (cmd->args[cmd->redirectionpos[i] + 1]
 			&& ft_strlen(cmd->args[cmd->redirectionpos[i] + 1]) > 0))
 	{
-		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 && PATH != NULL)
+		if (ft_strlen(cmd->args[cmd->redirectionpos[i]]) > 1 && path != NULL)
 		{
 			file = (open(&cmd->args[cmd->redirectionpos[i]][1], O_RDONLY));
 		}
-		else if (PATH != NULL)
+		else if (path != NULL)
 		{
 			file = (open(cmd->args[cmd->redirectionpos[i] + 1], O_RDONLY));
 		}
@@ -66,7 +66,7 @@ void	redirection2(t_cmd *cmd, int i, int file, t_main *main)
 		{
 			ft_putstr_fd(" No such file or directory\n", 2);
 			status = 1;
-			free(PATH);
+			free(path);
 			closepipes(cmd);
 			free_both(main);
 			free_every_thing(cmd, main, main->check);
