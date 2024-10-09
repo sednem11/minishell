@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 17:00:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 17:06:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:24:00 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,7 @@ t_cmd	*set_comands(char *argv, t_cmd *cmd, t_main *main)
 		set_comands2(cmd2, main, path2, main->env);
 		cmd2 = set_comands_help2(cmd2, argv, i, begin);
 	}
-	cmd2->numb = 0;
-	cmd = cmd2->begining;
-	while (cmd)
-	{
-		cmd2->numb++;
-		cmd = cmd->next;
-	}
-	free(path2[0]);
-	free(path2);
-	free(argv);
+	set_comands_help3(cmd2, argv, cmd, path2);
 	if (cmd2->begining == NULL)
 	{
 		free(cmd2->argv2);
@@ -97,6 +88,7 @@ int	check_args2(char *user_input)
 	int	flag;
 	int	j;
 
+	j = 0;
 	flag = 0;
 	i = 0;
 	while (user_input[i])
@@ -105,44 +97,12 @@ int	check_args2(char *user_input)
 			flag = 1;
 		else if (user_input[i] == '\"' && flag == 1)
 			flag = 0;
-		if ((user_input[i] == '<' || user_input[i] == '>') && flag == 0)
-		{
-			j = i + 1;
-			while (user_input[j])
-			{
-				if (user_input[j] != ' ' && user_input[j] != '<'
-					&& user_input[j] != '>' && user_input[j] != '\t'
-					&& user_input[j] != '|')
-					break ;
-				j++;
-			}
-			if (!user_input[j])
-				return (2);
-		}
-		if ((user_input[i] == '<' || user_input[i] == '>') && flag == 0)
-		{
-			if ((user_input[i] == '<' || user_input[i] == '>')
-				&& (user_input[i + 1] == '<'
-					|| user_input[i + 1] == '>') && (user_input[i + 2] == '<'
-					|| user_input[i + 2] == '>'))
-				return (2);
-			if (user_input[i + 1] != '<' && user_input[i] == '<'
-				&& user_input[i + 1] != ' ' && user_input[i + 1] != '\t')
-			{
-				if ((user_input[i + 1] <= 65 && user_input[i + 1] >= 91
-						&& user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
-					|| user_input[i + 1] == '|')
-					return (1);
-			}
-			if (user_input[i + 1] != '>' && user_input[i] == '>'
-				&& user_input[i + 1] != ' ' && user_input[i + 1] != '\t')
-			{
-				if ((user_input[i + 1] <= 65 && user_input[i + 1] >= 91
-						&& user_input[i + 1] <= 96 && user_input[i + 1] >= 123)
-					|| user_input[i + 1] == '|')
-					return (1);
-			}
-		}
+		if ((user_input[i] == '<' || user_input[i] == '>')
+			&& flag == 0 && check_args2_help2(user_input, i, j) == 2)
+			return (2);
+		if ((user_input[i] == '<' || user_input[i] == '>')
+			&& flag == 0 && check_args2_help(user_input, i) > 0)
+			return (check_args2_help(user_input, i));
 		i++;
 	}
 	return (0);

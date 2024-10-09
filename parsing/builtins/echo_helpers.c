@@ -6,38 +6,11 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:05:09 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/20 15:21:07 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:24:27 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	free_value(char **value)
-{
-	int	i;
-
-	i = 0;
-	while (value[i])
-	{
-		free(value[i]);
-		i++;
-	}
-	free(value);
-}
-
-int	check_equal(char *value)
-{
-	int	i;
-
-	i = 0;
-	while (value[i] && i < (int)ft_strlen(value))
-	{
-		if (value[i] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 void	print_dolar_helper(t_main *main, char **value)
 {

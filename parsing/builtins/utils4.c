@@ -6,11 +6,29 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/23 19:02:33 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 17:12:01 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:19:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+void	alloc_heredoc(t_cmd *cmd, char *alocated)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = ft_calloc(sizeof(char *), matrixlen(cmd->realarg) + 2);
+	while (cmd->realarg[i])
+	{
+		new[i] = cmd->realarg[i];
+		i++;
+	}
+	if (alocated)
+		new[i] = ft_strdup(alocated);
+	free(cmd->realarg);
+	cmd->realarg = new;
+}
 
 void	process_heredoc3(t_cmd *cmd, int i, int file, char *input)
 {
@@ -81,4 +99,3 @@ int	check_builtins3(t_cmd *cmd, char **envp, t_main *main)
 	else
 		return (1);
 }
-

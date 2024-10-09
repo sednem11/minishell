@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 16:53:13 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 16:57:47 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:49:44 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,59 +59,48 @@ int	check_aspas2(char *user_input, int k)
 	return (0);
 }
 
-int	check_aspas(char *user_input, int k)
+int	check_aspas(char *user_input, int k, t_aspas *asp)
 {
-	int	i;
-	int	j;
-	int	check;
-	int	check2;
-
-	check2 = 0;
-	check = 0;
-	j = 0;
-	i = 0;
-	while (user_input[i])
+	asp = malloc(sizeof(t_aspas));
+	asp->check2 = 0;
+	asp->check = 0;
+	asp->j = 0;
+	asp->i = 0;
+	while (user_input[asp->i])
 	{
-		if (user_input[i] == '"' && check == 0 && check2 == 0)
-			check2 = 1;
-		else if (user_input[i] == '"' && check == 0 && check2 == 1)
-			check2 = 0;
-		if ((user_input[i] == '"' || user_input[i] == ' '
-				|| user_input[i] == '\'') && check == 1 && check2 == 0)
-			check = 0;
-		else if ((user_input[i] == '"' || user_input[i] == ' '
-				|| user_input[i] == '\'') && check == 0 && check2 == 0)
-		{
-			j++;
-			while (user_input[i] == '"' || user_input[i] == ' '
-				|| user_input[i] == '\'')
-			{
-				if (user_input[i] == '"')
-					break ;
-				if (user_input[i] == '\'' && j == k && check2 == 0)
-				{
-					return (1);
-				}
-				i++;
-				check = 1;
-			}
-		}
-		i++;
+		if (user_input[asp->i] == '"' && asp->check == 0 && asp->check2 == 0)
+			asp->check2 = 1;
+		else if (user_input[asp->i] == '"' && asp->check == 0
+			&& asp->check2 == 1)
+			asp->check2 = 0;
+		if ((user_input[asp->i] == '"' || user_input[asp->i] == ' '
+				|| user_input[asp->i] == '\'') && asp->check == 1
+			&& asp->check2 == 0)
+			asp->check = 0;
+		else if ((user_input[asp->i] == '"' || user_input[asp->i] == ' '
+				|| user_input[asp->i] == '\'') && asp->check == 0
+			&& asp->check2 == 0 && aspas_help(user_input, k, asp) == 1)
+			return (1);
+		asp->i++;
 	}
+	free(asp);
 	return (0);
 }
 
 t_cmd	*set_comands_help(int i, t_cmd *cmd2, t_cmd *begin, t_main *main)
 {
-	int		j;
-	char	**fakeargs;
+	int			j;
+	char		**fakeargs;
+	t_split2	*spl2;
 
+	spl2 = malloc(sizeof(t_split2));
 	j = 0;
 	cmd2->args = ft_calloc(100, sizeof(char *));
 	fakeargs = ft_split3(cmd2->argv2[i], '\3');
 	check_for_expansion(cmd2, fakeargs, main);
 	free(fakeargs);
-	cmd2->realarg = ft_split2(cmd2->argv2[i], '\3');
+	cmd2->realarg = ft_split2(cmd2->argv2[i], '\3', spl2);
+	free(spl2);
 	cmd2->redirection = ft_calloc(sizeof(int), count_redirections(cmd2->args));
 	cmd2->redirectionpos = ft_calloc(sizeof(int),
 			count_redirections(cmd2->args));

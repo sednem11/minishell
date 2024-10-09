@@ -6,32 +6,11 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/02 18:51:11 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 15:43:09 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:26:20 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	ctrlc_signal2(int signal)
-{
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-	}
-}
-
-void	ctrlc_signal(int signal)
-{
-	if (signal == SIGINT)
-	{
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
 
 void	ctrl_slash(int signal)
 {

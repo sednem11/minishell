@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 17:05:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:54:14 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,15 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 	int	k;
 
 	i = 0;
-	k = 0;
+	k = -1;
 	cmd->valid_arg_for_redirection = ft_calloc(100, sizeof(int));
-	while (fakeargs[k])
+	while (fakeargs[++k])
 	{
 		if (ft_strncmp(fakeargs[k], "$", 1) == 0 && fakeargs[k][1] != '?'
-			&& fakeargs[k][1] && check_aspas(main->user_input, k) == 0 && (k
-				- 1 == -1 || cmd->args[k - 1][0] != '<') && (k - 1 == -1
-				|| cmd->args[k - 1][1] != '<') && (k - 1 == -1 || !cmd->args[k
-				- 1][2]))
+			&& fakeargs[k][1] && check_aspas(main->user_input, k, NULL) == 0
+			&& (k - 1 == -1 || cmd->args[k - 1][0] != '<') && (k - 1 == -1
+				|| cmd->args[k - 1][1] != '<') && (k - 1 == -1
+				|| !cmd->args[k - 1][2]))
 			get_expansion(main, cmd, fakeargs[k], i);
 		else
 		{
@@ -110,7 +110,6 @@ void	check_for_expansion(t_cmd *cmd, char **fakeargs, t_main *main)
 		else
 			cmd->valid_arg_for_redirection[k] = 1;
 		free(fakeargs[k]);
-		k++;
 	}
 }
 

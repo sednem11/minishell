@@ -6,61 +6,11 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 16:58:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 15:48:19 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:46:17 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	check_dolar(char *user_input)
-{
-	int	i;
-	int	flag;
-
-	i = 0;
-	flag = -1;
-	while (user_input[i])
-	{
-		if (user_input[i] == '\'')
-			flag *= -1;
-		if (user_input[i] == '$' && flag == 1)
-			return (2);
-		i++;
-	}
-	return (1);
-}
-
-int	check_backward_redirection(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (i < count_redirections(cmd->args))
-	{
-		if (cmd->redirection[i] == 3 || cmd->redirection[i] == 2)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	echo_redirections3(t_cmd *cmd)
-{
-	int	i;
-
-	i = 1;
-	if (cmd->redirectionoverall == 1 && check_backward_redirection(cmd) == 0)
-	{
-		while (cmd->realarg[i])
-		{
-			printf("%s", cmd->realarg[i]);
-			if (cmd->realarg[i + 1])
-				printf("%s", " ");
-			i++;
-		}
-	}
-	printf("\n");
-}
 
 void	echo_redirections2(t_cmd *cmd)
 {
@@ -100,7 +50,7 @@ void	print_args(t_cmd *cmd, char *user_input, int i, t_main *main)
 	j = 0;
 	while (j < (int)ft_strlen(cmd->args[i]))
 	{
-		if (cmd->args[i][j] == '$' && check_aspas(user_input, i) == 0)
+		if (cmd->args[i][j] == '$' && check_aspas(user_input, i, NULL) == 0)
 		{
 			print_dolar(main, &cmd->args[i][j + 1]);
 			while (cmd->args[i][j] && cmd->args[i][j] != ' '
@@ -135,6 +85,18 @@ int	check_nonl(char *arg)
 	return (0);
 }
 
+void	echo2(t_cmd *cmd, char *user_input, int i, t_main *main)
+{
+	i = 1;
+	while (cmd->args[i])
+	{
+		print_args(cmd, user_input, i, main);
+		i++;
+	}
+	main->status = 0;
+	printf("\n");
+}
+
 void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 {
 	if (cmd->args[1] && cmd->redirectionoverall != 0)
@@ -154,14 +116,5 @@ void	echo(t_cmd *cmd, t_main *main, int i, char *user_input)
 		}
 	}
 	else if (cmd->args[1] && cmd->redirectionoverall == 0)
-	{
-		i = 1;
-		while (cmd->args[i])
-		{
-			print_args(cmd, user_input, i, main);
-			i++;
-		}
-		main->status = 0;
-		printf("\n");
-	}
+		echo2(cmd, user_input, i, main);
 }

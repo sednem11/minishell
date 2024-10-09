@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/08 17:10:33 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 18:50:36 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,29 @@ typedef struct s_split
 	int				ctd2;
 }					t_split;
 
+typedef struct s_split2
+{
+	int		i;
+	int		k;
+	int		j;
+	int		flag;
+	char	**ptr;
+}			t_split2;
+
 typedef struct s_ar
 {
 	int				i;
 	int				j;
 	int				flag;
 }					t_ar;
+
+typedef struct s_aspas
+{
+	int	i;
+	int	j;
+	int	check;
+	int	check2;
+}		t_aspas;
 
 void				get_expansion3(char **new, char **expansion, int k, int j);
 void				check_args(char *user_input, t_ar *ar, char *argv);
@@ -121,7 +138,7 @@ void				redirection2(t_cmd *cmd, int i, int file, t_main *main);
 void				redirection_1(t_cmd *cmd, int file, int i, t_main *main);
 int					count_redirections(char **argv);
 void				free_cmd_args(t_cmd *cmd);
-char				**ft_split2(char const *s, char c);
+char				**ft_split2(char const *s, char c, t_split2 *spl2);
 void				closepipes(t_cmd *cmd);
 void				set_comands2(t_cmd *cmd, t_main *main, char **path2,
 						char **envp);
@@ -166,7 +183,7 @@ void				open_file2(t_cmd *cmd, int i, int *file, t_main *main);
 void				signal_main3(t_main *main, t_cmd *cmd, int file);
 void				ctrl_slash(int signal);
 void				ctrlc_signal2(int signal);
-int					check_aspas(char *user_input, int k);
+int					check_aspas(char *user_input, int k, t_aspas *asp);
 int					arg_len(char **args);
 char				**ft_split4(char const *s, char c, char c2);
 int					ft_strlen_updated(char *line);
@@ -175,5 +192,20 @@ char				*word_aloc4(char const *str, char c, char c2);
 int					check_builtins3(t_cmd *cmd, char **envp, t_main *main);
 int					*check_paired2(char *exported, char **envp, char **envp2,
 						int len);
+void				not_builtin_helper(int *check, char **envp, t_cmd *cmd,
+						t_main *main);
+int					check_backward_redirection(t_cmd *cmd);
+int					check_dolar(char *user_input);
+void				free_value(char **value);
+void				ctrlc_signal(int signal);
+void				ctrlc_signal2(int signal);
+void				echo_redirections3(t_cmd *cmd);
+void				set_main2_help2(t_main *mainn, int *place, char **envp,
+						char *exported);
+int					check_args2_help(char *user_input, int i);
+int					check_args2_help2(char *user_input, int i, int j);
+void				set_comands_help3(t_cmd *cmd2, char *argv, t_cmd *cmd,
+						char **path2);
+int					aspas_help(char *user_input, int k, t_aspas *asp);
 
 #endif

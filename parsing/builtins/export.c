@@ -6,25 +6,11 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 17:41:13 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:31:37 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-int	find_equal(char *arg)
-{
-	int	i;
-
-	i = 0;
-	while (arg[i])
-	{
-		if (arg[i] == '=')
-			return (i);
-		i++;
-	}
-	return (-1);
-}
 
 int	*check_paired2(char *exported, char **envp, char **envp2, int len)
 {
@@ -113,7 +99,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	int		i;
 
 	(void)envp;
-	i = 1;
+	i = 0;
 	next = main;
 	if (!cmd->args[1])
 	{
@@ -121,7 +107,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 		main->status = 0;
 		return (main);
 	}
-	while (cmd->args[i])
+	while (cmd->args[++i])
 	{
 		if (check_invalid(cmd->args[i]) != -1 || cmd->args[i][0] == '='
 			|| (cmd->args[1][0] > 47 && cmd->args[1][0] < 58))
@@ -132,7 +118,6 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 		}
 		else if (check_invalid(cmd->args[i]) == -1)
 			next = set_main2(next, next->env, next->export, cmd->args[i]);
-		i++;
 	}
 	return (next);
 }

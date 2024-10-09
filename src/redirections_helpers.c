@@ -6,29 +6,11 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/25 18:45:17 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:07:13 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	alloc_heredoc(t_cmd *cmd, char *alocated)
-{
-	char	**new;
-	int		i;
-
-	i = 0;
-	new = ft_calloc(sizeof(char *), matrixlen(cmd->realarg) + 2);
-	while (cmd->realarg[i])
-	{
-		new[i] = cmd->realarg[i];
-		i++;
-	}
-	if (alocated)
-		new[i] = ft_strdup(alocated);
-	free(cmd->realarg);
-	cmd->realarg = new;
-}
 
 int	check_overall_args(t_cmd *cmd)
 {

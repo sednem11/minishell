@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 23:35:51 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/20 15:22:49 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:09:25 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,47 +55,49 @@ static int	count_words3(char const *s, char c)
 	return (j);
 }
 
-char	**ft_split2(char const *s, char c)
+void	split2_help(char const *s, char c, t_split2 *spl2)
 {
-	int		i;
-	int		k;
-	int		j;
-	char	**ptr;
-	int		flag;
-
-	flag = 0;
-	i = 0;
-	j = 0;
-	ptr = ft_calloc(100, sizeof(char *));
-	if (!ptr)
-		return (NULL);
-	while (s[i])
+	while (s[spl2->i] && (s[spl2->i] == c || s[spl2->i] == '>'
+			|| s[spl2->i] == '<' || spl2->flag == 1))
 	{
-		k = 0;
-		while (s[i] && (s[i] == c || s[i] == '>' || s[i] == '<' || flag == 1))
-		{
-			if (s[i] == '>' || s[i] == '<')
-				flag = 1;
-			else if (s[i] == c && k == 1)
-				flag = 0;
-			if ((s[i] == '>' || s[i] == '<') && s[i + 1] != c && s[i + 1] != '>'
-				&& s[i + 1] != '<')
-				k = 1;
-			else if ((s[i] == '>' || s[i] == '<') && s[i + 1] == c)
-				k = 0;
-			else if (s[i] != '>' && s[i] != '<' && s[i + 1] != c)
-				k = 1;
-			i++;
-		}
-		if (s[i] != '\0' && s[i] != c)
-		{
-			ptr[j] = word_aloc(s + i, c);
-			j++;
-		}
-		while (s[i] && s[i] != c)
-			i++;
+		if (s[spl2->i] == '>' || s[spl2->i] == '<')
+			spl2->flag = 1;
+		else if (s[spl2->i] == c && spl2->k == 1)
+			spl2->flag = 0;
+		if ((s[spl2->i] == '>' || s[spl2->i] == '<')
+			&& s[spl2->i + 1] != c && s[spl2->i + 1] != '>'
+			&& s[spl2->i + 1] != '<')
+			spl2->k = 1;
+		else if ((s[spl2->i] == '>'
+				|| s[spl2->i] == '<') && s[spl2->i + 1] == c)
+			spl2->k = 0;
+		else if (s[spl2->i] != '>' && s[spl2->i] != '<' && s[spl2->i + 1] != c)
+			spl2->k = 1;
+		spl2->i++;
 	}
-	return (ptr);
+}
+
+char	**ft_split2(char const *s, char c, t_split2 *spl2)
+{
+	spl2->flag = 0;
+	spl2->i = 0;
+	spl2->j = 0;
+	spl2->ptr = ft_calloc(100, sizeof(char *));
+	if (!spl2->ptr)
+		return (NULL);
+	while (s[spl2->i])
+	{
+		spl2->k = 0;
+		split2_help(s, c, spl2);
+		if (s[spl2->i] != '\0' && s[spl2->i] != c)
+		{
+			spl2->ptr[spl2->j] = word_aloc(s + spl2->i, c);
+			spl2->j++;
+		}
+		while (s[spl2->i] && s[spl2->i] != c)
+			spl2->i++;
+	}
+	return (spl2->ptr);
 }
 
 char	**ft_split3(char const *s, char c)
