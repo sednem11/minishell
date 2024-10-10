@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:45:13 by macampos          #+#    #+#             */
-/*   Updated: 2024/09/27 18:38:46 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:45:54 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,18 @@ t_main	*set_main(t_main *main, char **envp)
 	main = ft_calloc(sizeof(t_main), sizeof(t_main));
 	if (envp[0] == NULL)
 	{
-		main->env = ft_calloc(sizeof(char *), 4);
+		main->env = ft_calloc(sizeof(char *), 5);
 		main->env[0] = ft_strdup("PWD=/home/macampos/minishell");
 		main->env[1] = ft_strdup("SHLVL=1");
 		main->env[2] = ft_strdup("_=/usr/bin/env");
-		main->export = ft_calloc(sizeof(char *), 4);
+		main->env[3] = ft_strjoin("PATH=/usr/local/sbin:/usr/local/bin",
+				":/usr/sbin:/usr/bin:/sbin:/bin");
+		main->export = ft_calloc(sizeof(char *), 5);
 		main->export[0] = ft_strdup("PWD=/home/macampos/minishell");
 		main->export[1] = ft_strdup("SHLVL=1");
 		main->export[2] = ft_strdup("_=/usr/bin/env");
+		main->export[3] = ft_strjoin("PATH=/usr/local/sbin:/usr/local/bin",
+				":/usr/sbin:/usr/bin:/sbin:/bin");
 		return (main);
 	}
 	main = set_main_helper(main, envp);
