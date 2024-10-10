@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/10 11:48:24 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:44:19 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ typedef struct s_expansion
 	int		k;
 }			t_expansion;
 
+int					check_priority_arg(t_cmd *cmd);
 void				get_expansion3(char **new, char **expansion, int k, int j);
 void				check_args(char *user_input, t_ar *ar, char *argv);
 t_cmd				*set_comands(char *argv, t_cmd *cmd, t_main *main);
