@@ -6,21 +6,21 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 00:11:53 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/09 18:54:14 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:47:12 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	get_expansion4(t_main *main, char **new, int i, int k, char *fakeargs)
+int	get_expansion4(t_main *main, char **new, t_expansion *exp, char *fakeargs)
 {
 	int		*check;
 	char	**expansion;
 	int		j;
 
 	j = 0;
-	check = check_paired(&fakeargs[i + 1], main->env, main->export,
-			ft_strlen_updated(&fakeargs[i + 1]));
+	check = check_paired(&fakeargs[exp->i + 1], main->env, main->export,
+			ft_strlen_updated(&fakeargs[exp->i + 1]));
 	if (check[0] != -1)
 	{
 		expansion = ft_split(&main->env[check[0]]
@@ -28,34 +28,34 @@ int	get_expansion4(t_main *main, char **new, int i, int k, char *fakeargs)
 				+ 1], ' ');
 		while (expansion[j])
 		{
-			get_expansion3(new, expansion, k, j);
-			if (!fakeargs[i + 1] || expansion[j + 1])
-				k++;
+			get_expansion3(new, expansion, exp->k, j);
+			if (!fakeargs[exp->i + 1] || expansion[j + 1])
+				exp->k++;
 			j++;
 		}
 		free(expansion);
 	}
 	free(check);
-	return (k);
+	return (exp->k);
 }
 
 char	**get_expansion2(t_main *main, char *fakeargs, int *check)
 {
-	char	**new;
-	int		i;
-	int		k;
+	t_expansion	*exp;
+	char		**new;
 
-	i = 0;
-	k = 0;
+	exp = malloc(sizeof(t_expansion));
+	exp->i = 0;
+	exp->k = 0;
 	(void)check;
 	new = calloc(sizeof(char *), 100);
-	while (fakeargs[i])
+	while (fakeargs[exp->i])
 	{
-		if (fakeargs[i] == ' ')
-			new[k] = ft_strjoin(new[k], " ");
-		if (fakeargs[i] == '$')
-			k = get_expansion4(main, new, i, k, fakeargs);
-		i++;
+		if (fakeargs[exp->i] == ' ')
+			new[exp->k] = ft_strjoin(new[exp->k], " ");
+		if (fakeargs[exp->i] == '$')
+			exp->k = get_expansion4(main, new, exp, fakeargs);
+		exp->i++;
 	}
 	return (new);
 }
@@ -139,13 +139,5 @@ t_cmd	*initiate_args(char *user_input, char **envp, t_cmd *cmd, t_main *main)
 		check_args(user_input, ar, argv);
 		ar->i++;
 	}
-	if (ar->flag == 1)
-	{
-		printf("unclosed argument\n");
-		free(argv);
-		free(ar);
-		return (NULL);
-	}
-	free(ar);
-	return (set_comands(argv, cmd, main));
+	return (initiate_args2(argv, ar, cmd, main));
 }

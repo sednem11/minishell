@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 15:38:36 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/09 18:50:36 by macampos         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:48:24 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,12 @@ typedef struct s_aspas
 	int	check;
 	int	check2;
 }		t_aspas;
+
+typedef struct s_expansion
+{
+	int		i;
+	int		k;
+}			t_expansion;
 
 void				get_expansion3(char **new, char **expansion, int k, int j);
 void				check_args(char *user_input, t_ar *ar, char *argv);
@@ -207,5 +213,10 @@ int					check_args2_help2(char *user_input, int i, int j);
 void				set_comands_help3(t_cmd *cmd2, char *argv, t_cmd *cmd,
 						char **path2);
 int					aspas_help(char *user_input, int k, t_aspas *asp);
+void				redirection3_help2(t_cmd *cmd, int i, int file);
+void				redirection2_help(t_cmd *cmd, int i, int file,
+						t_main *main);
+t_cmd				*initiate_args2(char *argv, t_ar *ar, t_cmd *cmd,
+						t_main *main);
 
 #endif
