@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 11:16:19 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/10 14:51:57 by macampos         ###   ########.fr       */
+/*   Updated: 2024/11/01 19:30:34 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	check_priority_arg(t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		if (cmd->args[i][0] != '<' && cmd->args[i][0] != '>'
-			&& cmd->args[i - 1][0] != '<' && cmd->args[i - 1][0] != '>')
+			&& cmd->args[i - 1][0] != '<' && cmd->args[i - 1][0] != '>'
+			&& strcmp(cmd->args[i - 1], "grep") != 0)
 			return (1);
 		i++;
 	}
