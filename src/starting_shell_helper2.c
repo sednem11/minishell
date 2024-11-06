@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:03:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/11/01 19:19:56 by macampos         ###   ########.fr       */
+/*   Updated: 2024/11/06 13:23:30 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	not_builtin_helper2(t_cmd *cmd, t_main *main, char **envp, int *check)
 
 	if (cmd->path && check_builtins3(cmd, main->env, main) == 1)
 	{
-		if (arg_len(cmd->args) == 1 || (get_paths(cmd->realarg[1],
-					main->env) == NULL && cmd->redirectionoverall == 0))
+		if (cmd->redirectionoverall == 0 && (arg_len(cmd->args) == 1
+				|| get_paths(cmd->realarg[1], main->env) == NULL))
 			execve(cmd->path, cmd->args, envp);
 		execve(cmd->path, cmd->realarg, envp);
 	}

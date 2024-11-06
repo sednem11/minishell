@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 17:04:24 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/09 15:31:37 by macampos         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:01:44 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_main	*export(t_cmd *cmd, char **envp, t_main *main)
 	(void)envp;
 	i = 0;
 	next = main;
-	if (!cmd->args[1])
+	if (!cmd->args[1] || cmd->args[1][0] == '>' || cmd->args[1][0] == '<')
 	{
 		print_export(main);
 		main->status = 0;
