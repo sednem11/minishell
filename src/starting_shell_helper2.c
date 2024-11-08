@@ -6,7 +6,7 @@
 /*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:03:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/11/06 13:23:30 by macampos         ###   ########.fr       */
+/*   Updated: 2024/11/08 23:39:52 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,22 +77,14 @@ void	not_builtin_helper3(t_main *main, t_cmd *cmd, char **envp, int *check)
 
 void	not_builtin_helper(int *check, char **envp, t_cmd *cmd, t_main *main)
 {
-	char	*path;
-
 	if (!cmd->path)
 		cmd->path = get_paths(cmd->realarg[0], main->env);
 	if (cmd->realarg[0] && cmd->realarg[0][0] == '/')
 	{
-		path = get_paths(cmd->realarg[0], main->env);
-		if (path == NULL)
-		{
-			ft_putstr_fd(" No such file or directory\n", 2);
-			free_every_thing(cmd, main, check);
-			free(path);
-			exit(127);
-		}
-		free(path);
 		execve(cmd->realarg[0], cmd->realarg, envp);
+		ft_putstr_fd(" No such file or directory\n", 2);
+		free_every_thing(cmd, main, check);
+		exit(127);
 	}
 	not_builtin_helper2(cmd, main, envp, check);
 	free(check);
