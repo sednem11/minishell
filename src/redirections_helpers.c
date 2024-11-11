@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 23:48:05 by macampos          #+#    #+#             */
-/*   Updated: 2024/10/10 14:30:46 by macampos         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:24:18 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_overall_args(t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		if (ft_strncmp(cmd->args[i], "<", 1) != 0 && ft_strncmp(cmd->args[i],
-				">", 1) != 0)
+				">", 1) != 0 && strcmp(cmd->args[i], "cat") != 0)
 		{
 			if ((ft_strncmp(cmd->args[i - 1], "<", 1) == 0
 					&& ft_strlen(cmd->args[i - 1]) != 1)

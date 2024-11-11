@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   starting_shell_helper2.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macampos <mcamposmendes@gmail.com>         +#+  +:+       +#+        */
+/*   By: macampos <macampos@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:03:47 by macampos          #+#    #+#             */
-/*   Updated: 2024/11/08 23:45:10 by macampos         ###   ########.fr       */
+/*   Updated: 2024/11/11 15:09:33 by macampos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	not_builtin_helper2(t_cmd *cmd, t_main *main, char **envp, int *check)
 {
 	int	status;
 
+	status = 127;
 	if (cmd->path && check_builtins3(cmd, main->env, main) == 1)
 	{
 		if (cmd->redirectionoverall == 0 && (arg_len(cmd->args) == 1
@@ -36,10 +37,7 @@ void	not_builtin_helper2(t_cmd *cmd, t_main *main, char **envp, int *check)
 	{
 		execve(cmd->args[0], cmd->args, envp);
 		if (access(cmd->args[0], F_OK) == -1)
-		{
-			status = 127;
 			ft_putstr_fd(" No such file or directory\n", 2);
-		}
 		else if (get_paths(&cmd->args[0][1], main->env) == NULL)
 		{
 			ft_putstr_fd(" Permission denied\n", 2);
